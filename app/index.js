@@ -4,8 +4,7 @@ const yosay = require('yosay');
 const chalk = require('chalk');
 const wiredep = require('wiredep');
 const mkdirp = require('mkdirp');
-const ncp = require('ncp').ncp;
-const _s = require('underscore.string');
+const ncp = require('ncp');
 
 module.exports = generators.Base.extend({
 
@@ -14,9 +13,7 @@ module.exports = generators.Base.extend({
   },
 
   prompting: function () {
-    if (!this.options['skip-welcome-message']) {
-      this.log(yosay('Hey TCG, whadyawant?'));
-    }
+    this.log(yosay('Hey TCG, whadyawant?'));
 
     let prompts = [{
       type: 'input',
@@ -38,41 +35,20 @@ module.exports = generators.Base.extend({
       let mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
       let newPath = `${answers.newNamespace}/${mod}`;
 
-      console.log(target);
-      console.log(mod);
-      console.log(newPath);
-
     }.bind(this));
   },
 
-  writing: {
-    // create: function () {
-    //   this.fs.copyTpl(
-    //     this.templatePath = path
-    //     this.destinationPath('gulpfile.js'),
-    //     {
-    //       date: (new Date).toISOString().split('T')[0],
-    //       name: this.pkg.name,
-    //       version: this.pkg.version,
-    //       includeBootstrap: this.includeBootstrap,
-    //       includeUncss: this.includeUncss,
-    //       includeBabel: this.options['babel'],
-    //       testFramework: this.options['test-framework']
-    //     }
-    //   );
-    // }
-
-    // ncp(target, newPath, function (err) {
-    //   if (err) {
-    //     return console.error(err);
-    //   }
-    //   console.log(newPath);
-    // });
-
+  writing: function () {
+    ncp(this.target, this.newPath, function (err) {
+      if (err) {
+        return console.error(err);
+      }
+      console.log('done!');
+    });
   },
 
   end: function () {
-
+    // might not need this
   }
 
 });
