@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const mkdirp = require('mkdirp');
 const fs = require('fs-extra');
 let ncp = require('ncp').ncp;
+// let shell = require('shelljs');
 
 module.exports = generators.Base.extend({
 
@@ -41,15 +42,13 @@ module.exports = generators.Base.extend({
       global.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
       global.newPath = `${answers.newNamespace}/${mod}`;
 
-      global.oldFile = `${answers.originalNamespace}/${answers.originalSubdirectory}/${answers.originalSubdirectory}.php`
-      global.newFile = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`
+      global.oldPhpFile = `${answers.originalNamespace}/${answers.originalSubdirectory}/${answers.originalSubdirectory}.php`;
+      global.newPhpFile = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`;
 
     }.bind(this));
   },
 
   writing: function (prompts) {
-
-    let fileArray = [];
 
     // this successfully creates the parent and sub directories
     mkdirp.sync(global.newPath, function (err) {
@@ -58,12 +57,12 @@ module.exports = generators.Base.extend({
     });
 
     // this does not WRITE the contents of the file
-    // ncp(global.target, global.newPath, function (err) {
-    //   if (err) {
-    //     return console.error(err);
-    //   }
-    //   console.log('done!');
-    // });
+    ncp(global.target, global.newPath, function (err) {
+      if (err) {
+        return console.error(err);
+      }
+      console.log('done!');
+    });
 
 
   },
