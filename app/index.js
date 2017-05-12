@@ -1,18 +1,16 @@
 'use strict';
-let generators = require('yeoman-generator');
-let yosay = require('yosay');
-let chalk = require('chalk');
-let wiredep = require('wiredep');
-let mkdirp = require('mkdirp');
-let _s = require('underscore.string');
+const generators = require('yeoman-generator');
+const yosay = require('yosay');
+const chalk = require('chalk');
+const wiredep = require('wiredep');
+const mkdirp = require('mkdirp');
+const _s = require('underscore.string');
 
 module.exports = generators.Base.extend({
+
   constructor: function () {
-
     generators.Base.apply(this, arguments);
-
   },
-
 
   prompting: function () {
     if (!this.options['skip-welcome-message']) {
