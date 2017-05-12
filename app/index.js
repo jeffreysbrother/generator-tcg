@@ -51,6 +51,8 @@ module.exports = generators.Base.extend({
       global.renamePHP = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.originalSubdirectory}.php`;
       global.newPHP = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`;
 
+      global.target = global.newPath;
+
     }.bind(this));
   },
 
@@ -71,11 +73,10 @@ module.exports = generators.Base.extend({
     });
 
     // rename: this is not working
-    var target = global.newPath;
-
-    fs.readdir(target, function(err, files) {
+    fs.readdir(global.target, function(err, files) {
       files.forEach(function(file) {
         if (path.extname == ".jsrc") {
+          console.log("found a JSRC file");
           fs.rename(file, file.replace(".jsrc", ".js"), function(err) {
             if (err) {
               throw err;
@@ -91,14 +92,10 @@ module.exports = generators.Base.extend({
       });
     });
 
-
-
-
-
   },
 
   end: function () {
-
+    // might not need this
   }
 
 });
