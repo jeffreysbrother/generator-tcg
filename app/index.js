@@ -88,7 +88,7 @@ module.exports = generators.Base.extend({
       // '\n   ');
 
       // commented out becasue this dumps the message AND the default ASCII ART
-      this.log(yosay('Yo Ninthlink! Out of the box I include HTML5 Boilerplate, jQuery, UnCSS, and many more useful tools.'));
+      this.log(yosay('Hey TCG, whadyawant?'));
     }
 
     var prompts = [{
