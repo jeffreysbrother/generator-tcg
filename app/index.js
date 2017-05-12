@@ -4,6 +4,7 @@ const yosay = require('yosay');
 const chalk = require('chalk');
 const wiredep = require('wiredep');
 const mkdirp = require('mkdirp');
+const ncp = require('ncp').ncp;
 const _s = require('underscore.string');
 
 module.exports = generators.Base.extend({
@@ -19,23 +20,37 @@ module.exports = generators.Base.extend({
 
     let prompts = [{
       type: 'input',
-      name: 'directory',
-      message: 'Which directory do you wish to copy?',
-      store: false
+      name: 'originalNamespace',
+      message: 'Which directory do you wish to copy?'
+    },{
+      type: 'input',
+      name: 'originalSubdirectory',
+      message: 'Which subdirectory?'
+    },{
+      type: 'input',
+      name: 'newNamespace',
+      message: 'Desired prefix?'
     }];
 
     return this.prompt(prompts).then(function (answers) {
-      let directory = answers.directory;
 
-      console.log(answers.directory);
+      let target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
+
+      let mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
+
+      let newPath = `${answers.newNamespace}/${mod}`;
+
+      console.log(target);
+      console.log(mod);
+      console.log(newPath);
 
     }.bind(this));
   },
 
   writing: {
-    // gulpfile: function () {
+    // create: function () {
     //   this.fs.copyTpl(
-    //     this.templatePath('gulpfile.js'),
+    //     this.templatePath = path
     //     this.destinationPath('gulpfile.js'),
     //     {
     //       date: (new Date).toISOString().split('T')[0],
@@ -47,7 +62,14 @@ module.exports = generators.Base.extend({
     //       testFramework: this.options['test-framework']
     //     }
     //   );
-    // },
+    // }
+
+    // ncp(target, newPath, function (err) {
+    //   if (err) {
+    //     return console.error(err);
+    //   }
+    //   console.log(newPath);
+    // });
 
   },
 
