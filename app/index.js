@@ -4,6 +4,7 @@ const yosay = require('yosay');
 const chalk = require('chalk');
 const mkdirp = require('mkdirp');
 const fs = require('fs-extra');
+let path = require('path');
 let ncp = require('ncp').ncp;
 // let shell = require('shelljs');
 
@@ -32,18 +33,23 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
+      var re = /^.{2}/g
+
       global.originalNamespace = answers.originalNamespace;
       global.newNamespace = answers.newNamespace;
 
       global.originalSubdirectory = answers.originalSubdirectory;
       global.newSubdirectory = answers.newSubdirectory;
 
-      global.target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-      global.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
+      global.origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
+      global.mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
       global.newPath = `${answers.newNamespace}/${mod}`;
 
       global.oldPhpFile = `${answers.originalNamespace}/${answers.originalSubdirectory}/${answers.originalSubdirectory}.php`;
       global.newPhpFile = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`;
+
+      global.renamePHP = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.originalSubdirectory}.php`;
+      global.newPHP = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`;
 
     }.bind(this));
   },
@@ -56,19 +62,43 @@ module.exports = generators.Base.extend({
       else console.log('pow!');
     });
 
-    // this does not WRITE the contents of the file
-    ncp(global.target, global.newPath, function (err) {
+    // copy files from origin to new subdirectory
+    ncp(global.origin, global.newPath, function (err) {
       if (err) {
         return console.error(err);
       }
       console.log('done!');
     });
 
+    // rename: this is not working
+    var target = global.newPath;
+
+    fs.readdir(target, function(err, files) {
+      files.forEach(function(file) {
+        if (path.extname == ".jsrc") {
+          fs.rename(file, file.replace(".jsrc", ".js"), function(err) {
+            if (err) {
+              throw err;
+            }
+          });
+        } else {
+          fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+      });
+    });
+
+
+
+
 
   },
 
   end: function () {
-    // might not need this
+
   }
 
 });
