@@ -3,6 +3,7 @@ const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const chalk = require('chalk');
 const mkdirp = require('mkdirp');
+const fs = require('fs-extra');
 let ncp = require('ncp').ncp;
 
 module.exports = generators.Base.extend({
@@ -30,21 +31,39 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
-      this.target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-      this.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
-      this.newPath = `${answers.newNamespace}/${mod}`;
+      global.target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
+      global.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
+      global.newPath = `${answers.newNamespace}/${mod}`;
+
+      // this.log(target);
+      // this.log(mod);
+      // this.log(newPath);
 
     }.bind(this));
   },
 
   writing: function (prompts) {
-    // console.log(this.target);
-    // console.log(this.mod);
-    // console.log(this.newPath);
-    ncp(this.target, this.newPath, function (err) {
+    // this.log(global.target);
+    // this.log(global.mod);
+    // this.log(global.newPath);
+
+    // mkdirp(global.newPath, function (err) {
+    //     if (err) console.error(err)
+    //     else console.log('pow!')
+    // });
+
+    ncp(global.target, global.newPath, function (err) {
+      if (!fs.existsSync(global.newPath)) {
+        mkdirp.sync(global.newPath, function (err) {
+          if (err) console.error(err)
+          else console.log('pow!');
+        });
+      }
+
       if (err) {
         return console.error(err);
       }
+
       console.log('done!');
     });
   },
