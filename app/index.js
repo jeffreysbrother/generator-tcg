@@ -3,7 +3,7 @@ const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const chalk = require('chalk');
 const mkdirp = require('mkdirp');
-const ncp = require('ncp');
+let ncp = require('ncp').ncp;
 
 module.exports = generators.Base.extend({
 
@@ -30,14 +30,17 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
-      let target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-      let mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
-      let newPath = `${answers.newNamespace}/${mod}`;
+      this.target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
+      this.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
+      this.newPath = `${answers.newNamespace}/${mod}`;
 
     }.bind(this));
   },
 
-  writing: function () {
+  writing: function (prompts) {
+    // console.log(this.target);
+    // console.log(this.mod);
+    // console.log(this.newPath);
     ncp(this.target, this.newPath, function (err) {
       if (err) {
         return console.error(err);
