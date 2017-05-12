@@ -31,9 +31,18 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
+      global.originalNamespace = answers.originalNamespace;
+      global.newNamespace = answers.newNamespace;
+
+      global.originalSubdirectory = answers.originalSubdirectory;
+      global.newSubdirectory = answers.newSubdirectory;
+
       global.target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
       global.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
       global.newPath = `${answers.newNamespace}/${mod}`;
+
+      global.oldFile = `${answers.originalNamespace}/${answers.originalSubdirectory}/${answers.originalSubdirectory}.php`
+      global.newFile = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`
 
     }.bind(this));
   },
@@ -48,25 +57,15 @@ module.exports = generators.Base.extend({
       else console.log('pow!');
     });
 
-    // read files out of the target dir (but we don't want to simply READ, we want to copy, then rename)
-    // fs.readdir(global.target, function (err, files, answers) {
-    //   files.forEach(function (file) {
-    //     fileArray = file;
-    //     console.log(fileArray);
-    //   });
+    // this does not WRITE the contents of the file
+    // ncp(global.target, global.newPath, function (err) {
+    //   if (err) {
+    //     return console.error(err);
+    //   }
+    //   console.log('done!');
     // });
 
 
-    // this.log(global.target);
-    // this.log(global.mod);
-    // this.log(global.newPath);
-    //
-    ncp(global.target, global.newPath, function (err) {
-      if (err) {
-        return console.error(err);
-      }
-      console.log('done!');
-    });
   },
 
   end: function () {
