@@ -35,17 +35,12 @@ module.exports = generators.Base.extend({
       global.mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
       global.newPath = `${answers.newNamespace}/${mod}`;
 
-      // this.log(target);
-      // this.log(mod);
-      // this.log(newPath);
-
     }.bind(this));
   },
 
   writing: function (prompts) {
-    // this.log(global.target);
-    // this.log(global.mod);
-    // this.log(global.newPath);
+
+    let fileArray = [];
 
     // this successfully creates the parent and sub directories
     mkdirp.sync(global.newPath, function (err) {
@@ -53,12 +48,23 @@ module.exports = generators.Base.extend({
       else console.log('pow!');
     });
 
-    ncp(global.target, global.newPath, function (err) {
+    // read files out of the target dir (but we don't want to simply READ, we want to copy, then rename)
+    // fs.readdir(global.target, function (err, files, answers) {
+    //   files.forEach(function (file) {
+    //     fileArray = file;
+    //     console.log(fileArray);
+    //   });
+    // });
 
+
+    // this.log(global.target);
+    // this.log(global.mod);
+    // this.log(global.newPath);
+    //
+    ncp(global.target, global.newPath, function (err) {
       if (err) {
         return console.error(err);
       }
-
       console.log('done!');
     });
   },
