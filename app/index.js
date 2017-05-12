@@ -1,10 +1,10 @@
 'use strict';
-var generators = require('yeoman-generator');
-var yosay = require('yosay');
-var chalk = require('chalk');
-var wiredep = require('wiredep');
-var mkdirp = require('mkdirp');
-var _s = require('underscore.string');
+let generators = require('yeoman-generator');
+let yosay = require('yosay');
+let chalk = require('chalk');
+let wiredep = require('wiredep');
+let mkdirp = require('mkdirp');
+let _s = require('underscore.string');
 
 module.exports = generators.Base.extend({
   constructor: function () {
@@ -16,33 +16,20 @@ module.exports = generators.Base.extend({
 
   prompting: function () {
     if (!this.options['skip-welcome-message']) {
-      // commented out becasue this dumps the message AND the default ASCII ART
       this.log(yosay('Hey TCG, whadyawant?'));
     }
 
-    var prompts = [{
+    let prompts = [{
       type: 'input',
       name: 'directory',
       message: 'Which directory do you wish to copy?',
-      store: true
-    }
-  ];
+      store: false
+    }];
 
     return this.prompt(prompts).then(function (answers) {
-      var features = answers.features;
+      let directory = answers.directory;
 
-      function hasFeature(feat) {
-        return features && features.indexOf(feat) !== -1;
-      };
-
-      // manually deal with the response, get back and store the results.
-      // we change a bit this way of doing to automatically do this in the self.prompt() method.
-      this.includeSass = hasFeature('includeSass');
-      this.includeBootstrap = hasFeature('includeBootstrap');
-      this.includeModernizr = hasFeature('includeModernizr');
-      this.includeTagManager = hasFeature('includeTagManager');
-      this.includeUncss = hasFeature('includeUncss');
-      this.includeJQuery = answers.includeJQuery;
+      console.log(answers.directory);
 
     }.bind(this));
   },
@@ -67,28 +54,7 @@ module.exports = generators.Base.extend({
   },
 
   end: function () {
-    var bowerJson = this.fs.readJSON(this.destinationPath('bower.json'));
-    var howToInstall =
-      '\nAfter running ' +
-      chalk.yellow.bold('npm install & bower install') +
-      ', inject your' +
-      '\nfront end dependencies by running ' +
-      chalk.yellow.bold('gulp wiredep') +
-      '.';
-
-    if (this.options['skip-install']) {
-      this.log(howToInstall);
-      return;
-    }
-
-    // wire Bower packages to .html
-    wiredep({
-      bowerJson: bowerJson,
-      directory: 'bower_components',
-      exclude: ['bootstrap-sass', 'bootstrap.js'],
-      ignorePath: /^(\.\.\/)*\.\./,
-      src: 'app/index.html'
-    });
 
   }
+
 });
