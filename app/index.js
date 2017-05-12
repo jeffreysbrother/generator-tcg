@@ -35,9 +35,7 @@ module.exports = generators.Base.extend({
     return this.prompt(prompts).then(function (answers) {
 
       let target = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-
       let mod = answers.originalSubdirectory.replace(/^.{2}/g, answers.newNamespace);
-
       let newPath = `${answers.newNamespace}/${mod}`;
 
       console.log(target);
