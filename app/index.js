@@ -47,18 +47,13 @@ module.exports = generators.Base.extend({
     // this.log(global.mod);
     // this.log(global.newPath);
 
-    // mkdirp(global.newPath, function (err) {
-    //     if (err) console.error(err)
-    //     else console.log('pow!')
-    // });
+    // this successfully creates the parent and sub directories
+    mkdirp.sync(global.newPath, function (err) {
+      if (err) console.error(err)
+      else console.log('pow!');
+    });
 
     ncp(global.target, global.newPath, function (err) {
-      if (!fs.existsSync(global.newPath)) {
-        mkdirp.sync(global.newPath, function (err) {
-          if (err) console.error(err)
-          else console.log('pow!');
-        });
-      }
 
       if (err) {
         return console.error(err);
