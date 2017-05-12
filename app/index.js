@@ -1,8 +1,6 @@
 'use strict';
 const generators = require('yeoman-generator');
-const yosay = require('yosay');
 const chalk = require('chalk');
-const wiredep = require('wiredep');
 const mkdirp = require('mkdirp');
 const ncp = require('ncp');
 
@@ -13,7 +11,7 @@ module.exports = generators.Base.extend({
   },
 
   prompting: function () {
-    this.log(yosay('Hey TCG, whadyawant?'));
+    this.log('Hey TCG, whadyawant?');
 
     let prompts = [{
       type: 'input',

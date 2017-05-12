@@ -30,7 +30,6 @@
     "chalk": "^1.0.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "wiredep": "^4.0.0",
     "yeoman-assert": "^2.1.1",
     "yeoman-generator": "^0.24.1",
     "yosay": "^1.2.0"
