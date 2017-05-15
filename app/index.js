@@ -33,7 +33,7 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
-      var re = /^.{2}/g;
+      let re = /^.{2}/g;
 
       global.originalNamespace = answers.originalNamespace;
       global.newNamespace = answers.newNamespace;
@@ -44,8 +44,6 @@ module.exports = generators.Base.extend({
       global.origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
       global.mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
       global.newPath = `${answers.newNamespace}/${global.mod}`;
-
-      global.target = global.newPath;
 
     }.bind(this));
   },
@@ -67,7 +65,7 @@ module.exports = generators.Base.extend({
     });
 
     // rename: this is not working ... none of this code is executing
-    fs.readdir(global.target, function(err, files) {
+    fs.readdir(global.newPath, function(err, files) {
       files.forEach(function(file) {
         if (path.extname == ".jsrc") {
           console.log("found a JSRC file");
