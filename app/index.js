@@ -33,23 +33,17 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
-      var re = /^.{2}/g
+      var re = /^.{2}/g;
 
       global.originalNamespace = answers.originalNamespace;
       global.newNamespace = answers.newNamespace;
 
-      global.originalSubdirectory = answers.originalSubdirectory;
-      global.newSubdirectory = answers.newSubdirectory;
+      // global.originalSubdirectory = answers.originalSubdirectory;
+      // global.newSubdirectory = answers.newSubdirectory;
 
       global.origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
       global.mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
-      global.newPath = `${answers.newNamespace}/${mod}`;
-
-      global.oldPhpFile = `${answers.originalNamespace}/${answers.originalSubdirectory}/${answers.originalSubdirectory}.php`;
-      global.newPhpFile = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`;
-
-      global.renamePHP = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.originalSubdirectory}.php`;
-      global.newPHP = `${answers.newNamespace}/${answers.newSubdirectory}/${answers.newSubdirectory}.php`;
+      global.newPath = `${answers.newNamespace}/${global.mod}`;
 
       global.target = global.newPath;
 
@@ -72,7 +66,7 @@ module.exports = generators.Base.extend({
       console.log('done!');
     });
 
-    // rename: this is not working
+    // rename: this is not working ... none of this code is executing
     fs.readdir(global.target, function(err, files) {
       files.forEach(function(file) {
         if (path.extname == ".jsrc") {
