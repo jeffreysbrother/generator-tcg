@@ -1,7 +1,6 @@
 'use strict';
 const generators = require('yeoman-generator');
 const yosay = require('yosay');
-const chalk = require('chalk');
 const mkdirp = require('mkdirp');
 const fs = require('fs');
 let path = require('path');
@@ -45,7 +44,7 @@ module.exports = generators.Base.extend({
   },
 
   directories: function (prompts) {
-    // this successfully creates the parent and sub directories
+    // create parent and sub directories
     mkdirp.sync(global.newPath, function (err) {
       if (err) {
         return console.error(err);
@@ -65,21 +64,19 @@ module.exports = generators.Base.extend({
   },
 
   rename: function () {
-    setTimeout(function() {
-      let target = cwd + "/" + global.newPath;
+      let target = `${cwd}/${global.newPath}`;
       fs.readdir(target, function(err, files) {
         files.forEach(function(file) {
           console.log(file);
 
-            fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
-              if (err) {
-                throw err;
-              }
-            });
+            // fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
+            //   if (err) {
+            //     throw err;
+            //   }
+            // });
 
         });
       });
-    }, 5000);
   }
 
 
