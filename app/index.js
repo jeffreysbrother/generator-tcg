@@ -2,9 +2,8 @@
 const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const mkdirp = require('mkdirp');
-const fs = require('fs');
+const fse = require('fs-extra');
 let path = require('path');
-let ncp = require('ncp').ncp;
 
 let cwd = process.cwd();
 let re = /^.{2}/g;
@@ -55,18 +54,18 @@ module.exports = generators.Base.extend({
 
   files: function () {
     // copy files from origin to new subdirectory
-    ncp(global.origin, global.newPath, function (err) {
-      if (err) {
-        return console.error(err);
-      }
-    });
-    console.log("files copied!");
+    try {
+      fse.copySync(global.origin, global.newPath);
+      console.log('success!');
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   rename: function () {
     setTimeout(function() {
       let target = `${cwd}/${global.newPath}`;
-      fs.readdir(target, function(err, files) {
+      fse.readdir(target, function(err, files) {
         files.forEach(function(file) {
           console.log(file);
 
