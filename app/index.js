@@ -44,55 +44,43 @@ module.exports = generators.Base.extend({
     }.bind(this));
   },
 
-  writing: function (prompts) {
-
+  directories: function (prompts) {
     // this successfully creates the parent and sub directories
     mkdirp.sync(global.newPath, function (err) {
       if (err) {
         return console.error(err);
       }
     });
+    console.log("dirs made!");
+  },
 
+  files: function () {
     // copy files from origin to new subdirectory
     ncp(global.origin, global.newPath, function (err) {
       if (err) {
         return console.error(err);
       }
     });
-
-    // rename: this is not working ... none of this code is executing
-    // fs.readdir(global.newPath, function(err, files) {
-    //   files.forEach(function(file) {
-    //     if (path.extname == ".jsrc") {
-    //       console.log("found a JSRC file");
-    //       fs.rename(file, file.replace(".jsrc", ".js"), function(err) {
-    //         if (err) {
-    //           throw err;
-    //         }
-    //       });
-    //     } else {
-    //       fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
-    //         if (err) {
-    //           throw err;
-    //         }
-    //       });
-    //     }
-    //   });
-    // });
-
-    return;
+    console.log("files copied!");
   },
 
-
   rename: function () {
-    let target = cwd + "/" + global.newPath;
-    console.log(target);
-    fs.readdir(target, function(err, files) {
-      files.forEach(function(file) {
-        console.log(file);
+    setTimeout(function() {
+      let target = cwd + "/" + global.newPath;
+      fs.readdir(target, function(err, files) {
+        files.forEach(function(file) {
+          console.log(file);
+
+            fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
+              if (err) {
+                throw err;
+              }
+            });
+
+        });
       });
-    });
-    return;
+    }, 5000);
   }
+
 
 });
