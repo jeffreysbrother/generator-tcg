@@ -50,7 +50,7 @@ module.exports = generators.Base.extend({
         return console.error(err);
       }
     });
-    console.log("dirs made!");
+    console.log("directories created!");
   },
 
   files: function () {
