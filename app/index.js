@@ -3,10 +3,12 @@ const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const chalk = require('chalk');
 const mkdirp = require('mkdirp');
-const fs = require('fs-extra');
+const fs = require('fs');
 let path = require('path');
 let ncp = require('ncp').ncp;
-// let shell = require('shelljs');
+
+let cwd = process.cwd();
+let re = /^.{2}/g;
 
 module.exports = generators.Base.extend({
 
@@ -33,14 +35,8 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
-      let re = /^.{2}/g;
-
       global.originalNamespace = answers.originalNamespace;
       global.newNamespace = answers.newNamespace;
-
-      // global.originalSubdirectory = answers.originalSubdirectory;
-      // global.newSubdirectory = answers.newSubdirectory;
-
       global.origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
       global.mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
       global.newPath = `${answers.newNamespace}/${global.mod}`;
@@ -52,8 +48,9 @@ module.exports = generators.Base.extend({
 
     // this successfully creates the parent and sub directories
     mkdirp.sync(global.newPath, function (err) {
-      if (err) console.error(err)
-      else console.log('pow!');
+      if (err) {
+        return console.error(err);
+      }
     });
 
     // copy files from origin to new subdirectory
@@ -61,33 +58,41 @@ module.exports = generators.Base.extend({
       if (err) {
         return console.error(err);
       }
-      console.log('done!');
     });
 
     // rename: this is not working ... none of this code is executing
-    fs.readdir(global.newPath, function(err, files) {
-      files.forEach(function(file) {
-        if (path.extname == ".jsrc") {
-          console.log("found a JSRC file");
-          fs.rename(file, file.replace(".jsrc", ".js"), function(err) {
-            if (err) {
-              throw err;
-            }
-          });
-        } else {
-          fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
-            if (err) {
-              throw err;
-            }
-          });
-        }
-      });
-    });
+    // fs.readdir(global.newPath, function(err, files) {
+    //   files.forEach(function(file) {
+    //     if (path.extname == ".jsrc") {
+    //       console.log("found a JSRC file");
+    //       fs.rename(file, file.replace(".jsrc", ".js"), function(err) {
+    //         if (err) {
+    //           throw err;
+    //         }
+    //       });
+    //     } else {
+    //       fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
+    //         if (err) {
+    //           throw err;
+    //         }
+    //       });
+    //     }
+    //   });
+    // });
 
+    return;
   },
 
-  end: function () {
-    // might not need this
+
+  rename: function () {
+    let target = cwd + "/" + global.newPath;
+    console.log(target);
+    fs.readdir(target, function(err, files) {
+      files.forEach(function(file) {
+        console.log(file);
+      });
+    });
+    return;
   }
 
 });
