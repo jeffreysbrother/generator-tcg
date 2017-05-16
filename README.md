@@ -13,3 +13,4 @@ Still need:
   * maybe there's an existing npm package for this
 * probably want to assume that all commands will be run from the funnel/ directory
 * convert to ES6 syntax?
+  * possibly with [this plugin](https://www.npmjs.com/package/js-beautify)
