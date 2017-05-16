@@ -54,10 +54,10 @@ module.exports = generators.Base.extend({
   rename: function () {
       let target = `${cwd}/${global.newPath}`;
 
-      fse.readdir(target, function(err, files) {
-        files.forEach(function(file) {
+      fse.readdir(target, function (err, files) {
+        files.forEach(function (file) {
 
-          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(global.originalNamespace, global.newNamespace), function(err) {
+          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(global.originalNamespace, global.newNamespace), function (err) {
             if (err) {
               throw err;
             }
