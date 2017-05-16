@@ -3,6 +3,7 @@ const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const fse = require('fs-extra');
 const path = require('path');
+const beautify = require('js-beautify').js_beautify;
 
 const cwd = process.cwd();
 const re = /^.{2}/g;
