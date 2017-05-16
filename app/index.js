@@ -1,7 +1,6 @@
 'use strict';
 const generators = require('yeoman-generator');
 const yosay = require('yosay');
-const mkdirp = require('mkdirp');
 const fse = require('fs-extra');
 let path = require('path');
 
@@ -42,42 +41,31 @@ module.exports = generators.Base.extend({
     }.bind(this));
   },
 
-  directories: function (prompts) {
-    // create parent and sub directories
-    mkdirp.sync(global.newPath, function (err) {
-      if (err) {
-        return console.error(err);
-      }
-    });
-    console.log("directories created!");
-  },
-
-  files: function () {
+  copy: function () {
     // copy files from origin to new subdirectory
     try {
       fse.copySync(global.origin, global.newPath);
-      console.log('success!');
+      console.log('files copied!');
     } catch (err) {
       console.error(err);
     }
   },
 
   rename: function () {
-    setTimeout(function() {
       let target = `${cwd}/${global.newPath}`;
+
       fse.readdir(target, function(err, files) {
         files.forEach(function(file) {
-          console.log(file);
 
-            // fs.rename(file, file.replace(global.originalNamespace, global.newNamespace), function(err) {
-            //   if (err) {
-            //     throw err;
-            //   }
-            // });
+          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(global.originalNamespace, global.newNamespace), function(err) {
+            if (err) {
+              throw err;
+            }
+          });
 
         });
+        console.log('files renamed!');
       });
-    }, 4000);
   }
 
 
