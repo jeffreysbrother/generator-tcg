@@ -56,6 +56,10 @@ module.exports = generators.Base.extend({
       fse.readdir(target, function (err, files) {
         files.forEach(function (file) {
 
+          if (path.extname(file) == ".jsrc") {
+            console.log(file);
+          }
+
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(global.originalNamespace, global.newNamespace), function (err) {
             if (err) {
               throw err;
