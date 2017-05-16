@@ -64,6 +64,7 @@ module.exports = generators.Base.extend({
   },
 
   rename: function () {
+    setTimeout(function() {
       let target = `${cwd}/${global.newPath}`;
       fs.readdir(target, function(err, files) {
         files.forEach(function(file) {
@@ -77,6 +78,7 @@ module.exports = generators.Base.extend({
 
         });
       });
+    }, 4000);
   }
 
 
