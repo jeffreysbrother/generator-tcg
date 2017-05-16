@@ -42,7 +42,6 @@ module.exports = generators.Base.extend({
   },
 
   copy: function () {
-    // copy files from origin to new subdirectory
     try {
       fse.copySync(global.origin, global.newPath);
       console.log('files copied!');
@@ -67,6 +66,5 @@ module.exports = generators.Base.extend({
         console.log('files renamed!');
       });
   }
-
 
 });
