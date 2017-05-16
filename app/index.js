@@ -2,10 +2,10 @@
 const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const fse = require('fs-extra');
-let path = require('path');
+const path = require('path');
 
-let cwd = process.cwd();
-let re = /^.{2}/g;
+const cwd = process.cwd();
+const re = /^.{2}/g;
 
 module.exports = generators.Base.extend({
 
