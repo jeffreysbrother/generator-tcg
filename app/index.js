@@ -50,15 +50,12 @@ module.exports = generators.Base.extend({
     }
   },
 
+  // after copying, this will rename all files with the new namespace
   rename: function () {
       let target = `${cwd}/${global.newPath}`;
 
       fse.readdir(target, function (err, files) {
         files.forEach(function (file) {
-
-          if (path.extname(file) == ".jsrc") {
-            console.log(file);
-          }
 
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(global.originalNamespace, global.newNamespace), function (err) {
             if (err) {
@@ -69,6 +66,26 @@ module.exports = generators.Base.extend({
         });
         console.log('files renamed!');
       });
+  },
+
+  // this renames all .jsrc files to .js
+  renameJS: function () {
+    let target2 = `${cwd}/${global.newPath}`;
+    // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
+    setTimeout(function () {
+      fse.readdir(target2, function (err, files) {
+        files.forEach(function (file) {
+          if (path.extname(file) == ".jsrc") {
+            fse.rename(`${target2}/${file}`, `${target2}/${file}`.replace('.jsrc', '.js'), function (err) {
+              if (err) {
+                throw err;
+              }
+            });
+            console.log(`...and "${file}" has been renamed to "${file.replace('.jsrc', '.js')}"`);
+          }
+        });
+      });
+    }, 1000);
   }
 
 });
