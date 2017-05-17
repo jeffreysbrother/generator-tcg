@@ -43,11 +43,19 @@ module.exports = generators.Base.extend({
   },
 
   copy: function () {
-    try {
-      fse.copySync(global.origin, global.newPath);
-      console.log('files copied!');
-    } catch (err) {
-      console.error(err);
+    if (fse.existsSync(`${cwd}/${global.newPath}`)) {
+      console.log('Parent and child directories already exist!');
+      process.exit();
+    } else if (fse.existsSync(`${cwd}/${global.newNamespace}`)) {
+      console.log('Parent directory already exists!');
+      process.exit();
+    } else {
+      try {
+        fse.copySync(global.origin, global.newPath);
+        console.log('files copied!');
+      } catch (err) {
+        console.error(err);
+      }
     }
   },
 
@@ -83,6 +91,9 @@ module.exports = generators.Base.extend({
               }
             });
             console.log(`...and "${file}" has been renamed to "${file.replace('.jsrc', '.js')}"`);
+          } else {
+            console.log('Good news! No JSRC files found!');
+            process.exit();
           }
         });
       });
