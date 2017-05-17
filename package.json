@@ -22,9 +22,7 @@
     "TCG",
     "front-end",
     "automation",
-    "gulp",
-    "duplicate",
-    "yargs"
+    "duplicate"
   ],
   "dependencies": {
     "fs-extra": "^3.0.1",
