@@ -91,9 +91,6 @@ module.exports = generators.Base.extend({
               }
             });
             console.log(`...and "${file}" has been renamed to "${file.replace('.jsrc', '.js')}"`);
-          } else {
-            console.log('Good news! No JSRC files found!');
-            process.exit();
           }
         });
       });
