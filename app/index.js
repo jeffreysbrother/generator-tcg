@@ -59,6 +59,7 @@ module.exports = generators.Base.extend({
     }
   },
 
+
   // after copying, this will rename all files with the new namespace
   rename: function () {
       let target = `${cwd}/${global.newPath}`;
