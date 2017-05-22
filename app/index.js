@@ -74,13 +74,11 @@ module.exports = generators.Base.extend({
         // ensure that hidden files are not considered
         files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
         files.forEach(function (file) {
-
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(originalNamespace, newNamespace), function (err) {
             if (err) {
               throw err;
             }
           });
-
         });
         console.log('files renamed!');
       });
@@ -113,7 +111,6 @@ module.exports = generators.Base.extend({
         // ensure that hidden files are not considered
         files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
         files.forEach(function (file) {
-
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(file.substring(0, 5), `${newNamespace}\-${newSuffix}`), function (err) {
             if (err) {
               throw err;
