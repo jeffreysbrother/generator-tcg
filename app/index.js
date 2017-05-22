@@ -6,13 +6,13 @@ const path = require('path');
 const beautify = require('js-beautify').js_beautify;
 
 const cwd = process.cwd();
-const re = /^.{2}/g;
 
 let originalNamespace = "",
     newNamespace = "",
     origin = "",
-    mod = "",
-    newPath = "";
+    newPath = "",
+    newSuffix = "",
+    target = "";
 
 module.exports = generators.Base.extend({
 
@@ -35,6 +35,10 @@ module.exports = generators.Base.extend({
       type: 'input',
       name: 'newNamespace',
       message: 'Desired prefix?'
+    },{
+      type: 'input',
+      name: 'newSuffix',
+      message: 'Desired suffix?'
     }];
 
     return this.prompt(prompts).then(function (answers) {
@@ -42,8 +46,10 @@ module.exports = generators.Base.extend({
       originalNamespace = answers.originalNamespace;
       newNamespace = answers.newNamespace;
       origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-      mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
-      newPath = `${answers.newNamespace}/${mod}`;
+      newPath = `${answers.newNamespace}/${answers.newNamespace}-${answers.newSuffix}`;
+      newSuffix = answers.newSuffix;
+
+      target = `${cwd}/${newPath}`;
 
     }.bind(this));
   },
@@ -51,9 +57,6 @@ module.exports = generators.Base.extend({
   copy: function () {
     if (fse.existsSync(`${cwd}/${newPath}`)) {
       console.log('Parent and child directories already exist!');
-      process.exit();
-    } else if (fse.existsSync(`${cwd}/${newNamespace}`)) {
-      console.log('Parent directory already exists!');
       process.exit();
     } else {
       try {
@@ -66,10 +69,10 @@ module.exports = generators.Base.extend({
   },
 
   // after copying, this will rename all files with the new namespace
-  rename: function () {
-      let target = `${cwd}/${newPath}`;
-
+  renameNameSpace: function () {
       fse.readdir(target, function (err, files) {
+        // ensure that hidden files are not considered
+        files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
         files.forEach(function (file) {
 
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(originalNamespace, newNamespace), function (err) {
@@ -85,13 +88,14 @@ module.exports = generators.Base.extend({
 
   // this renames all .jsrc files to .js
   renameJS: function () {
-    let target2 = `${cwd}/${newPath}`;
     // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
     setTimeout(function () {
-      fse.readdir(target2, function (err, files) {
+      fse.readdir(target, function (err, files) {
+        // ensure that hidden files are not considered
+        files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
         files.forEach(function (file) {
           if (path.extname(file) == ".jsrc") {
-            fse.rename(`${target2}/${file}`, `${target2}/${file}`.replace('.jsrc', '.js'), function (err) {
+            fse.rename(`${target}/${file}`, `${target}/${file}`.replace('.jsrc', '.js'), function (err) {
               if (err) {
                 throw err;
               }
@@ -101,6 +105,24 @@ module.exports = generators.Base.extend({
         });
       });
     }, 1000);
+  },
+
+  // rename suffix
+  renameSuffix: function () {
+      fse.readdir(target, function (err, files) {
+        // ensure that hidden files are not considered
+        files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+        files.forEach(function (file) {
+
+          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(file.substring(0, 5), `${newNamespace}\-${newSuffix}`), function (err) {
+            if (err) {
+              throw err;
+            }
+          });
+          // console.log(file.substring(0,5));
+        });
+        console.log('Suffixes renamed!');
+      });
   }
 
 });
