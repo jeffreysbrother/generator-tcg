@@ -13,7 +13,7 @@ This tool assumes that the user will navigate to the `funnel/source/sections/{se
 ### Future Features:
 
 * create the appropriate subdirectory (numerically speaking) dynamically.
-* What if both .jsrc AND .js files exist?
+* What if both .jsrc AND .js files exist? Maybe use the [glob module](https://www.npmjs.com/package/glob).
   * if .jsrc and .js exist OR if only .js exists, do nothing.
   * if only .jsrc exists, convert to .js.
   * if neither exist, print a message: "No JSRC or JS files exist!"
