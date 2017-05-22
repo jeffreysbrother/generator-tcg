@@ -2,7 +2,7 @@
 
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed with the desired prefix and suffix.
 
-This tool assumes that the user will navigate to the *funnel/source/sections/{section}* directory before running any commands.
+This tool assumes that the user will navigate to the `funnel/source/sections/{section}` directory before running any commands.
 
 ### Existing Features:
 
