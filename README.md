@@ -1,16 +1,22 @@
 # This is a work in progress!
 
-come back later...
+A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed with the desired prefix and suffix.
 
-Still need:
+This tool assumes that the user will navigate to the *funnel/source/sections/<section>* directory before running any commands.
 
-* check if namespaced dir already exists, check which subfolders already exist and create the appropriate one (numerically speaking)
-* rename .jsrc to .js? But sometimes both files exist!
+### Existing Features:
+
+* rename `.jsrc` files to `.js`
+* prevent hidden files from being copied and renamed
+* cloning is prevented when subdirectory already exists
+
+### Future Features:
+
+* create the appropriate subdirectory (numerically speaking) dynamically.
+* What if both .jsrc AND .js files exist?
   * if .jsrc and .js exist OR if only .js exists, do nothing.
   * if only .jsrc exists, convert to .js.
   * if neither exist, print a message: "No JSRC or JS files exist!"
-* find a way to convert .jsrc file contents to ES6!
-  * maybe there's an existing npm package for this
-* probably want to assume that all commands will be run from the funnel/ directory
 * convert to ES6 syntax?
   * possibly with [this plugin](https://www.npmjs.com/package/js-beautify)
+* modify so commands can be executed from the *funnel* directory.
