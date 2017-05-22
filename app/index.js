@@ -8,6 +8,12 @@ const beautify = require('js-beautify').js_beautify;
 const cwd = process.cwd();
 const re = /^.{2}/g;
 
+let originalNamespace = "",
+    newNamespace = "",
+    origin = "",
+    mod = "",
+    newPath = "";
+
 module.exports = generators.Base.extend({
 
   constructor: function () {
@@ -33,25 +39,25 @@ module.exports = generators.Base.extend({
 
     return this.prompt(prompts).then(function (answers) {
 
-      global.originalNamespace = answers.originalNamespace;
-      global.newNamespace = answers.newNamespace;
-      global.origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-      global.mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
-      global.newPath = `${answers.newNamespace}/${global.mod}`;
+      originalNamespace = answers.originalNamespace;
+      newNamespace = answers.newNamespace;
+      origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
+      mod = answers.originalSubdirectory.replace(re, answers.newNamespace);
+      newPath = `${answers.newNamespace}/${mod}`;
 
     }.bind(this));
   },
 
   copy: function () {
-    if (fse.existsSync(`${cwd}/${global.newPath}`)) {
+    if (fse.existsSync(`${cwd}/${newPath}`)) {
       console.log('Parent and child directories already exist!');
       process.exit();
-    } else if (fse.existsSync(`${cwd}/${global.newNamespace}`)) {
+    } else if (fse.existsSync(`${cwd}/${newNamespace}`)) {
       console.log('Parent directory already exists!');
       process.exit();
     } else {
       try {
-        fse.copySync(global.origin, global.newPath);
+        fse.copySync(origin, newPath);
         console.log('files copied!');
       } catch (err) {
         console.error(err);
@@ -61,12 +67,12 @@ module.exports = generators.Base.extend({
 
   // after copying, this will rename all files with the new namespace
   rename: function () {
-      let target = `${cwd}/${global.newPath}`;
+      let target = `${cwd}/${newPath}`;
 
       fse.readdir(target, function (err, files) {
         files.forEach(function (file) {
 
-          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(global.originalNamespace, global.newNamespace), function (err) {
+          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(originalNamespace, newNamespace), function (err) {
             if (err) {
               throw err;
             }
@@ -79,7 +85,7 @@ module.exports = generators.Base.extend({
 
   // this renames all .jsrc files to .js
   renameJS: function () {
-    let target2 = `${cwd}/${global.newPath}`;
+    let target2 = `${cwd}/${newPath}`;
     // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
     setTimeout(function () {
       fse.readdir(target2, function (err, files) {
