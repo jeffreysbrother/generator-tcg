@@ -1,4 +1,4 @@
-# This is a work in progress!
+# Generator-TCG
 
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed with the desired prefix and suffix.
 
