@@ -8,7 +8,7 @@ const generators = require('yeoman-generator'),
 
 let originalNamespace,
     newNamespace,
-    origin,
+    oldPath,
     newPath,
     newSuffix,
     target;
@@ -44,7 +44,7 @@ module.exports = generators.Base.extend({
 
       originalNamespace = answers.originalNamespace;
       newNamespace = answers.newNamespace;
-      origin = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
+      oldPath = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
       newPath = `${answers.newNamespace}/${answers.newNamespace}-${answers.newSuffix}`;
       newSuffix = answers.newSuffix;
 
@@ -59,7 +59,7 @@ module.exports = generators.Base.extend({
       process.exit();
     } else {
       try {
-        fse.copySync(origin, newPath);
+        fse.copySync(oldPath, newPath);
         console.log('files copied!');
       } catch (err) {
         console.error(err);
