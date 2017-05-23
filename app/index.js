@@ -12,6 +12,7 @@ let newNamespace;
 let oldPath;
 let newPath;
 let newSuffix;
+let newScheme;
 let target;
 
 module.exports = generators.Base.extend({
@@ -49,6 +50,7 @@ module.exports = generators.Base.extend({
       newPath = `${answers.newNamespace}/${answers.newNamespace}-${answers.newSuffix}`;
       newSuffix = answers.newSuffix;
 
+      newScheme = `${newNamespace}\-${newSuffix}`;
       target = `${cwd}/${newPath}`;
 
     }.bind(this));
@@ -74,7 +76,8 @@ module.exports = generators.Base.extend({
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
-          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(originalNamespace, newNamespace), function (err) {
+          let x = `${target}/${file}`;
+          fse.rename(x, x.replace(originalNamespace, newNamespace), function (err) {
             if (err) {
               throw err;
             }
@@ -92,8 +95,9 @@ module.exports = generators.Base.extend({
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
+          let x = `${target}/${file}`;
           if (path.extname(file) == ".jsrc") {
-            fse.rename(`${target}/${file}`, `${target}/${file}`.replace('.jsrc', '.js'), function (err) {
+            fse.rename(x, x.replace('.jsrc', '.js'), function (err) {
               if (err) {
                 throw err;
               }
@@ -110,7 +114,8 @@ module.exports = generators.Base.extend({
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
-          fse.rename(`${target}/${file}`, `${target}/${file}`.replace(file.substring(0, 5), `${newNamespace}\-${newSuffix}`), function (err) {
+          let x = `${target}/${file}`;
+          fse.rename(x, x.replace(file.substring(0, 5), newScheme), function (err) {
             if (err) {
               throw err;
             }
