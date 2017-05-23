@@ -1,11 +1,10 @@
 'use strict';
-const generators = require('yeoman-generator');
-const yosay = require('yosay');
-const fse = require('fs-extra');
-const path = require('path');
-
-const cwd = process.cwd();
-const regex = /(^|\/)\.[^\/\.]/ig;
+const generators = require('yeoman-generator'),
+      yosay = require('yosay'),
+      fse = require('fs-extra'),
+      path = require('path'),
+      cwd = process.cwd(),
+      regex = /(^|\/)\.[^\/\.]/ig;
 
 let originalNamespace,
     newNamespace,
