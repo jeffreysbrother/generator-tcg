@@ -116,7 +116,6 @@ module.exports = generators.Base.extend({
               throw err;
             }
           });
-          // console.log(file.substring(0,5));
         });
         console.log('Suffixes renamed!');
       });
