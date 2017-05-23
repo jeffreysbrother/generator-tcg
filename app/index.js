@@ -6,12 +6,12 @@ const path = require('path');
 
 const cwd = process.cwd();
 
-let originalNamespace = "",
-    newNamespace = "",
-    origin = "",
-    newPath = "",
-    newSuffix = "",
-    target = "";
+let originalNamespace,
+    newNamespace,
+    origin,
+    newPath,
+    newSuffix,
+    target;
 
 module.exports = generators.Base.extend({
 
