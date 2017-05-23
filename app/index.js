@@ -5,6 +5,7 @@ const fse = require('fs-extra');
 const path = require('path');
 
 const cwd = process.cwd();
+const regex = /(^|\/)\.[^\/\.]/ig;
 
 let originalNamespace,
     newNamespace,
@@ -71,7 +72,7 @@ module.exports = generators.Base.extend({
   renameNameSpace: function () {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
-        files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+        files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(originalNamespace, newNamespace), function (err) {
             if (err) {
@@ -89,7 +90,7 @@ module.exports = generators.Base.extend({
     setTimeout(function () {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
-        files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+        files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
           if (path.extname(file) == ".jsrc") {
             fse.rename(`${target}/${file}`, `${target}/${file}`.replace('.jsrc', '.js'), function (err) {
@@ -107,7 +108,7 @@ module.exports = generators.Base.extend({
   renameSuffix: function () {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
-        files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
+        files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
           fse.rename(`${target}/${file}`, `${target}/${file}`.replace(file.substring(0, 5), `${newNamespace}\-${newSuffix}`), function (err) {
             if (err) {
