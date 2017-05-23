@@ -54,7 +54,7 @@ module.exports = generators.Base.extend({
   },
 
   copy: function () {
-    if (fse.existsSync(`${cwd}/${newPath}`)) {
+    if (fse.existsSync(target)) {
       console.log('Parent and child directories already exist!');
       process.exit();
     } else {
