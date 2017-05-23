@@ -13,11 +13,12 @@ This tool assumes that the user will navigate to the `funnel/source/sections/{se
 
 ### Future Features:
 
-* create the appropriate subdirectory (numerically speaking) dynamically. This would prevent us from having to input the desired suffix.
+* create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the "greatest" value is `jc-44.js`, it would create `jc-45.js`.
 * What if both .jsrc AND .js files exist? Maybe use the [glob module](https://www.npmjs.com/package/glob).
-  * if .jsrc and .js exist OR if only .js exists, do nothing.
+  * if .jsrc and .js exist OR if only .js exists, do not rename the extensions.
   * if only .jsrc exists, convert to .js.
   * if neither exist, print a message: "No JSRC or JS files exist!"
+  * (other fringe cases) if there are multiple .js files, multiple .jsrc files, or if there are no .js or .jsrc files
 * convert to ES6 syntax?
   * possibly with [this plugin](https://www.npmjs.com/package/js-beautify)
 * modify so commands can be executed from the *funnel* directory.
