@@ -1,5 +1,5 @@
 'use strict';
-const generators = require('yeoman-generator');
+const Base = require('yeoman-generator').Base;
 const fse = require('fs-extra');
 const path = require('path');
 
@@ -14,10 +14,10 @@ let newSuffix;
 let newScheme;
 let target;
 
-module.exports = generators.Base.extend({
+module.exports = Base.extend({
 
   constructor: function () {
-    generators.Base.apply(this, arguments);
+    Base.apply(this, arguments);
   },
 
   prompting: function () {
