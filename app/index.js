@@ -1,6 +1,5 @@
 'use strict';
 const generators = require('yeoman-generator');
-const yosay = require('yosay');
 const fse = require('fs-extra');
 const path = require('path');
 
@@ -22,7 +21,6 @@ module.exports = generators.Base.extend({
   },
 
   prompting: function () {
-    this.log(yosay('Hey TCG, whadyawant?'));
 
     const prompts = [{
       type: 'input',

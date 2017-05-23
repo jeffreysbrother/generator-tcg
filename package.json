@@ -22,12 +22,14 @@
     "TCG",
     "front-end",
     "automation",
+    "rename",
+    "utility",
+    "copy",
+    "file names",
     "duplicate"
   ],
   "dependencies": {
     "fs-extra": "^3.0.1",
-    "yeoman-assert": "^2.1.1",
-    "yeoman-generator": "^0.24.1",
-    "yosay": "^1.2.0"
+    "yeoman-generator": "^0.24.1"
   }
 }
