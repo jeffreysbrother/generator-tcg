@@ -3,7 +3,6 @@ const generators = require('yeoman-generator');
 const yosay = require('yosay');
 const fse = require('fs-extra');
 const path = require('path');
-const beautify = require('js-beautify').js_beautify;
 
 const cwd = process.cwd();
 
@@ -105,7 +104,6 @@ module.exports = generators.Base.extend({
     }, 1000);
   },
 
-  // rename suffix
   renameSuffix: function () {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
