@@ -55,7 +55,7 @@ module.exports = Base.extend({
   },
 
   copy: function () {
-    if (fse.existsSync(target)) {
+    if (fse.existsSync(target) === true) {
       console.log('Parent and child directories already exist!');
       process.exit();
     } else {
@@ -94,7 +94,7 @@ module.exports = Base.extend({
         files = files.filter(item => !(regex).test(item));
         files.forEach(function (file) {
           let x = `${target}/${file}`;
-          if (path.extname(file) == ".jsrc") {
+          if (path.extname(file) === ".jsrc") {
             fse.rename(x, x.replace('.jsrc', '.js'), function (err) {
               if (err) {
                 throw err;
