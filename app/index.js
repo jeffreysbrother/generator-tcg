@@ -1,17 +1,18 @@
 'use strict';
-const generators = require('yeoman-generator'),
-      yosay = require('yosay'),
-      fse = require('fs-extra'),
-      path = require('path'),
-      cwd = process.cwd(),
-      regex = /(^|\/)\.[^\/\.]/ig;
+const generators = require('yeoman-generator');
+const yosay = require('yosay');
+const fse = require('fs-extra');
+const path = require('path');
 
-let originalNamespace,
-    newNamespace,
-    oldPath,
-    newPath,
-    newSuffix,
-    target;
+const cwd = process.cwd();
+const regex = /(^|\/)\.[^\/\.]/ig;
+
+let originalNamespace;
+let newNamespace;
+let oldPath;
+let newPath;
+let newSuffix;
+let target;
 
 module.exports = generators.Base.extend({
 
@@ -22,7 +23,7 @@ module.exports = generators.Base.extend({
   prompting: function () {
     this.log(yosay('Hey TCG, whadyawant?'));
 
-    let prompts = [{
+    const prompts = [{
       type: 'input',
       name: 'originalNamespace',
       message: 'Which directory do you wish to copy?'
