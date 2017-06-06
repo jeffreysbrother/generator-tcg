@@ -36,7 +36,7 @@ module.exports = class extends Base {
       message: 'Desired suffix?'
     }];
 
-    return this.prompt(prompts).then((answers) => {
+    return this.prompt(prompts).then(answers => {
 
       originalNamespace = answers.originalNamespace;
       newNamespace = answers.newNamespace;
@@ -66,7 +66,7 @@ module.exports = class extends Base {
 
   // after copying, this will rename all files with the new namespace
   renameNameSpace() {
-      fse.readdir(target, function (err, files) {
+      fse.readdir(target, (err, files) => {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach((file) => {
@@ -85,7 +85,7 @@ module.exports = class extends Base {
   renameJS() {
     // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
     setTimeout(() => {
-      fse.readdir(target, function (err, files) {
+      fse.readdir(target, (err, files) => {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach((file) => {
@@ -104,7 +104,7 @@ module.exports = class extends Base {
   }
 
   renameSuffix() {
-      fse.readdir(target, function (err, files) {
+      fse.readdir(target, (err, files) => {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach((file) => {
