@@ -14,13 +14,9 @@ let newSuffix;
 let newScheme;
 let target;
 
-module.exports = Base.extend({
+module.exports = class extends Base {
 
-  constructor: function () {
-    Base.apply(this, arguments);
-  },
-
-  prompting: function () {
+  prompting() {
 
     const prompts = [{
       type: 'input',
@@ -52,9 +48,9 @@ module.exports = Base.extend({
       target = `${cwd}/${newPath}`;
 
     }.bind(this));
-  },
+  }
 
-  copy: function () {
+  copy() {
     if (fse.existsSync(target) === true) {
       console.log('Parent and child directories already exist!');
       process.exit();
@@ -66,10 +62,10 @@ module.exports = Base.extend({
         console.error(err);
       }
     }
-  },
+  }
 
   // after copying, this will rename all files with the new namespace
-  renameNameSpace: function () {
+  renameNameSpace() {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
@@ -83,10 +79,10 @@ module.exports = Base.extend({
         });
         console.log('files renamed!');
       });
-  },
+  }
 
   // this renames all .jsrc files to .js
-  renameJS: function () {
+  renameJS() {
     // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
     setTimeout(function () {
       fse.readdir(target, function (err, files) {
@@ -105,9 +101,9 @@ module.exports = Base.extend({
         });
       });
     }, 1000);
-  },
+  }
 
-  renameSuffix: function () {
+  renameSuffix() {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
@@ -123,4 +119,4 @@ module.exports = Base.extend({
       });
   }
 
-});
+};
