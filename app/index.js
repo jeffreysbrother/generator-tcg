@@ -66,19 +66,19 @@ module.exports = class extends Base {
 
   // after copying, this will rename all files with the new namespace
   renameNameSpace() {
-      fse.readdir(target, (err, files) => {
-        // ensure that hidden files are not considered
-        files = files.filter(item => !(regex).test(item));
-        files.forEach((file) => {
-          let x = `${target}/${file}`;
-          fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+    fse.readdir(target, (err, files) => {
+      // ensure that hidden files are not considered
+      files = files.filter(item => !(regex).test(item));
+      files.forEach((file) => {
+        let x = `${target}/${file}`;
+        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
+          if (err) {
+            throw err;
+          }
         });
-        console.log('files renamed!');
       });
+      console.log('files renamed!');
+    });
   }
 
   // this renames all .jsrc files to .js
@@ -104,19 +104,19 @@ module.exports = class extends Base {
   }
 
   renameSuffix() {
-      fse.readdir(target, (err, files) => {
-        // ensure that hidden files are not considered
-        files = files.filter(item => !(regex).test(item));
-        files.forEach((file) => {
-          let x = `${target}/${file}`;
-          fse.rename(x, x.replace(file.substring(0, 5), newScheme), (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+    fse.readdir(target, (err, files) => {
+      // ensure that hidden files are not considered
+      files = files.filter(item => !(regex).test(item));
+      files.forEach((file) => {
+        let x = `${target}/${file}`;
+        fse.rename(x, x.replace(file.substring(0, 5), newScheme), (err) => {
+          if (err) {
+            throw err;
+          }
         });
-        console.log('Suffixes renamed!');
       });
+      console.log('Suffixes renamed!');
+    });
   }
 
 };
