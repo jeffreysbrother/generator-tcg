@@ -36,7 +36,7 @@ module.exports = class extends Base {
       message: 'Desired suffix?'
     }];
 
-    return this.prompt(prompts).then(function (answers) {
+    return this.prompt(prompts).then((answers) => {
 
       originalNamespace = answers.originalNamespace;
       newNamespace = answers.newNamespace;
@@ -47,7 +47,7 @@ module.exports = class extends Base {
       newScheme = `${newNamespace}\-${newSuffix}`;
       target = `${cwd}/${newPath}`;
 
-    }.bind(this));
+    });
   }
 
   copy() {
@@ -69,9 +69,9 @@ module.exports = class extends Base {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
-        files.forEach(function (file) {
+        files.forEach((file) => {
           let x = `${target}/${file}`;
-          fse.rename(x, x.replace(originalNamespace, newNamespace), function (err) {
+          fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
             if (err) {
               throw err;
             }
@@ -84,14 +84,14 @@ module.exports = class extends Base {
   // this renames all .jsrc files to .js
   renameJS() {
     // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
-    setTimeout(function () {
+    setTimeout(() => {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
-        files.forEach(function (file) {
+        files.forEach((file) => {
           let x = `${target}/${file}`;
           if (path.extname(file) === ".jsrc") {
-            fse.rename(x, x.replace('.jsrc', '.js'), function (err) {
+            fse.rename(x, x.replace('.jsrc', '.js'), (err) => {
               if (err) {
                 throw err;
               }
@@ -107,9 +107,9 @@ module.exports = class extends Base {
       fse.readdir(target, function (err, files) {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
-        files.forEach(function (file) {
+        files.forEach((file) => {
           let x = `${target}/${file}`;
-          fse.rename(x, x.replace(file.substring(0, 5), newScheme), function (err) {
+          fse.rename(x, x.replace(file.substring(0, 5), newScheme), (err) => {
             if (err) {
               throw err;
             }
