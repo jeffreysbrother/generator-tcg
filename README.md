@@ -23,3 +23,4 @@ This tool assumes that the user will navigate to the `funnel/source/sections/{se
   * possibly with [this plugin](https://www.npmjs.com/package/js-beautify)
 * modify so commands can be executed from the *funnel* directory.
 * is there a way to eliminate the setTimeout() function? We need to force synchronous execution in the renameJS() method.
+* need a way to handle the error that arises after attempting to copy a directory that doesn't exist
