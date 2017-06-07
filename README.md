@@ -13,11 +13,11 @@ When the command "yo tcg" is run in the target directory, you will have to answe
 * **Desired prefix?** [jc]
 * **Desired suffix?** [01]
 
-The answers above will result in `gg/gg-33` (the folders and all files within) being duplicated and renamed to `jc/jc-01`.
+The answers above will result in `gg/gg-33` (the folders and all files within) being duplicated and renamed to `jc/jc-01`. To be clear, by "suffix" I am referring to the numerical value *after* the hyphen.
 
 ### Existing Features:
 
-* Clone default variation into the appropriate directory/sub-directory, rename all files according to desired namespace and suffix.
+* The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to the desired namespace and suffix.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
 * Cloning is prevented when the subdirectory already exists.
 * The user is alerted when she attempts to copy a directory that does not exist.
