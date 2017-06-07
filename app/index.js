@@ -13,6 +13,7 @@ let newPath;
 let newSuffix;
 let newScheme;
 let target;
+let oldTarget;
 
 module.exports = class extends Base {
 
@@ -45,6 +46,7 @@ module.exports = class extends Base {
       newSuffix = answers.newSuffix;
 
       newScheme = `${newNamespace}\-${newSuffix}`;
+      oldTarget = `${cwd}/${oldPath}`;
       target = `${cwd}/${newPath}`;
 
     });
@@ -53,6 +55,9 @@ module.exports = class extends Base {
   copy() {
     if (fse.existsSync(target) === true) {
       console.log('Parent and child directories already exist!');
+      process.exit();
+    } else if (fse.existsSync(oldTarget) === false) {
+      console.log(`The directory you're attempting to copy (${oldPath}) doesn't exist!`);
       process.exit();
     } else {
       try {
