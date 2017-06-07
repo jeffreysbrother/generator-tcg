@@ -17,12 +17,13 @@ The answers above will result in `gg/gg-33` (the folders and all files within) b
 
 ### Existing Features:
 
-* clone default variation into the appropriate directory/sub-directory, rename all files according to desired namespace and suffix.
-* rename `.jsrc` files to `.js`
-* prevent hidden files from being copied and renamed (.DS_Store, for example)
-* cloning is prevented when the subdirectory already exists
+* Clone default variation into the appropriate directory/sub-directory, rename all files according to desired namespace and suffix.
+* Hidden files are prevented from being copied and renamed (.DS_Store, for example).
+* Cloning is prevented when the subdirectory already exists.
+* The user is alerted when she attempts to copy a directory that does not exist.
 
 ### Future Features:
 
-* create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the "greatest" value is `jc-44.js`, it would create `jc-45.js`.
-* allow commands to be executed from the *funnel* directory.
+* Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
+* Allow commands to be executed from the *funnel* directory.
+* Find a way to eliminate `setTimeout()`.
