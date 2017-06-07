@@ -81,28 +81,6 @@ module.exports = class extends Base {
     });
   }
 
-  // this renames all .jsrc files to .js
-  renameJS() {
-    // setTimeout() is being used because we need to force synchronous execution. Is there a better way?
-    setTimeout(() => {
-      fse.readdir(target, (err, files) => {
-        // ensure that hidden files are not considered
-        files = files.filter(item => !(regex).test(item));
-        files.forEach((file) => {
-          let x = `${target}/${file}`;
-          if (path.extname(file) === ".jsrc") {
-            fse.rename(x, x.replace('.jsrc', '.js'), (err) => {
-              if (err) {
-                throw err;
-              }
-            });
-            console.log(`...and "${file}" has been renamed to "${file.replace('.jsrc', '.js')}"`);
-          }
-        });
-      });
-    }, 1000);
-  }
-
   renameSuffix() {
     fse.readdir(target, (err, files) => {
       // ensure that hidden files are not considered
