@@ -82,19 +82,21 @@ module.exports = class extends Base {
   }
 
   renameSuffix() {
-    fse.readdir(target, (err, files) => {
-      // ensure that hidden files are not considered
-      files = files.filter(item => !(regex).test(item));
-      files.forEach((file) => {
-        let x = `${target}/${file}`;
-        fse.rename(x, x.replace(file.substring(0, 5), newScheme), (err) => {
-          if (err) {
-            throw err;
-          }
+    setTimeout(() => {
+      fse.readdir(target, (err, files) => {
+        // ensure that hidden files are not considered
+        files = files.filter(item => !(regex).test(item));
+        files.forEach((file) => {
+          let x = `${target}/${file}`;
+          fse.rename(x, x.replace(file.substring(0, 5), newScheme), (err) => {
+            if (err) {
+              throw err;
+            }
+          });
         });
+        console.log('Suffixes renamed!');
       });
-      console.log('Suffixes renamed!');
-    });
+    }, 1000);
   }
 
 };
