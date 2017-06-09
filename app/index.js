@@ -7,6 +7,8 @@ const path = require('path');
 const cwd = process.cwd();
 const regex = /(^|\/)\.[^\/\.]/ig;
 
+let originalDir;
+let newDir;
 let originalNamespace;
 let newNamespace;
 let oldPath;
@@ -22,29 +24,24 @@ module.exports = class extends Generator {
 
     const prompts = [{
       type: 'input',
-      name: 'originalNamespace',
+      name: 'originalDir',
       message: 'Which directory do you wish to copy?'
     },{
       type: 'input',
-      name: 'originalSubdirectory',
-      message: 'Which subdirectory?'
-    },{
-      type: 'input',
-      name: 'newNamespace',
-      message: 'Desired prefix?'
-    },{
-      type: 'input',
-      name: 'newSuffix',
-      message: 'Desired suffix?'
+      name: 'newDir',
+      message: 'What would you like to call it?'
     }];
 
     return this.prompt(prompts).then(answers => {
 
-      originalNamespace = answers.originalNamespace;
-      newNamespace = answers.newNamespace;
-      oldPath = `${answers.originalNamespace}/${answers.originalSubdirectory}`;
-      newPath = `${answers.newNamespace}/${answers.newNamespace}-${answers.newSuffix}`;
-      newSuffix = answers.newSuffix;
+      originalDir = answers.originalDir;
+      newDir = answers.newDir;
+
+      originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
+      newNamespace = newDir.substr(0, newDir.indexOf('-'));
+      oldPath = `${originalNamespace}/${originalDir}`;
+      newPath = `${newNamespace}/${newDir}`;
+      newSuffix = newDir.slice(-2);
 
       newScheme = `${newNamespace}\-${newSuffix}`;
       oldTarget = `${cwd}/${oldPath}`;
