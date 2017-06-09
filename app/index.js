@@ -1,5 +1,5 @@
 'use strict';
-const Base = require('yeoman-generator').Base;
+const Generator = require('yeoman-generator');
 const fse = require('fs-extra');
 const chalk = require('chalk');
 const path = require('path');
@@ -16,7 +16,7 @@ let newScheme;
 let target;
 let oldTarget;
 
-module.exports = class extends Base {
+module.exports = class extends Generator {
 
   prompting() {
 
