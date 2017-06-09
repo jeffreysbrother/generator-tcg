@@ -8,12 +8,10 @@ This tool assumes that the user will navigate to the `funnel/source/sections/{se
 
 When the command "yo tcg" is run in the target directory, you will have to answer four questions. Here's an example of how you might answer:
 
-* **Which directory do you wish to copy?** [gg]
-* **Which subdirectory?** [gg-33]
-* **Desired prefix?** [jc]
-* **Desired suffix?** [01]
+* **Which directory do you wish to copy?** [ga-33]
+* **What would you like to call it?** [jc-01]
 
-The answers above will result in `gg/gg-33` (the folders and all files within) being duplicated and renamed to `jc/jc-01`. To be clear, by "suffix" I am referring to the numerical value *after* the hyphen.
+The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-01`. The parent directory ("ga" and "jc") are derived from "ga-33" and "jc-01", respectively, by grabbing the part of the string that precedes the hyphen. This is TCG's current naming convention, so as long as this remains in place, there should be no problems.
 
 ### Existing Features:
 
