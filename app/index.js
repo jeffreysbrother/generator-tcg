@@ -1,6 +1,7 @@
 'use strict';
 const Base = require('yeoman-generator').Base;
 const fse = require('fs-extra');
+const chalk = require('chalk');
 const path = require('path');
 
 const cwd = process.cwd();
@@ -54,10 +55,10 @@ module.exports = class extends Base {
 
   copy() {
     if (fse.existsSync(target) === true) {
-      console.log('Parent and child directories already exist!');
+      console.log('Parent and child directories already exist! Aborting.');
       process.exit();
     } else if (fse.existsSync(oldTarget) === false) {
-      console.log(`The directory you're attempting to copy (${oldPath}) doesn't exist!`);
+      console.log(`The directory you're attempting to copy (${chalk.yellow(oldPath)}) doesn't exist! Aborting.`);
       process.exit();
     } else {
       try {
