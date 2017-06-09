@@ -14,7 +14,6 @@ let newNamespace;
 let oldPath;
 let newPath;
 let newSuffix;
-let newScheme;
 let target;
 let oldTarget;
 
@@ -43,7 +42,6 @@ module.exports = class extends Generator {
       newPath = `${newNamespace}/${newDir}`;
       newSuffix = newDir.slice(-2);
 
-      newScheme = `${newNamespace}\-${newSuffix}`;
       oldTarget = `${cwd}/${oldPath}`;
       target = `${cwd}/${newPath}`;
 
@@ -52,7 +50,7 @@ module.exports = class extends Generator {
 
   copy() {
     if (fse.existsSync(target) === true) {
-      console.log('Parent and child directories already exist! Aborting.');
+      console.log(`${chalk.yellow(newPath)} already exists! Aborting.`);
       process.exit();
     } else if (fse.existsSync(oldTarget) === false) {
       console.log(`The directory you're attempting to copy (${chalk.yellow(oldPath)}) doesn't exist! Aborting.`);
@@ -91,7 +89,7 @@ module.exports = class extends Generator {
         files = files.filter(item => !(regex).test(item));
         files.forEach((file) => {
           let x = `${target}/${file}`;
-          fse.rename(x, x.replace(file.substring(0, 5), newScheme), (err) => {
+          fse.rename(x, x.replace(file.substring(0, 5), newDir), (err) => {
             if (err) {
               throw err;
             }
