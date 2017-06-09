@@ -101,7 +101,7 @@ module.exports = class extends Base {
         });
         console.log('Suffixes renamed!');
       });
-    }, 1000);
+    }, 20);
   }
 
 };
