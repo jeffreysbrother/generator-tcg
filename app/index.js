@@ -7,6 +7,7 @@ const path = require('path');
 const cwd = process.cwd();
 const regex = /(^|\/)\.[^\/\.]/ig;
 const pattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
+const pathToSection = `${cwd}/source/sections`;
 
 let section;
 let originalDir;
@@ -27,7 +28,8 @@ module.exports = class extends Generator {
       name: 'section',
       message: 'What section are you working on?',
       validate: function (value) {
-        if (fse.existsSync(`${cwd}/source/sections/${value}/`) === true) {
+        // ensure that section exists
+        if (fse.existsSync(`${pathToSection}/${value}/`) === true) {
           return true
         } else {
           console.log(chalk.yellow(' invalid section name!'));
