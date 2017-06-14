@@ -2,12 +2,13 @@
 
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed with the desired prefix and suffix. The new files will then serve as a variation against which the control will be tested.
 
-This tool assumes that the user will navigate to the `funnel/source/sections/{section}` directory before running any commands. See below for potential modifications to this functionality.
+This tool assumes that the user will navigate to the `funnel/` directory before running any commands.
 
 ### How to Use:
 
-When the command "yo tcg" is run in the target directory, you will have to answer four questions. Here's an example of how you might answer:
+When the command "yo tcg" is executed, you will have to answer three questions. Here's an example of how one might answer:
 
+* **What section are you working on?** [report-review]
 * **Which directory do you wish to copy?** [ga-33]
 * **What would you like to call it?** [jc-01]
 
@@ -23,7 +24,6 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 ### Future Features:
 
 * Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
-* Allow commands to be executed from the *funnel* directory. Alternatively, we can ask an additional question: "What is the current working directory?" which would assume an answer such as "funnel" (default), "source", "sections", or "report-review".
+* Allow for modification of the current working directory (with the default being "funnel")
 * Find a way to eliminate `setTimeout()`.
 * Issue a warning if the user attempts to rename according to a pattern which doesn't adhere to TCG best practices (e.g. `jc/jc_44.js`).
-* Might want to reintroduce the chalk package in order to highlight certain phrases/words in the command prompt.

@@ -1,6 +1,6 @@
 {
   "name": "generator-tcg",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "rename stuff!",
   "license": "BSD-2-Clause",
   "repository": "jeffreysbrother/generator-tcg",
@@ -26,7 +26,8 @@
     "utility",
     "copy",
     "file names",
-    "duplicate"
+    "duplicate",
+    "James Cool"
   ],
   "dependencies": {
     "chalk": "^1.1.3",
