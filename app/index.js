@@ -14,7 +14,6 @@ let originalNamespace;
 let newNamespace;
 let oldPath;
 let newPath;
-let newSuffix;
 let target;
 let oldTarget;
 
@@ -38,21 +37,23 @@ module.exports = class extends Generator {
 
     return this.prompt(prompts).then(answers => {
 
+      // user input
       section = answers.section;
       originalDir = answers.originalDir;
       newDir = answers.newDir;
 
+      // derive new/old namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
       newNamespace = newDir.substr(0, newDir.indexOf('-'));
       
+      // generate path relative to /funnel
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
       newPath = `source/sections/${section}/${newNamespace}/${newDir}`;
 
-      newSuffix = newDir.slice(-2);
-
+      // generate absolute path
       oldTarget = `${cwd}/${oldPath}`;
       target = `${cwd}/${newPath}`;
-      
+
     });
   }
 
