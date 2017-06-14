@@ -7,6 +7,7 @@ const path = require('path');
 const cwd = process.cwd();
 const regex = /(^|\/)\.[^\/\.]/ig;
 
+let section;
 let originalDir;
 let newDir;
 let originalNamespace;
@@ -23,6 +24,10 @@ module.exports = class extends Generator {
 
     const prompts = [{
       type: 'input',
+      name: 'section',
+      message: 'What section are you working on?'
+    },{
+      type: 'input',
       name: 'originalDir',
       message: 'Which directory do you wish to copy?'
     },{
@@ -33,18 +38,21 @@ module.exports = class extends Generator {
 
     return this.prompt(prompts).then(answers => {
 
+      section = answers.section;
       originalDir = answers.originalDir;
       newDir = answers.newDir;
 
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
       newNamespace = newDir.substr(0, newDir.indexOf('-'));
-      oldPath = `${originalNamespace}/${originalDir}`;
-      newPath = `${newNamespace}/${newDir}`;
+      
+      oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
+      newPath = `source/sections/${section}/${newNamespace}/${newDir}`;
+
       newSuffix = newDir.slice(-2);
 
       oldTarget = `${cwd}/${oldPath}`;
       target = `${cwd}/${newPath}`;
-
+      
     });
   }
 
