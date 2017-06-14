@@ -12,7 +12,7 @@ When the command "yo tcg" is executed, the user must answer three questions. Her
 * **Which directory do you wish to copy?** [ga-33]
 * **What would you like to call it?** [jc-01]
 
-The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-01`. The parent directories ("ga" and "jc") are derived from "ga-33" and "jc-01", respectively, by grabbing the part of the string that precedes the hyphen. This is TCG's current naming convention, so as long as this remains in place, there should be no problems.
+The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-01`. The parent directories ("ga" and "jc") are derived from "ga-33" and "jc-01", respectively, by grabbing the part of the string that precedes the hyphen. TCG's current naming convention is enforced: user's initials (two letters), a hyphen, and 2-3 numbers.
 
 ### Existing Features:
 
