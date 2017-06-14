@@ -6,6 +6,7 @@ const path = require('path');
 
 const cwd = process.cwd();
 const regex = /(^|\/)\.[^\/\.]/ig;
+const pattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 
 let section;
 let originalDir;
@@ -24,15 +25,42 @@ module.exports = class extends Generator {
     const prompts = [{
       type: 'input',
       name: 'section',
-      message: 'What section are you working on?'
+      message: 'What section are you working on?',
+      validate: function (value) {
+        if (fse.existsSync(`${cwd}/source/sections/${value}/`) === true) {
+          return true
+        } else {
+          console.log(chalk.yellow(' invalid section name!'));
+        }
+      }
     },{
       type: 'input',
       name: 'originalDir',
-      message: 'Which directory do you wish to copy?'
+      message: 'Which directory do you wish to copy?',
+      validate: function (value) {
+        // ensure user input is two letters, a hyphen, and 2-3 digits
+        const check = value.match(pattern);
+        if (check) {
+          return true
+        } else {
+          console.log(chalk.yellow(' invalid directory name!'));
+          return false;
+        }
+      }
     },{
       type: 'input',
       name: 'newDir',
-      message: 'What would you like to call it?'
+      message: 'What would you like to call it?',
+      validate: function (value) {
+        // ensure user input is two letters, a hyphen, and 2-3 digits
+        const check = value.match(pattern);
+        if (check) {
+          return true
+        } else {
+          console.log(chalk.yellow(' invalid directory name!'));
+          return false;
+        }
+      }
     }];
 
     return this.prompt(prompts).then(answers => {
