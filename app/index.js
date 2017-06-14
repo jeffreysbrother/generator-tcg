@@ -32,7 +32,7 @@ module.exports = class extends Generator {
         if (fse.existsSync(`${pathToSection}/${value}/`) === true) {
           return true
         } else {
-          console.log(chalk.yellow(' invalid section name!'));
+          console.log(chalk.yellow(' Invalid section name!'));
         }
       }
     },{
@@ -45,7 +45,7 @@ module.exports = class extends Generator {
         if (check) {
           return true
         } else {
-          console.log(chalk.yellow(' invalid directory name!'));
+          console.log(chalk.yellow(' Invalid directory name!'));
           return false;
         }
       }
@@ -59,7 +59,7 @@ module.exports = class extends Generator {
         if (check) {
           return true
         } else {
-          console.log(chalk.yellow(' invalid directory name!'));
+          console.log(chalk.yellow(' Invalid directory name!'));
           return false;
         }
       }
@@ -75,7 +75,7 @@ module.exports = class extends Generator {
       // derive new/old namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
       newNamespace = newDir.substr(0, newDir.indexOf('-'));
-      
+
       // generate path relative to /funnel
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
       newPath = `source/sections/${section}/${newNamespace}/${newDir}`;

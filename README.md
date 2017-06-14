@@ -6,7 +6,7 @@ This tool assumes that the user will navigate to the `funnel/` directory before 
 
 ### How to Use:
 
-When the command "yo tcg" is executed, you will have to answer three questions. Here's an example of how one might answer:
+When the command "yo tcg" is executed, the user must answer three questions. Here's an example of how one might answer:
 
 * **What section are you working on?** [report-review]
 * **Which directory do you wish to copy?** [ga-33]
@@ -24,7 +24,7 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 
 ### Future Features:
 
-* Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
-* Allow for modification of the current working directory (with the default being "funnel")
-* Find a way to eliminate `setTimeout()`.
-* Maybe make validation messages more explicit (more direction for user)
+[] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
+[] Allow for modification of the current working directory (with the default being "funnel")
+[] Find a way to eliminate `setTimeout()`.
+[] Maybe make validation messages more explicit (more direction for user)
