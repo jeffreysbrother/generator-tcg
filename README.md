@@ -26,3 +26,4 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 
 - [ ] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
 - [ ] Find a way to eliminate `setTimeout()`.
+- [ ] The error message that appears when the directory doesn't exist should appear sooner.
