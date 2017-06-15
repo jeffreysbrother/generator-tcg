@@ -89,23 +89,27 @@ module.exports = class extends Generator {
   }
 
   copy() {
-    if (fse.existsSync(target) === true) {
-      console.log(`${chalk.yellow(newPath)} already exists! Aborting.`);
+    // newDir already exists
+    if (fse.existsSync(target) === true && fse.existsSync(oldTarget) === false) {
+      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newDir} already does! Aborting.`));
       process.exit();
+    } else if (fse.existsSync(target) === true) {
+      console.log(chalk.yellow(`${newDir} already exists! Aborting.`));
+      process.exit();
+    // originalDir doesn't exist
     } else if (fse.existsSync(oldTarget) === false) {
-      console.log(`The directory you're attempting to copy (${chalk.yellow(oldPath)}) doesn't exist! Aborting.`);
+      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
       process.exit();
     } else {
       try {
         fse.copySync(oldPath, newPath);
-        console.log('files copied!');
+        console.log(chalk.yellow('Files copied!'));
       } catch (err) {
         console.error(err);
       }
     }
   }
 
-  // after copying, this will rename all files with the new namespace
   renameNameSpace() {
     fse.readdir(target, (err, files) => {
       // ensure that hidden files are not considered
@@ -118,7 +122,7 @@ module.exports = class extends Generator {
           }
         });
       });
-      console.log('files renamed!');
+      console.log(chalk.yellow('Files renamed!'));
     });
   }
 
@@ -135,7 +139,7 @@ module.exports = class extends Generator {
             }
           });
         });
-        console.log('Suffixes renamed!');
+        console.log(chalk.yellow('Suffixes renamed!'));
       });
     }, 20);
   }
