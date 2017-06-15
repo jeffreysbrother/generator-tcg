@@ -30,9 +30,10 @@ module.exports = class extends Generator {
       validate: function (value) {
         // ensure that section exists
         if (fse.existsSync(`${pathToSection}/${value}/`) === true) {
-          return true
+          return true;
         } else {
-          console.log(chalk.yellow(' Invalid section name!'));
+          console.log(chalk.yellow(" Section doesn't exist!"));
+          return false;
         }
       }
     },{
@@ -43,7 +44,7 @@ module.exports = class extends Generator {
         // ensure user input is two letters, a hyphen, and 2-3 digits
         const check = value.match(pattern);
         if (check) {
-          return true
+          return true;
         } else {
           console.log(chalk.yellow(' Invalid directory name!'));
           return false;
@@ -57,7 +58,7 @@ module.exports = class extends Generator {
         // ensure user input is two letters, a hyphen, and 2-3 digits
         const check = value.match(pattern);
         if (check) {
-          return true
+          return true;
         } else {
           console.log(chalk.yellow(' Invalid directory name!'));
           return false;
@@ -110,7 +111,7 @@ module.exports = class extends Generator {
       // ensure that hidden files are not considered
       files = files.filter(item => !(regex).test(item));
       files.forEach((file) => {
-        let x = `${target}/${file}`;
+        const x = `${target}/${file}`;
         fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
           if (err) {
             throw err;
@@ -127,7 +128,7 @@ module.exports = class extends Generator {
         // ensure that hidden files are not considered
         files = files.filter(item => !(regex).test(item));
         files.forEach((file) => {
-          let x = `${target}/${file}`;
+          const x = `${target}/${file}`;
           fse.rename(x, x.replace(file.substring(0, 5), newDir), (err) => {
             if (err) {
               throw err;
