@@ -107,6 +107,10 @@ module.exports = class extends Generator {
     });
   }
 
+	// REMOVE COMMENTS TO ILLUSTRATE THAT USER INPUT (ONE DIRECTORY OR MULTIPLE)
+	// WILL BE STORED AS ITEMS IN AN ARRAY.
+	// NEWNAMESPACE, NEWPATH, AND TARGET ARE WORKING
+	
 	// thing() {
 	// 	console.log(newNamespace);
 	// 	console.log(newPath)
