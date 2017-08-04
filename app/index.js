@@ -131,29 +131,33 @@ module.exports = class extends Generator {
     //   console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
     //   process.exit();
     // } else {
-      try {
-        fse.copySync(oldPath, newPath);
+		newPath.forEach(function (i) {
+			try {
+        fse.copySync(oldPath, i);
         console.log(chalk.yellow('Files copied!'));
       } catch (err) {
         console.error(err);
       }
+		});
     // }
   }
 
   renameNameSpace() {
-    fse.readdir(target, (err, files) => {
-      // ensure that hidden files are not considered
-      files = files.filter(item => !(regex).test(item));
-      files.forEach((file) => {
-        const x = `${target}/${file}`;
-        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      });
-      console.log(chalk.yellow('Files renamed!'));
-    });
+		target.forEach(function (i) {
+			fse.readdir(i, (err, files) => {
+	      // ensure that hidden files are not considered
+	      files = files.filter(item => !(regex).test(item));
+	      files.forEach((file) => {
+	        let x = `${i}/${file}`;
+	        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
+	          if (err) {
+	            throw err;
+	          }
+	        });
+	      });
+	      console.log(chalk.yellow('Files renamed!'));
+	    });
+		});
   }
 
   renameSuffix() {
