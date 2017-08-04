@@ -110,7 +110,7 @@ module.exports = class extends Generator {
 	// REMOVE COMMENTS TO ILLUSTRATE THAT USER INPUT (ONE DIRECTORY OR MULTIPLE)
 	// WILL BE STORED AS ITEMS IN AN ARRAY.
 	// NEWNAMESPACE, NEWPATH, AND TARGET ARE WORKING
-	
+
 	// thing() {
 	// 	console.log(newNamespace);
 	// 	console.log(newPath)
@@ -120,24 +120,24 @@ module.exports = class extends Generator {
 
   copy() {
     // newDir already exists
-    if (fse.existsSync(target) === true && fse.existsSync(oldTarget) === false) {
-      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newDir} already does! Aborting.`));
-      process.exit();
-    } else if (fse.existsSync(target) === true) {
-      console.log(chalk.yellow(`${newDir} already exists! Aborting.`));
-      process.exit();
-    // originalDir doesn't exist
-    } else if (fse.existsSync(oldTarget) === false) {
-      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
-      process.exit();
-    } else {
+    // if (fse.existsSync(target) === true && fse.existsSync(oldTarget) === false) {
+    //   console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newDir} already does! Aborting.`));
+    //   process.exit();
+    // } else if (fse.existsSync(target) === true) {
+    //   console.log(chalk.yellow(`${newDir} already exists! Aborting.`));
+    //   process.exit();
+    // // originalDir doesn't exist
+    // } else if (fse.existsSync(oldTarget) === false) {
+    //   console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
+    //   process.exit();
+    // } else {
       try {
         fse.copySync(oldPath, newPath);
         console.log(chalk.yellow('Files copied!'));
       } catch (err) {
         console.error(err);
       }
-    }
+    // }
   }
 
   renameNameSpace() {
