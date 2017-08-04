@@ -143,12 +143,13 @@ module.exports = class extends Generator {
   }
 
   renameNameSpace() {
+		let x;
 		target.forEach(function (i) {
 			fse.readdir(i, (err, files) => {
 	      // ensure that hidden files are not considered
 	      files = files.filter(item => !(regex).test(item));
 	      files.forEach((file) => {
-	        let x = `${i}/${file}`;
+	        x = `${i}/${file}`;
 	        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
 	          if (err) {
 	            throw err;
@@ -161,20 +162,29 @@ module.exports = class extends Generator {
   }
 
   renameSuffix() {
+
+		let y;
     setTimeout(() => {
-      fse.readdir(target, (err, files) => {
-        // ensure that hidden files are not considered
-        files = files.filter(item => !(regex).test(item));
-        files.forEach((file) => {
-          const x = `${target}/${file}`;
-          fse.rename(x, x.replace(file.substring(0, 5), newDir), (err) => {
-            if (err) {
-              throw err;
-            }
-          });
-        });
-        console.log(chalk.yellow('Suffixes renamed!'));
-      });
+			target.forEach(function (i) {
+	      fse.readdir(i, (err, files) => {
+	        // ensure that hidden files are not considered
+	        files = files.filter(item => !(regex).test(item));
+	        files.forEach((file) => {
+
+						// EVERYTHING LOOKS GOOD UP TO HERE (THIS PART IS BROKEN)
+						valueToArray.forEach(function (k) {
+							y = `${i}/${file}`;
+							fse.rename(y, y.replace(file.substring(0, 5), k), (err) => {
+		            if (err) {
+		              throw err;
+		            }
+		          });
+						});
+
+	        });
+	  //       console.log(chalk.yellow('Suffixes renamed!'));
+	      });
+			});
     }, 20);
   }
 
