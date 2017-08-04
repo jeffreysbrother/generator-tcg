@@ -12,12 +12,18 @@ const pathToSection = `${cwd}/source/sections`;
 let section;
 let originalDir;
 let newDir;
+let valueToArray;
 let originalNamespace;
-let newNamespace;
+let newNamespace = [];
 let oldPath;
-let newPath;
-let target;
+let newPath = [];
+let target = [];
 let oldTarget;
+
+// this will serve as potential variables names that will store
+// individual values from the user's array input
+let varNames = ['aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg'];
+let myVariables = {};
 
 module.exports = class extends Generator {
 
@@ -55,14 +61,17 @@ module.exports = class extends Generator {
       name: 'newDir',
       message: 'What would you like to call it?',
       validate: function (value) {
+				valueToArray = value.split(' ');
         // ensure user input is two letters, a hyphen, and 2-3 digits
-        const check = value.match(pattern);
-        if (check) {
-          return true;
-        } else {
-          console.log(chalk.yellow(' Invalid directory name!'));
-          return false;
-        }
+				valueToArray.forEach(function (item) {
+					if (value.match(pattern)) {
+	          return true;
+	        } else {
+	          console.log(chalk.yellow(' Invalid directory name!'));
+	          return false;
+	        }
+				});
+				return true;
       }
     }];
 
@@ -71,22 +80,39 @@ module.exports = class extends Generator {
       // user input
       section = answers.section;
       originalDir = answers.originalDir;
-      newDir = answers.newDir;
+      // newDir = answers.newDir;
+
+			valueToArray.forEach(function (i, v) {
+				myVariables[varNames[v]] = valueToArray[v];
+			});
 
       // derive new/old namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
-      newNamespace = newDir.substr(0, newDir.indexOf('-'));
+      newNamespace = myVariables['aa'].substr(0, myVariables['aa'].indexOf('-'));
 
       // generate path relative to /funnel
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
-      newPath = `source/sections/${section}/${newNamespace}/${newDir}`;
+
+			Object.values(myVariables).forEach(function(val) {
+			  newPath.push(`source/sections/${section}/${newNamespace}/${val}`);
+			});
 
       // generate absolute path
       oldTarget = `${cwd}/${oldPath}`;
-      target = `${cwd}/${newPath}`;
+
+			newPath.forEach(function (i) {
+				target.push(`${cwd}/${i}`);
+			});
 
     });
   }
+
+	// thing() {
+	// 	console.log(newNamespace);
+	// 	console.log(newPath)
+	// 	console.log(target);
+	// 	process.exit();
+	// }
 
   copy() {
     // newDir already exists
