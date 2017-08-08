@@ -141,10 +141,10 @@ module.exports = class extends Generator {
 		target.forEach( i => {
 			// newDir already exists
 	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
-	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${i} already does! Aborting.`));
+	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newPath} already does! Aborting.`));
 	      process.exit();
 	    } else if (fse.existsSync(i) === true) {
-	      console.log(chalk.yellow(`${i} already exists! Aborting.`));
+	      console.log(chalk.yellow(`${newPath} already exists! Aborting.`));
 	      process.exit();
 	    // originalDir doesn't exist
 	    } else if (fse.existsSync(oldTarget) === false) {
@@ -191,13 +191,13 @@ module.exports = class extends Generator {
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
 					// log path, files
 					console.log(i, files);
-						// valueToArray.forEach(k => {
-						// 	fse.rename(files, files.replace(k.substring(0, 5), k), (err) => {
-						// 	  if (err) {
-						// 	    throw err;
-						// 	  }
-						// 	});
-						// });
+					// valueToArray.forEach(k => {
+					// 	fse.rename(i, i.replace(k.substring(0, 5), k), err => {
+					// 	  if (err) {
+					// 	    throw err;
+					// 	  }
+					// 	});
+					// });
 				});
 			});
     }, 20);
