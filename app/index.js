@@ -10,15 +10,20 @@ const pattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
 
 let section;
+
 let originalDir;
 let newDir;
+
 let valueToArray;
+
 let originalNamespace;
 let newNamespace = [];
+
 let oldPath;
 let newPath = [];
-let target = [];
+
 let oldTarget;
+let target = [];
 
 // this will serve as potential variables names that will store
 // individual values from the user's array input
@@ -163,28 +168,53 @@ module.exports = class extends Generator {
 
   renameSuffix() {
 
-		let y;
+		// let y;
     setTimeout(() => {
 			target.forEach(function (i) {
-	      fse.readdir(i, (err, files) => {
-	        // ensure that hidden files are not considered
+				fse.readdir(i, (err, files) => {
+					// i is complete path to new variation folder
+					// files is an array of files within
+
+					// ensure that hidden files are not considered
 	        files = files.filter(item => !(regex).test(item));
-	        files.forEach((file) => {
+
+
+
+					fse.rename(y, y.replace(file.substring(0, 5), k), (err) => {
+					  if (err) {
+					    throw err;
+					  }
+					});
+
+				});
+			});
+
+			// for each new directory (e.g. jc-01/ jc-02/ jc-03)
+			// target.forEach(function (i) {
+	      // fse.readdir(i, (err, files) => {
+	        // ensure that hidden files are not considered
+	        // files = files.filter(item => !(regex).test(item));
+	        // files.forEach((file) => {
+
+						// this logs full path to new directory (minus files within)
+						// console.log(i);
+						// console.log(file);
 
 						// EVERYTHING LOOKS GOOD UP TO HERE (THIS PART IS BROKEN)
-						valueToArray.forEach(function (k) {
-							y = `${i}/${file}`;
-							fse.rename(y, y.replace(file.substring(0, 5), k), (err) => {
-		            if (err) {
-		              throw err;
-		            }
-		          });
-						});
+						// valueToArray.forEach(function (k) {
+							// console.log(k);
+							// y = `${i}/${file}`;
+							// fse.rename(y, y.replace(file.substring(0, 5), k), (err) => {
+		          //   if (err) {
+		          //     throw err;
+		          //   }
+		          // });
+						// });
 
-	        });
-	  //       console.log(chalk.yellow('Suffixes renamed!'));
-	      });
-			});
+	        // });
+	        // console.log(chalk.yellow('Suffixes renamed!'));
+	      // });
+			// });
     }, 20);
   }
 
