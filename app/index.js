@@ -185,20 +185,19 @@ module.exports = class extends Generator {
     setTimeout(() => {
 			// for each new complete directory (e.g. ...jc-01/ ...jc-02/ )
 			target.forEach( i => {
-				// is this timeout necessary ?
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
-					// log path, files
-					// console.log(i, files);
-					// valueToArray.forEach(k => {
-						// console.log(valueToArray, k);
-					// 	fse.rename(i, i.replace(k.substring(0, 5), k), err => {
-					// 	  if (err) {
-					// 	    throw err;
-					// 	  }
-					// 	});
-					// });
+					files.forEach((k) =>{
+						// i = each new path
+						// k = each file within
+						let b = `${i}/${k}`;
+						fse.rename(b, `${b}-123`), err => {
+							if (err) {
+								throw err;
+							}
+						};
+					});
 				});
 			});
     }, 20);
