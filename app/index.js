@@ -190,8 +190,9 @@ module.exports = class extends Generator {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
 					// log path, files
-					console.log(i, files);
+					// console.log(i, files);
 					// valueToArray.forEach(k => {
+						// console.log(valueToArray, k);
 					// 	fse.rename(i, i.replace(k.substring(0, 5), k), err => {
 					// 	  if (err) {
 					// 	    throw err;
