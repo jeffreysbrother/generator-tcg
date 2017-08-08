@@ -5,8 +5,8 @@ const chalk = require('chalk');
 const path = require('path');
 
 const cwd = process.cwd();
-const regex = /(^|\/)\.[^\/\.]/ig;
-const pattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
+const ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig;
+const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
 
 let section;
@@ -67,7 +67,7 @@ module.exports = class extends Generator {
       message: 'Which directory do you wish to copy?',
       validate: value => {
         // ensure user input is two letters, a hyphen, and 2-3 digits
-        const check = value.match(pattern);
+        const check = value.match(restrictUserInputPattern);
         if (check) {
           return true;
         } else {
@@ -81,9 +81,9 @@ module.exports = class extends Generator {
       message: 'What would you like to call it?',
       validate: value => {
 				valueToArray = value.split(' ');
-        // ensure user input is two letters, a hyphen, and 2-3 digits
 				valueToArray.forEach(item => {
-					if (value.match(pattern)) {
+					// ensure user input is two letters, a hyphen, and 2-3 digits
+					if (value.match(restrictUserInputPattern)) {
 	          return true;
 	        } else {
 	          console.log(chalk.yellow(' Invalid directory name!'));
@@ -166,7 +166,7 @@ module.exports = class extends Generator {
 		target.forEach( i => {
 			fse.readdir(i, (err, files) => {
 	      // ensure that hidden files are not considered
-	      files = files.filter(item => !(regex).test(item));
+	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach((file) => {
 	        x = `${i}/${file}`;
 	        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
@@ -188,7 +188,7 @@ module.exports = class extends Generator {
 				// is this timeout necessary ?
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
-				  files = files.filter(item => !(regex).test(item));
+				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
 					// log path, files
 					console.log(i, files);
 						// valueToArray.forEach(k => {
