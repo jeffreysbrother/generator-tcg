@@ -25,6 +25,20 @@ let newPath = [];
 let oldTarget;
 let target = [];
 
+// ----------------------------------------- POLYFILL FOR OBJECT.VALUES
+const reduce = Function.bind.call(Function.call, Array.prototype.reduce);
+const isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
+const concat = Function.bind.call(Function.call, Array.prototype.concat);
+const keys = Reflect.ownKeys;
+
+if (!Object.values) {
+	Object.values = function values(O) {
+		return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
+	};
+}
+
+// --------------------------------------- END POLYFILL FOR OBJECT.VALUES
+
 // this will serve as potential variables names that will store
 // individual values from the user's array input
 let varNames = ['aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg'];
@@ -166,55 +180,26 @@ module.exports = class extends Generator {
 		});
   }
 
+
   renameSuffix() {
-
-		// let y;
     setTimeout(() => {
+			// for each new complete directory (e.g. ...jc-01/ ...jc-02/ )
 			target.forEach(function (i) {
-				fse.readdir(i, (err, files) => {
-					// i is complete path to new variation folder
-					// files is an array of files within
-
-					// ensure that hidden files are not considered
-	        files = files.filter(item => !(regex).test(item));
-
-
-
-					fse.rename(y, y.replace(file.substring(0, 5), k), (err) => {
-					  if (err) {
-					    throw err;
-					  }
-					});
-
+				// is this timeout necessary ?
+				fse.readdir(i, (err,files) => {
+					// skip hidden files
+				  files = files.filter(item => !(regex).test(item));
+					// log path, files
+					console.log(i, files);
+						valueToArray.forEach(function (k) {
+							fse.rename(files, files.replace(k.substring(0, 5), k), (err) => {
+							  if (err) {
+							    throw err;
+							  }
+							});
+						});
 				});
 			});
-
-			// for each new directory (e.g. jc-01/ jc-02/ jc-03)
-			// target.forEach(function (i) {
-	      // fse.readdir(i, (err, files) => {
-	        // ensure that hidden files are not considered
-	        // files = files.filter(item => !(regex).test(item));
-	        // files.forEach((file) => {
-
-						// this logs full path to new directory (minus files within)
-						// console.log(i);
-						// console.log(file);
-
-						// EVERYTHING LOOKS GOOD UP TO HERE (THIS PART IS BROKEN)
-						// valueToArray.forEach(function (k) {
-							// console.log(k);
-							// y = `${i}/${file}`;
-							// fse.rename(y, y.replace(file.substring(0, 5), k), (err) => {
-		          //   if (err) {
-		          //     throw err;
-		          //   }
-		          // });
-						// });
-
-	        // });
-	        // console.log(chalk.yellow('Suffixes renamed!'));
-	      // });
-			// });
     }, 20);
   }
 
