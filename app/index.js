@@ -138,27 +138,27 @@ module.exports = class extends Generator {
 	// }
 
   copy() {
-    // newDir already exists
-    // if (fse.existsSync(target) === true && fse.existsSync(oldTarget) === false) {
-    //   console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newDir} already does! Aborting.`));
-    //   process.exit();
-    // } else if (fse.existsSync(target) === true) {
-    //   console.log(chalk.yellow(`${newDir} already exists! Aborting.`));
-    //   process.exit();
-    // // originalDir doesn't exist
-    // } else if (fse.existsSync(oldTarget) === false) {
-    //   console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
-    //   process.exit();
-    // } else {
-		newPath.forEach(function (i) {
-			try {
-        fse.copySync(oldPath, i);
-        console.log(chalk.yellow('Files copied!'));
-      } catch (err) {
-        console.error(err);
-      }
+		target.forEach(function (i) {
+			// newDir already exists
+	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
+	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${i} already does! Aborting.`));
+	      process.exit();
+	    } else if (fse.existsSync(i) === true) {
+	      console.log(chalk.yellow(`${i} already exists! Aborting.`));
+	      process.exit();
+	    // originalDir doesn't exist
+	    } else if (fse.existsSync(oldTarget) === false) {
+	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
+	      process.exit();
+	    } else {
+				try {
+	        fse.copySync(oldPath, i);
+	        console.log(chalk.yellow('Files copied!'));
+	      } catch (err) {
+	        console.error(err);
+	      }
+			}
 		});
-    // }
   }
 
   renameNameSpace() {
@@ -191,13 +191,13 @@ module.exports = class extends Generator {
 				  files = files.filter(item => !(regex).test(item));
 					// log path, files
 					console.log(i, files);
-						valueToArray.forEach(function (k) {
-							fse.rename(files, files.replace(k.substring(0, 5), k), (err) => {
-							  if (err) {
-							    throw err;
-							  }
-							});
-						});
+						// valueToArray.forEach(function (k) {
+						// 	fse.rename(files, files.replace(k.substring(0, 5), k), (err) => {
+						// 	  if (err) {
+						// 	    throw err;
+						// 	  }
+						// 	});
+						// });
 				});
 			});
     }, 20);
