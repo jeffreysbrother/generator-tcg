@@ -188,7 +188,7 @@ module.exports = class extends Generator {
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
-					files.forEach((k) =>{
+					files.forEach(k =>{
 						// i = each new path
 						// k = each file within
 						let b = `${i}/${k}`;
