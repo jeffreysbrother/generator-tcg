@@ -52,7 +52,7 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'section',
       message: 'What section are you working on?',
-      validate: function (value) {
+      validate: value => {
         // ensure that section exists
         if (fse.existsSync(`${pathToSection}/${value}/`) === true) {
           return true;
@@ -65,7 +65,7 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'originalDir',
       message: 'Which directory do you wish to copy?',
-      validate: function (value) {
+      validate: value => {
         // ensure user input is two letters, a hyphen, and 2-3 digits
         const check = value.match(pattern);
         if (check) {
@@ -79,10 +79,10 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'newDir',
       message: 'What would you like to call it?',
-      validate: function (value) {
+      validate: value => {
 				valueToArray = value.split(' ');
         // ensure user input is two letters, a hyphen, and 2-3 digits
-				valueToArray.forEach(function (item) {
+				valueToArray.forEach(item => {
 					if (value.match(pattern)) {
 	          return true;
 	        } else {
@@ -101,7 +101,7 @@ module.exports = class extends Generator {
       originalDir = answers.originalDir;
       // newDir = answers.newDir;
 
-			valueToArray.forEach(function (i, v) {
+			valueToArray.forEach((i, v) => {
 				myVariables[varNames[v]] = valueToArray[v];
 			});
 
@@ -112,14 +112,14 @@ module.exports = class extends Generator {
       // generate path relative to /funnel
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
 
-			Object.values(myVariables).forEach(function(val) {
+			Object.values(myVariables).forEach(val => {
 			  newPath.push(`source/sections/${section}/${newNamespace}/${val}`);
 			});
 
       // generate absolute path
       oldTarget = `${cwd}/${oldPath}`;
 
-			newPath.forEach(function (i) {
+			newPath.forEach( i => {
 				target.push(`${cwd}/${i}`);
 			});
 
@@ -138,7 +138,7 @@ module.exports = class extends Generator {
 	// }
 
   copy() {
-		target.forEach(function (i) {
+		target.forEach( i => {
 			// newDir already exists
 	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
 	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${i} already does! Aborting.`));
@@ -163,7 +163,7 @@ module.exports = class extends Generator {
 
   renameNameSpace() {
 		let x;
-		target.forEach(function (i) {
+		target.forEach( i => {
 			fse.readdir(i, (err, files) => {
 	      // ensure that hidden files are not considered
 	      files = files.filter(item => !(regex).test(item));
@@ -184,14 +184,14 @@ module.exports = class extends Generator {
   renameSuffix() {
     setTimeout(() => {
 			// for each new complete directory (e.g. ...jc-01/ ...jc-02/ )
-			target.forEach(function (i) {
+			target.forEach( i => {
 				// is this timeout necessary ?
-				fse.readdir(i, (err,files) => {
+				fse.readdir(i, (err, files) => {
 					// skip hidden files
 				  files = files.filter(item => !(regex).test(item));
 					// log path, files
 					console.log(i, files);
-						// valueToArray.forEach(function (k) {
+						// valueToArray.forEach(k => {
 						// 	fse.rename(files, files.replace(k.substring(0, 5), k), (err) => {
 						// 	  if (err) {
 						// 	    throw err;
