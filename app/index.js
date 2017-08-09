@@ -85,10 +85,10 @@ module.exports = class extends Generator {
       // generate path relative to funnel/
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
 
-      // generate absolute path
+      // generate absolute path (old)
       oldTarget = `${cwd}/${oldPath}`;
 
-			// push new complete paths into an array
+			// push new absolute paths (new) into an array
 			valueToArray.forEach( i => {
 				target.push(`${cwd}/source/sections/${section}/${newNamespace}/${i}`);
 			});
@@ -124,17 +124,18 @@ module.exports = class extends Generator {
 
   renameNameSpace() {
 		let x;
+		// for each new absolute path to directory (e.g. ...jc-01/ ...jc-02/ )
 		target.forEach( i => {
 			fse.readdir(i, (err, files) => {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
 	        x = `${i}/${file}`;
-	        fse.rename(x, x.replace(originalNamespace, newNamespace), err => {
-	          if (err) {
-	            throw err;
-	          }
-	        });
+					try {
+						fse.renameSync(x, x.replace(originalNamespace, newNamespace));
+					} catch (err) {
+						console.error(err);
+					}
 	      });
 	    });
 		});
@@ -142,8 +143,7 @@ module.exports = class extends Generator {
 
   renameSuffix() {
 		let b;
-    setTimeout(() => {
-			// for each new complete directory (e.g. ...jc-01/ ...jc-02/ )
+			// for each new absolute path to directory (e.g. ...jc-01/ ...jc-02/ )
 			target.forEach( i => {
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
@@ -153,15 +153,14 @@ module.exports = class extends Generator {
 						// file = each file within
 						b = `${i}/${file}`;
 						let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
-						fse.rename(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName)), err => {
-							if (err) {
-								throw err;
-							}
-						};
+						try {
+							fse.renameSync(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName));
+						} catch (err) {
+							console.error(err);
+						}
 					});
 				});
 			});
-    }, 20);
 		console.log(chalk.yellow('Files renamed!'));
   }
 
