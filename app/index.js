@@ -79,7 +79,10 @@ module.exports = class extends Generator {
       name: 'newDir',
       message: 'What would you like to call it?',
       validate: value => {
-				valueToArray = value.split(' ');
+				// this could be better
+				// would be good to also eliminate single spaces from the beginning and end of the string
+				let multipleSpaceRemoval = value.replace(/\s{2,}/g, ' ');
+				valueToArray = multipleSpaceRemoval.split(' ');
 				valueToArray.forEach(item => {
 					// ensure user input is two letters, a hyphen, and 2-3 digits
 					if (value.match(restrictUserInputPattern)) {
