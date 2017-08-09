@@ -128,7 +128,7 @@ module.exports = class extends Generator {
 			fse.readdir(i, (err, files) => {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
-	      files.forEach((file) => {
+	      files.forEach(file => {
 	        x = `${i}/${file}`;
 	        fse.rename(x, x.replace(originalNamespace, newNamespace), err => {
 	          if (err) {
@@ -141,16 +141,17 @@ module.exports = class extends Generator {
   }
 
   renameSuffix() {
+		let b;
     setTimeout(() => {
 			// for each new complete directory (e.g. ...jc-01/ ...jc-02/ )
 			target.forEach( i => {
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
-					files.forEach(k => {
+					files.forEach(file => {
 						// i = each new path
-						// k = each file within
-						let b = `${i}/${k}`;
+						// file = each file within
+						b = `${i}/${file}`;
 						let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
 						fse.rename(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName)), err => {
 							if (err) {
