@@ -192,8 +192,8 @@ module.exports = class extends Generator {
 						// i = each new path
 						// k = each file within
 						let b = `${i}/${k}`;
-						let newFileName = "carlos"
-						fse.rename(b, b.replace(b.substring(b.lastIndexOf('-')+1, b.lastIndexOf('.')), newFileName)), err => {
+						let newFileName = i.substring(i.lastIndexOf('/')+1, i.length);
+						fse.rename(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName)), err => {
 							if (err) {
 								throw err;
 							}
