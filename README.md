@@ -4,7 +4,11 @@ A command line utility for The Control Group split testing team. An existing dir
 
 This tool assumes that the user will navigate to the `funnel/` directory before running any commands.
 
-### How to Use:
+## Installation:
+
+`npm install --global yo generator-tcg`
+
+## How to Use:
 
 When the command "yo tcg" is executed, the user must answer three questions. Here's an example of how one might answer:
 
@@ -16,7 +20,7 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 
 If you need to create *multiple* variations, on the third prompt you can specify additional names (separated by a space) such as: [**jc-02 jc-03 jc-04**]
 
-### Existing Features:
+## Existing Features:
 
 * The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to the desired namespace and suffix.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
@@ -26,7 +30,7 @@ If you need to create *multiple* variations, on the third prompt you can specify
 * Pass multiple arguments to create multiple copies of the default variation (this, of course, is optional).
 * Polyfill for `Object.values`, in case it is not supported on all machines.
 
-### Future Features:
+## Future Features:
 
 - [x] Give user the ability to copy multiple directories.
 - [ ] Improve user input sanitization (in progress).
