@@ -146,12 +146,12 @@ module.exports = class extends Generator {
 	    } else {
 				try {
 	        fse.copySync(oldPath, i);
-	        console.log(chalk.yellow('Files copied!'));
 	      } catch (err) {
 	        console.error(err);
 	      }
 			}
 		});
+		console.log(chalk.yellow('Files copied!'));
   }
 
   renameNameSpace() {
@@ -169,7 +169,6 @@ module.exports = class extends Generator {
 	          }
 	        });
 	      });
-	      console.log(chalk.yellow('Files renamed!'));
 	    });
 		});
   }
@@ -196,6 +195,7 @@ module.exports = class extends Generator {
 				});
 			});
     }, 20);
+		console.log(chalk.yellow('Files renamed!'));
   }
 
 };
