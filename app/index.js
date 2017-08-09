@@ -10,18 +10,13 @@ const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
 
 let section;
-
 let originalDir;
 let newDir;
-
 let valueToArray;
-
 let originalNamespace;
 let newNamespace = [];
-
 let oldPath;
 let newPath = [];
-
 let oldTarget;
 let target = [];
 
@@ -46,7 +41,6 @@ if (!Object.values) {
 module.exports = class extends Generator {
 
   prompting() {
-
     const prompts = [{
       type: 'input',
       name: 'section',
