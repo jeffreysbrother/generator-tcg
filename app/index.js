@@ -20,24 +20,6 @@ let newPath = [];
 let oldTarget;
 let target = [];
 
-// this will serve as potential variables names that will store
-// individual values from the user's array input
-let varNames = ['aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg'];
-let myVariables = {};
-
-// ------------------------------ POLYFILL FOR OBJECT.VALUES
-const reduce = Function.bind.call(Function.call, Array.prototype.reduce);
-const isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
-const concat = Function.bind.call(Function.call, Array.prototype.concat);
-const keys = Reflect.ownKeys;
-
-if (!Object.values) {
-	Object.values = function values(O) {
-		return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
-	};
-}
-// ----------------------------- END POLYFILL FOR OBJECT.VALUES
-
 module.exports = class extends Generator {
 
   prompting() {
@@ -97,18 +79,14 @@ module.exports = class extends Generator {
       section = answers.section;
       originalDir = answers.originalDir;
 
-			valueToArray.forEach((i, v) => {
-				myVariables[varNames[v]] = valueToArray[v];
-			});
-
       // derive new/old namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
-      newNamespace = myVariables['aa'].substr(0, myVariables['aa'].indexOf('-'));
+      newNamespace = valueToArray[0].substr(0, valueToArray[0].indexOf('-'));
 
       // generate path relative to /funnel
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
 
-			Object.values(myVariables).forEach(val => {
+			valueToArray.forEach(val => {
 			  newPath.push(`source/sections/${section}/${newNamespace}/${val}`);
 			});
 
