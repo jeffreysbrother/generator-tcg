@@ -98,7 +98,7 @@ module.exports = class extends Generator {
 
   copy() {
 		target.forEach( i => {
-			let newFileName = i.substring(i.lastIndexOf('/')+1, i.length);
+			let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
 			// if newDir already exists
 	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
 	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newFileName} already does! Aborting.`));
@@ -128,7 +128,6 @@ module.exports = class extends Generator {
 			fse.readdir(i, (err, files) => {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
-
 	      files.forEach((file) => {
 	        x = `${i}/${file}`;
 	        fse.rename(x, x.replace(originalNamespace, newNamespace), err => {
@@ -148,12 +147,11 @@ module.exports = class extends Generator {
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
-
 					files.forEach(k => {
 						// i = each new path
 						// k = each file within
 						let b = `${i}/${k}`;
-						let newFileName = i.substring(i.lastIndexOf('/')+1, i.length);
+						let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
 						fse.rename(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName)), err => {
 							if (err) {
 								throw err;
