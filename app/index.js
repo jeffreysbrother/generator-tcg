@@ -102,7 +102,6 @@ module.exports = class extends Generator {
       // user input
       section = answers.section;
       originalDir = answers.originalDir;
-      // newDir = answers.newDir;
 
 			valueToArray.forEach((i, v) => {
 				myVariables[varNames[v]] = valueToArray[v];
@@ -131,12 +130,13 @@ module.exports = class extends Generator {
 
   copy() {
 		target.forEach( i => {
+			let newFileName = i.substring(i.lastIndexOf('/')+1, i.length);
 			// if newDir already exists
 	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
-	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newPath} already does! Aborting.`));
+	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newFileName} already does! Aborting.`));
 	      process.exit();
 	    } else if (fse.existsSync(i) === true) {
-	      console.log(chalk.yellow(`${newPath} already exists! Aborting.`));
+	      console.log(chalk.yellow(`${newFileName} already exists! Aborting.`));
 	      process.exit();
 	    // if originalDir doesn't exist
 	    } else if (fse.existsSync(oldTarget) === false) {
@@ -163,7 +163,7 @@ module.exports = class extends Generator {
 
 	      files.forEach((file) => {
 	        x = `${i}/${file}`;
-	        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
+	        fse.rename(x, x.replace(originalNamespace, newNamespace), err => {
 	          if (err) {
 	            throw err;
 	          }
@@ -182,7 +182,7 @@ module.exports = class extends Generator {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
 
-					files.forEach(k =>{
+					files.forEach(k => {
 						// i = each new path
 						// k = each file within
 						let b = `${i}/${k}`;
