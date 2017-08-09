@@ -21,11 +21,12 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 * User input validation.
 * Cloning is prevented when the subdirectory already exists.
 * User is alerted when she attempts to copy a directory that does not exist.
+* Ability pass multiple arguments to create multiple copies of the default variation (this, of course, is optional).
 
 ### Future Features:
 
 - [ ] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
 - [ ] Find a way to eliminate `setTimeout()`.
-- [ ] The error message that appears when the directory doesn't exist should appear sooner; the user should have a chance to fix their mistake. However, to do this we'd need to move the two conditional statements (line 92-98) in the prompting() section ... but the variables `oldTarget` and `newPath` aren't accessible from there.
+- [ ] The error message that appears when the directory doesn't exist should appear sooner; the user should have a chance to fix their mistake. However, to do this we'd need to move the two conditional statements in the prompting() section ... but the variables `oldTarget` and `newPath` aren't accessible from there.
 - [ ] Add an optional flag to generate a dummy directory structure in order to facilitate testing.
-- [ ] Might want to give the user the ability to copy multiple directories. Perhaps after asking which section they're working on, we can ask how many variations they need.
+- [x] Might want to give the user the ability to copy multiple directories.
