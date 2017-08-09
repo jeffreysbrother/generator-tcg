@@ -55,8 +55,8 @@ module.exports = class extends Generator {
       message: 'What would you like to call it?',
       validate: value => {
 				// this could be better: currently eliminates all tabs and MULTIPLE spaces
-				// (except for those at the beginning and end of the strting)
-				// would best to eliminate single spaces and tabs from the beginning and end of the string
+				// (except for those at the beginning and end of the string)
+				// would best to eliminate these too
 				let multipleSpaceAndTabRemoval = value.replace(/\s{2,}|\t/g, ' ');
 				valueToArray = multipleSpaceAndTabRemoval.split(' ');
 				valueToArray.forEach(item => {
@@ -154,7 +154,7 @@ module.exports = class extends Generator {
 						b = `${i}/${file}`;
 						let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
 						try {
-							fse.renameSync(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName));
+							fse.renameSync(b, b.replace(b.substring(b.lastIndexOf('/') + 1, b.lastIndexOf('.')), newFileName));
 						} catch (err) {
 							console.error(err);
 						}
