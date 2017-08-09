@@ -16,7 +16,6 @@ let valueToArray;
 let originalNamespace;
 let newNamespace = [];
 let oldPath;
-let newPath = [];
 let oldTarget;
 let target = [];
 
@@ -79,22 +78,19 @@ module.exports = class extends Generator {
       section = answers.section;
       originalDir = answers.originalDir;
 
-      // derive new/old namespaces
+      // derive new & old namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
       newNamespace = valueToArray[0].substr(0, valueToArray[0].indexOf('-'));
 
-      // generate path relative to /funnel
+      // generate path relative to funnel/
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
-
-			valueToArray.forEach(val => {
-			  newPath.push(`source/sections/${section}/${newNamespace}/${val}`);
-			});
 
       // generate absolute path
       oldTarget = `${cwd}/${oldPath}`;
 
-			newPath.forEach( i => {
-				target.push(`${cwd}/${i}`);
+			// push new complete paths into an array
+			valueToArray.forEach( i => {
+				target.push(`${cwd}/source/sections/${section}/${newNamespace}/${i}`);
 			});
 
     });
