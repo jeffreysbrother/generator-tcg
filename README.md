@@ -24,6 +24,7 @@ If you need to create *multiple* variations, on the third prompt you can specify
 * Cloning is prevented when the subdirectory already exists.
 * User is alerted when she attempts to copy a directory that does not exist.
 * Pass multiple arguments to create multiple copies of the default variation (this, of course, is optional).
+* Polyfill for `Object.values`, in case it is not supported on all machines.
 
 ### Future Features:
 
