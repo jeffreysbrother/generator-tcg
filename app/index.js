@@ -36,7 +36,6 @@ if (!Object.values) {
 		return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
 	};
 }
-
 // --------------------------------------- END POLYFILL FOR OBJECT.VALUES
 
 // this will serve as potential variables names that will store
@@ -126,30 +125,20 @@ module.exports = class extends Generator {
     });
   }
 
-	// REMOVE COMMENTS TO ILLUSTRATE THAT USER INPUT (ONE DIRECTORY OR MULTIPLE)
-	// WILL BE STORED AS ITEMS IN AN ARRAY.
-	// NEWNAMESPACE, NEWPATH, AND TARGET ARE WORKING
-
-	// thing() {
-	// 	console.log(newNamespace);
-	// 	console.log(newPath)
-	// 	console.log(target);
-	// 	process.exit();
-	// }
-
   copy() {
 		target.forEach( i => {
-			// newDir already exists
+			// if newDir already exists
 	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
 	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newPath} already does! Aborting.`));
 	      process.exit();
 	    } else if (fse.existsSync(i) === true) {
 	      console.log(chalk.yellow(`${newPath} already exists! Aborting.`));
 	      process.exit();
-	    // originalDir doesn't exist
+	    // if originalDir doesn't exist
 	    } else if (fse.existsSync(oldTarget) === false) {
 	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
 	      process.exit();
+			// if successful...
 	    } else {
 				try {
 	        fse.copySync(oldPath, i);
@@ -165,8 +154,9 @@ module.exports = class extends Generator {
 		let x;
 		target.forEach( i => {
 			fse.readdir(i, (err, files) => {
-	      // ensure that hidden files are not considered
+	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
+
 	      files.forEach((file) => {
 	        x = `${i}/${file}`;
 	        fse.rename(x, x.replace(originalNamespace, newNamespace), (err) => {
@@ -180,7 +170,6 @@ module.exports = class extends Generator {
 		});
   }
 
-
   renameSuffix() {
     setTimeout(() => {
 			// for each new complete directory (e.g. ...jc-01/ ...jc-02/ )
@@ -188,6 +177,7 @@ module.exports = class extends Generator {
 				fse.readdir(i, (err, files) => {
 					// skip hidden files
 				  files = files.filter(item => !(ignoreHiddenFiles).test(item));
+
 					files.forEach(k =>{
 						// i = each new path
 						// k = each file within
