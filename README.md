@@ -2,7 +2,7 @@
 
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed with the desired prefix and suffix. The new files will then serve as a variation against which the control will be tested.
 
-This tool assumes that the user will navigate to the `funnel/` directory before running any commands.
+This tool assumes that the user will navigate to the `funnel/` directory before running any commands. Without the appropriate directory structure in place, this tool will be useless.
 
 ## Installation:
 
@@ -33,7 +33,8 @@ If you need to create *multiple* variations, on the third prompt you can specify
 
 - [x] Give user the ability to copy multiple directories.
 - [x] Find a way to eliminate `setTimeout()`.
-- [ ] Improve user input sanitization (in progress).
-- [ ] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`.
 - [ ] The error message that appears when the directory doesn't exist should appear sooner; the user should have a chance to fix their mistake. However, to do this we'd need to move the two conditional statements in the prompting() section ... but the variables `oldTarget` and `newPath` aren't accessible from there.
+- [ ] Improve user input sanitization (in progress).
+- [ ] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask "How many variations?" instead of expecting the user to type them out manually, and also retrieve the developer initials from the config file (Adam's idea).
 - [ ] Add an optional flag to generate a dummy directory structure in order to facilitate testing.
+- [ ] Ensure that this tool works on Windows and Linux machines.
