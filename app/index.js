@@ -98,7 +98,7 @@ module.exports = class extends Generator {
 
   copy() {
 		target.forEach( i => {
-			let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
+			let newFileName = path.basename(i);
 			// if newDir already exists
 	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
 	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newFileName} already does! Aborting.`));
@@ -153,7 +153,7 @@ module.exports = class extends Generator {
 							// i = each new path
 							// file = each file within
 							b = `${i}/${file}`;
-							let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
+							let newFileName = path.basename(i);
 							fse.rename(b, b.replace(b.substring(b.lastIndexOf('/') + 1, b.lastIndexOf('.')), newFileName)), err => {
 								if (err) {
 									throw err;
