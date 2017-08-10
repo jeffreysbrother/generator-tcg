@@ -85,10 +85,10 @@ module.exports = class extends Generator {
       // generate path relative to funnel/
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
 
-      // generate absolute path
+      // generate absolute path (old)
       oldTarget = `${cwd}/${oldPath}`;
 
-			// push new complete paths into an array
+			// push (new) absolute paths into an array
 			valueToArray.forEach( i => {
 				target.push(`${cwd}/source/sections/${section}/${newNamespace}/${i}`);
 			});
@@ -153,7 +153,7 @@ module.exports = class extends Generator {
 						// file = each file within
 						b = `${i}/${file}`;
 						let newFileName = i.substring(i.lastIndexOf('/') + 1, i.length);
-						fse.rename(b, b.replace(b.substring(b.lastIndexOf('/')+1, b.lastIndexOf('.')), newFileName)), err => {
+						fse.rename(b, b.replace(b.substring(b.lastIndexOf('/') + 1, b.lastIndexOf('.')), newFileName)), err => {
 							if (err) {
 								throw err;
 							}
