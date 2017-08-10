@@ -122,16 +122,17 @@ module.exports = class extends Generator {
 		console.log(chalk.yellow('Files copied!'));
   }
 
-  renameNameSpace() {
-		let x;
+  rename() {
 		// for each new absolute path to directory (e.g. ...jc-01/ ...jc-02/ )
 		target.forEach( i => {
 			fse.readdir(i, (err, files) => {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
-	        x = `${i}/${file}`;
-					fse.rename(x, x.replace(originalNamespace, newNamespace)), err => {
+	        let fullPath = `${i}/${file}`;
+					let newPart = path.basename(path.dirname(fullPath));
+					let oldPart = file.substring(0, file.indexOf('.'));
+					fse.rename(fullPath, fullPath.replace(oldPart, newPart)), err => {
 						if (err) {
 							throw err;
 						}
@@ -139,30 +140,6 @@ module.exports = class extends Generator {
 	      });
 	    });
 		});
-  }
-
-  renameSuffix() {
-		let b;
-			// for each new absolute path to directory (e.g. ...jc-01/ ...jc-02/ )
-			target.forEach( i => {
-				setTimeout(() => {
-					fse.readdir(i, (err, files) => {
-						// skip hidden files
-					  files = files.filter(item => !(ignoreHiddenFiles).test(item));
-						files.forEach(file => {
-							// i = each new path
-							// file = each file within
-							b = `${i}/${file}`;
-							let newFileName = path.basename(i);
-							fse.rename(b, b.replace(b.substring(b.lastIndexOf('/') + 1, b.lastIndexOf('.')), newFileName)), err => {
-								if (err) {
-									throw err;
-								}
-							};
-						});
-					});
-				}, 20);
-			});
 		console.log(chalk.yellow('Files renamed!'));
   }
 
