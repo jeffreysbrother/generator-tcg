@@ -131,11 +131,11 @@ module.exports = class extends Generator {
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
 	        x = `${i}/${file}`;
-					try {
-						fse.renameSync(x, x.replace(originalNamespace, newNamespace));
-					} catch (err) {
-						console.error(err);
-					}
+					fse.rename(x, x.replace(originalNamespace, newNamespace)), err => {
+						if (err) {
+							throw err;
+						}
+					};
 	      });
 	    });
 		});
