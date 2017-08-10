@@ -2,7 +2,39 @@
 
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed with the desired prefix and suffix. The new files will then serve as a variation against which the control will be tested.
 
-This tool assumes that the user will navigate to the `funnel/` directory before running any commands.
+This tool assumes that the user will navigate to the `funnel/` directory before running any commands. Please keep in mind that the utility of this tool is very dependent upon your directory structure; if the following directory relationship is not realized, the damn thing probably won't do you any good at all:
+
+```
+funnel
+└── source
+    └── sections
+        ├── home
+        │   ├── ga
+        │   │   └── ga-01
+        │   │       ├── ga-01.js
+        │   │       ├── ga-01.less
+        │   │       └── ga-01.php
+        │   └── bm
+        │       └── bm-01
+        │           ├── bm-01.js
+        │           ├── bm-01.less
+        │           └── bm-01.php
+        └── report-review
+            ├── ga
+            │   ├── ga-01
+            │   │   ├── ga-01.js
+            │   │   ├── ga-01.less
+            │   │   └── ga-01.php
+            │   └── ga-02
+            │       ├── ga-02.js
+            │       ├── ga-02.less
+            │       └── ga-02.php
+            └── jc
+                └── jc-01
+                    ├── jc-01.js
+                    ├── jc-01.less
+                    └── jc-01.php
+```
 
 ## Installation:
 
