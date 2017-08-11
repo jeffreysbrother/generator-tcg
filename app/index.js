@@ -10,7 +10,7 @@ const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
 const osenv = require('osenv');
 const user = osenv.user();
-const pathToConfig = `/Users/${user}/vagrants/public-records/sites/public-records-app/public/truthfinder.com/funnel/config.json`;
+const pathToConfig = `${cwd}/config.json`;
 const devInitials = require(pathToConfig).developer;
 
 let section;
