@@ -13,18 +13,19 @@ const user = osenv.user();
 const pathToConfig = `/Users/${user}/vagrants/public-records/sites/public-records-app/public/truthfinder.com/funnel/config.json`;
 const devInitials = require(pathToConfig).developer;
 
-console.log(devInitials);
-process.exit();
-
 let section;
 let originalDir;
-let newDir;
-let valueToArray;
+let howMany;
 let originalNamespace;
 let newNamespace = [];
 let oldPath;
 let oldTarget;
 let target = [];
+let newPathToUser;
+let existingFiles = [];
+let lastFile;
+let lastFileSuffix;
+let newFileSuffixes = [];
 
 module.exports = class extends Generator {
 
@@ -57,26 +58,9 @@ module.exports = class extends Generator {
         }
       }
     },{
-      type: 'input',
-      name: 'newDir',
-      message: 'What would you like to call it?',
-      validate: value => {
-				// this could be better: currently eliminates all tabs and MULTIPLE spaces
-				// (except for those at the beginning and end of the string)
-				// would best to eliminate these too
-				let multipleSpaceAndTabRemoval = value.replace(/\s{2,}|\t/g, ' ');
-				valueToArray = multipleSpaceAndTabRemoval.split(' ');
-				valueToArray.forEach(item => {
-					// ensure user input is two letters, a hyphen, and 2-3 digits
-					if (value.match(restrictUserInputPattern)) {
-	          return true;
-	        } else {
-	          console.log(chalk.yellow(' Invalid directory name!'));
-	          return false;
-	        }
-				});
-				return true;
-      }
+      type: 'number',
+      name: 'howMany',
+      message: 'How many variations would you like?'
     }];
 
     return this.prompt(prompts).then(answers => {
@@ -84,21 +68,36 @@ module.exports = class extends Generator {
       // user input
       section = answers.section;
       originalDir = answers.originalDir;
+			howMany = answers.howMany;
 
       // derive new & old namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
-      newNamespace = valueToArray[0].substr(0, valueToArray[0].indexOf('-'));
 
       // generate path relative to funnel/
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
+			newPathToUser = `${cwd}/source/sections/${section}/${devInitials}`;
+
+			// get array of existing files
+			fse.readdirSync(newPathToUser).forEach(file => {
+				existingFiles.push(file);
+			});
+
+			// find last file ... and last file suffix from array of existing files
+			lastFile = existingFiles[existingFiles.length - 1];
+			lastFileSuffix = lastFile.substring(lastFile.indexOf('-') + 1, lastFile.length);
+
+			// create array of numerically next suffixes
+			for (let i = 1; i <= howMany; i++) {
+				newFileSuffixes.push(parseFloat(lastFileSuffix) + i);
+			}
+
+			// populate array of new directories
+			newFileSuffixes.forEach(i => {
+				target.push(`${cwd}/source/sections/${section}/${devInitials}/${devInitials}-${i}`);
+			});
 
       // generate absolute path (old)
       oldTarget = `${cwd}/${oldPath}`;
-
-			// push (new) absolute paths into an array
-			valueToArray.forEach( i => {
-				target.push(`${cwd}/source/sections/${section}/${newNamespace}/${i}`);
-			});
 
     });
   }
