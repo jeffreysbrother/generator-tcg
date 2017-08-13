@@ -70,12 +70,17 @@ module.exports = class extends Generator {
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
 
-      // derive new & old namespaces
+      // derive original namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
 
       // generate path relative to funnel/
       oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
 			newPathToUser = `${cwd}/source/sections/${section}/${devInitials}`;
+
+			// if the user folder does not exist, create it
+			if (!fse.existsSync(newPathToUser)) {
+				fse.mkdirSync(newPathToUser);
+			}
 
 			// get array of existing files
 			fse.readdirSync(newPathToUser).forEach(file => {
@@ -84,7 +89,7 @@ module.exports = class extends Generator {
 
 			// find last file ... and last file suffix from array of existing files
 			lastFile = existingFiles[existingFiles.length - 1];
-			lastFileSuffix = lastFile.substring(lastFile.indexOf('-') + 1, lastFile.length);
+			lastFileSuffix = existingFiles.length == 0 ? "00" : lastFile.substring(lastFile.indexOf('-') + 1, lastFile.length);
 
 			// create array of numerically next suffixes
 			for (let i = 1; i <= howMany; i++) {
