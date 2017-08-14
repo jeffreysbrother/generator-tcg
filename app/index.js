@@ -18,9 +18,8 @@ let originalDir;
 let howMany;
 let originalNamespace;
 let oldPath;
-let oldTarget;
 let target = [];
-let newPathToUser;
+let newPath;
 let existingDirs = [];
 let lastDir;
 let lastSuffix;
@@ -72,17 +71,17 @@ module.exports = class extends Generator {
       // derive original namespaces
       originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
 
-      // generate path relative to funnel/
-      oldPath = `source/sections/${section}/${originalNamespace}/${originalDir}`;
-			newPathToUser = `${cwd}/source/sections/${section}/${devInitials}`;
+      // generate old/new path
+      oldPath = `${cwd}/source/sections/${section}/${originalNamespace}/${originalDir}`;
+			newPath = `${cwd}/source/sections/${section}/${devInitials}`;
 
 			// if the user folder does not exist, create it
-			if (!fse.existsSync(newPathToUser)) {
-				fse.mkdirSync(newPathToUser);
+			if (!fse.existsSync(newPath)) {
+				fse.mkdirSync(newPath);
 			}
 
 			// get array of existing dirs
-			fse.readdirSync(newPathToUser).forEach(file => {
+			fse.readdirSync(newPath).forEach(file => {
 				existingDirs.push(file);
 			});
 
@@ -98,17 +97,14 @@ module.exports = class extends Generator {
 			// convert array of numbers to array of strings
 			let suffixesStringy = newSuffixes.map(String);
 
-			// populate array of new dirs, add padding if suffix is one digit
+			// populate array of new paths to variations, adding padding if suffix is one digit
 			suffixesStringy.forEach(i => {
 				if (i.length == 1) {
-					target.push(`${cwd}/source/sections/${section}/${devInitials}/${devInitials}-0${i}`);
+					target.push(`${newPath}/${devInitials}-0${i}`);
 				} else {
-					target.push(`${cwd}/source/sections/${section}/${devInitials}/${devInitials}-${i}`);
+					target.push(`${newPath}/${devInitials}-${i}`);
 				}
 			});
-
-      // generate absolute path (old)
-      oldTarget = `${cwd}/${oldPath}`;
 
     });
   }
@@ -117,14 +113,14 @@ module.exports = class extends Generator {
 		target.forEach( i => {
 			let newFileName = path.basename(i);
 			// if newDir already exists
-	    if (fse.existsSync(i) === true && fse.existsSync(oldTarget) === false) {
+	    if (fse.existsSync(i) === true && fse.existsSync(oldPath) === false) {
 	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newFileName} already does! Aborting.`));
 	      process.exit();
 	    } else if (fse.existsSync(i) === true) {
 	      console.log(chalk.yellow(`${newFileName} already exists! Aborting.`));
 	      process.exit();
 	    // if originalDir doesn't exist
-	    } else if (fse.existsSync(oldTarget) === false) {
+	    } else if (fse.existsSync(oldPath) === false) {
 	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
 	      process.exit();
 			// if successful...
