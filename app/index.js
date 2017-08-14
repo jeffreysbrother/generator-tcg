@@ -17,15 +17,14 @@ let section;
 let originalDir;
 let howMany;
 let originalNamespace;
-let newNamespace = [];
 let oldPath;
 let oldTarget;
 let target = [];
 let newPathToUser;
 let existingDirs = [];
 let lastDir;
-let lastDirSuffix;
-let newFileSuffixes = [];
+let lastSuffix;
+let newSuffixes = [];
 
 module.exports = class extends Generator {
 
@@ -82,24 +81,24 @@ module.exports = class extends Generator {
 				fse.mkdirSync(newPathToUser);
 			}
 
-			// get array of existing files
+			// get array of existing dirs
 			fse.readdirSync(newPathToUser).forEach(file => {
 				existingDirs.push(file);
 			});
 
-			// find last file ... and last file suffix from array of existing files
+			// find last existing dir ... and last suffix from array of existing dirs
 			lastDir = existingDirs[existingDirs.length - 1];
-			lastDirSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
+			lastSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
 
 			// create array of numerically next suffixes
 			for (let i = 1; i <= howMany; i++) {
-				newFileSuffixes.push(parseFloat(lastDirSuffix) + i);
+				newSuffixes.push(parseFloat(lastSuffix) + i);
 			}
 
 			// convert array of numbers to array of strings
-			let suffixesStringy = newFileSuffixes.map(String);
+			let suffixesStringy = newSuffixes.map(String);
 
-			// populate array of new directories, add padding if suffix is one digit
+			// populate array of new dirs, add padding if suffix is one digit
 			suffixesStringy.forEach(i => {
 				if (i.length == 1) {
 					target.push(`${cwd}/source/sections/${section}/${devInitials}/${devInitials}-0${i}`);
