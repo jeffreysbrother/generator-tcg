@@ -60,8 +60,8 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 
 ## Existing Features:
 
-* The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according whatever files already exist in the target directory (suffixes are incremented numerically).
-* The appropriate developer initials are retrieved from `funnel/config.json`.
+* The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to whatever files already exist in the target directory (suffixes are incremented numerically).
+* Developer initials are retrieved from `funnel/config.json`. This is used to rename the duplicated files and folders.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
 * User input validation.
 
@@ -70,6 +70,3 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 - [x] Give user the ability to copy multiple directories.
 - [x] Find a way to eliminate `setTimeout()`.
 - [x] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask the user "How many variations?" instead of expecting them to type the variation names manually. Adam also suggested that we retrieve the developer initials from the config file.
-- [ ] Improve user input sanitization.
-- [ ] The error message that appears when the directory doesn't exist should appear sooner; the user should have a chance to fix their mistake. However, to do this we'd need to move the two conditional statements in the prompting() section ... but the variables `oldTarget` and `newPath` aren't accessible from there.
-- [ ] Add an optional flag to generate a dummy directory structure in order to facilitate testing.
