@@ -58,7 +58,15 @@ module.exports = class extends Generator {
     },{
       type: 'number',
       name: 'howMany',
-      message: 'How many variations would you like?'
+      message: 'How many variations would you like?',
+			validate: value => {
+				if (!isNaN(parseFloat(value)) && isFinite(value)) {
+					return true;
+				} else {
+					console.log(chalk.yellow(' Please enter a number.'));
+					return false;
+				}
+			}
     }];
 
     return this.prompt(prompts).then(answers => {
@@ -112,15 +120,8 @@ module.exports = class extends Generator {
   copy() {
 		target.forEach( i => {
 			let newFileName = path.basename(i);
-			// if newDir already exists
-	    if (fse.existsSync(i) === true && fse.existsSync(oldPath) === false) {
-	      console.log(chalk.yellow(`Damn, bro! ${originalDir} doesn't exist and ${newFileName} already does! Aborting.`));
-	      process.exit();
-	    } else if (fse.existsSync(i) === true) {
-	      console.log(chalk.yellow(`${newFileName} already exists! Aborting.`));
-	      process.exit();
-	    // if originalDir doesn't exist
-	    } else if (fse.existsSync(oldPath) === false) {
+			// if originalDir doesn't exist
+			if (fse.existsSync(oldPath) === false) {
 	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
 	      process.exit();
 			// if successful...
