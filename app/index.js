@@ -21,8 +21,6 @@ let oldPath;
 let target = [];
 let newPath;
 let existingDirs = [];
-let lastDir;
-let lastSuffix;
 let newSuffixes = [];
 
 module.exports = class extends Generator {
@@ -76,46 +74,48 @@ module.exports = class extends Generator {
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
 
-      // derive original namespaces
-      originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
-
-      // generate old/new path
-      oldPath = `${cwd}/source/sections/${section}/${originalNamespace}/${originalDir}`;
-			newPath = `${cwd}/source/sections/${section}/${devInitials}`;
-
-			// if the user folder does not exist, create it
-			if (!fse.existsSync(newPath)) {
-				fse.mkdirSync(newPath);
-			}
-
-			// get array of existing dirs
-			fse.readdirSync(newPath).forEach(file => {
-				existingDirs.push(file);
-			});
-
-			// find last existing dir ... and last suffix from array of existing dirs
-			lastDir = existingDirs[existingDirs.length - 1];
-			lastSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
-
-			// create array of numerically next suffixes
-			for (let i = 1; i <= howMany; i++) {
-				newSuffixes.push(parseFloat(lastSuffix) + i);
-			}
-
-			// convert array of numbers to array of strings
-			let suffixesStringy = newSuffixes.map(String);
-
-			// populate array of new paths to variations, adding padding if suffix is one digit
-			suffixesStringy.forEach(i => {
-				if (i.length == 1) {
-					target.push(`${newPath}/${devInitials}-0${i}`);
-				} else {
-					target.push(`${newPath}/${devInitials}-${i}`);
-				}
-			});
-
     });
   }
+
+	manipulation() {
+		// derive original namespaces
+		originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
+
+		// generate old/new path
+		oldPath = `${cwd}/source/sections/${section}/${originalNamespace}/${originalDir}`;
+		newPath = `${cwd}/source/sections/${section}/${devInitials}`;
+
+		// if the user folder does not exist, create it
+		if (!fse.existsSync(newPath)) {
+			fse.mkdirSync(newPath);
+		}
+
+		// get array of existing dirs
+		fse.readdirSync(newPath).forEach(file => {
+			existingDirs.push(file);
+		});
+
+		// find last existing dir ... and last suffix from array of existing dirs
+		const lastDir = existingDirs[existingDirs.length - 1];
+		const lastSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
+
+		// create array of numerically next suffixes
+		for (let i = 1; i <= howMany; i++) {
+			newSuffixes.push(parseFloat(lastSuffix) + i);
+		}
+
+		// convert array of numbers to array of strings
+		const suffixesStringy = newSuffixes.map(String);
+
+		// populate array of new paths to variations, adding padding if suffix is one digit
+		suffixesStringy.forEach(i => {
+			if (i.length == 1) {
+				target.push(`${newPath}/${devInitials}-0${i}`);
+			} else {
+				target.push(`${newPath}/${devInitials}-${i}`);
+			}
+		});
+	}
 
   copy() {
 		target.forEach( i => {
