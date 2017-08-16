@@ -3,13 +3,13 @@ const Generator = require('yeoman-generator');
 const fse = require('fs-extra');
 const chalk = require('chalk');
 const path = require('path');
+const osenv = require('osenv');
 
 const cwd = process.cwd();
+const user = osenv.user();
 const ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig;
 const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
-const osenv = require('osenv');
-const user = osenv.user();
 const pathToConfig = `${cwd}/config.json`;
 const devInitials = require(pathToConfig).developer;
 
@@ -45,8 +45,7 @@ module.exports = class extends Generator {
       message: 'Which directory do you wish to copy?',
       validate: value => {
         // ensure user input is two letters, a hyphen, and 2-3 digits
-        const check = value.match(restrictUserInputPattern);
-        if (check) {
+        if (value.match(restrictUserInputPattern)) {
           return true;
         } else {
           console.log(chalk.yellow(' Invalid directory name!'));
@@ -68,12 +67,9 @@ module.exports = class extends Generator {
     }];
 
     return this.prompt(prompts).then(answers => {
-
-      // user input
       section = answers.section;
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
-
     });
   }
 
