@@ -82,8 +82,8 @@ module.exports = class extends Generator {
 		originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
 
 		// generate old/new path
-		oldPath = `${cwd}/source/sections/${section}/${originalNamespace}/${originalDir}`;
-		newPath = `${cwd}/source/sections/${section}/${devInitials}`;
+		oldPath = `${pathToSection}/${section}/${originalNamespace}/${originalDir}`;
+		newPath = `${pathToSection}/${section}/${devInitials}`;
 
 		// if the user folder does not exist, create it
 		if (!fse.existsSync(newPath)) {
@@ -133,7 +133,6 @@ module.exports = class extends Generator {
 	      }
 			}
 		});
-		console.log(chalk.yellow('Files copied!'));
   }
 
   rename() {
