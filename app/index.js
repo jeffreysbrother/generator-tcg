@@ -57,10 +57,18 @@ module.exports = class extends Generator {
       name: 'howMany',
       message: 'How many variations would you like?',
 			validate: value => {
-				if (!isNaN(parseFloat(value)) && isFinite(value)) {
-					return true;
+				if (!isNaN(parseFloat(value)) && isFinite(value) && value % 1 === 0) {
+					if (parseFloat(value) === 0) {
+						console.log(chalk.yellow(' What? You don\'t want that.'));
+						return false;
+					} else if (parseFloat(value) > 10) {
+						console.log(chalk.yellow(' Too many variations!'));
+						return false;
+					} else {
+						return true;
+					}
 				} else {
-					console.log(chalk.yellow(' Please enter a number.'));
+					console.log(chalk.yellow(' Please enter a whole number.'));
 					return false;
 				}
 			}
@@ -149,9 +157,16 @@ module.exports = class extends Generator {
 	      });
 	    });
 		});
+  }
+
+	message() {
 		let items = [];
 		target.forEach(i => { items.push(path.basename(i)) });
-		console.log(chalk.yellow(`${howMany} variations created: ${items.join(', ')}`));
-  }
+		if (items.length > 1) {
+			console.log(chalk.yellow(`${howMany} variations created: ${items.join(', ')}`));
+		} else {
+			console.log(chalk.yellow(`${howMany} variation created: ${items[0]}`));
+		}
+	}
 
 };
