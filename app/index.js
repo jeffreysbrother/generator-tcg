@@ -91,8 +91,8 @@ module.exports = class extends Generator {
 		}
 
 		// get array of existing dirs
-		fse.readdirSync(newPath).forEach(file => {
-			existingDirs.push(file);
+		fse.readdirSync(newPath).forEach(dir => {
+			existingDirs.push(dir);
 		});
 
 		// find last existing dir ... and last suffix from array of existing dirs
@@ -105,14 +105,14 @@ module.exports = class extends Generator {
 		}
 
 		// convert array of numbers to array of strings
-		const suffixesStringy = newSuffixes.map(String);
+		global.suffixesStringy = newSuffixes.map(String);
 
 		// populate array of new paths to variations, adding padding if suffix is one digit
-		suffixesStringy.forEach(i => {
-			if (i.length == 1) {
-				target.push(`${newPath}/${devInitials}-0${i}`);
+		suffixesStringy.forEach(suffix => {
+			if (suffix.length == 1) {
+				target.push(`${newPath}/${devInitials}-0${suffix}`);
 			} else {
-				target.push(`${newPath}/${devInitials}-${i}`);
+				target.push(`${newPath}/${devInitials}-${suffix}`);
 			}
 		});
 	}
@@ -153,7 +153,9 @@ module.exports = class extends Generator {
 	      });
 	    });
 		});
-		console.log(chalk.yellow('Files renamed!'));
+		let items = [];
+		target.forEach(i => { items.push(path.basename(i)) });
+		console.log(chalk.yellow(`${howMany} variations created: ${items.join(', ')}`));
   }
 
 };
