@@ -92,8 +92,8 @@ module.exports = class extends Generator {
 		});
 
 		// find last existing dir ... and last suffix from array of existing dirs
-		const lastDir = existingDirs[existingDirs.length - 1];
-		const lastSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
+		let lastDir = existingDirs[existingDirs.length - 1];
+		let lastSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
 
 		// create array of numerically next suffixes
 		for (let i = 1; i <= howMany; i++) {
@@ -101,7 +101,7 @@ module.exports = class extends Generator {
 		}
 
 		// convert array of numbers to array of strings
-		global.suffixesStringy = newSuffixes.map(String);
+		let suffixesStringy = newSuffixes.map(String);
 
 		// populate array of new paths to variations, adding padding if suffix is one digit
 		suffixesStringy.forEach(suffix => {
