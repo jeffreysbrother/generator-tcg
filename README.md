@@ -64,6 +64,7 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 * Developer initials are retrieved from `funnel/config.json`. This is used to rename the duplicated files and folders.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
 * User input validation.
+* Maximum number of variations is set to 10 (in order to prevent a huge number of files being created inadvertently).
 
 ## Future Features:
 
