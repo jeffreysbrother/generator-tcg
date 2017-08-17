@@ -162,9 +162,9 @@ module.exports = class extends Generator {
 		let items = [];
 		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
 		if (items.length > 1) {
-			console.log(chalk.yellow(`${howMany} variations created: ${items.join(', ')}`));
+			console.log(chalk.yellow(`${howMany} variations created: ${[...items]}`));
 		} else {
-			console.log(chalk.yellow(`${howMany} variation created: ${items[0]}`));
+			console.log(chalk.yellow(`${howMany} variation created: ${items}`));
 		}
 	}
 
