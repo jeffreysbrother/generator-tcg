@@ -17,9 +17,9 @@ let section;
 let originalDir;
 let howMany;
 let originalNamespace;
-let oldPath;
-let target = [];
-let newPath;
+let pathToOriginalDir;
+let pathsToNewVariations = [];
+let pathToNewDev;
 let existingDirs = [];
 let newSuffixes = [];
 
@@ -31,8 +31,7 @@ module.exports = class extends Generator {
       name: 'section',
       message: 'What section are you working on?',
       validate: value => {
-        // ensure that section exists
-        if (fse.existsSync(`${pathToSection}/${value}/`) === true) {
+        if (fse.existsSync(`${pathToSection}/${value}`)) {
           return true;
         } else {
           console.log(chalk.yellow(" Section doesn't exist!"));
@@ -82,26 +81,29 @@ module.exports = class extends Generator {
   }
 
 	manipulation() {
-		// derive original namespaces
 		originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
 
-		// generate old/new path
-		oldPath = `${pathToSection}/${section}/${originalNamespace}/${originalDir}`;
-		newPath = `${pathToSection}/${section}/${devInitials}`;
+		pathToOriginalDir = `${pathToSection}/${section}/${originalNamespace}/${originalDir}`;
+		pathToNewDev = `${pathToSection}/${section}/${devInitials}`;
 
-		// if the user folder does not exist, create it
-		if (!fse.existsSync(newPath)) {
-			fse.mkdirSync(newPath);
+		if (!fse.existsSync(pathToNewDev)) {
+			fse.mkdirSync(pathToNewDev);
 		}
 
 		// get array of existing dirs
-		fse.readdirSync(newPath).forEach(dir => {
+		fse.readdirSync(pathToNewDev).forEach(dir => {
 			existingDirs.push(dir);
 		});
 
-		// find last existing dir ... and last suffix from array of existing dirs
+		// find last existing dir
 		let lastDir = existingDirs[existingDirs.length - 1];
-		let lastSuffix = existingDirs.length == 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
+
+		// get last suffix from array of existing dirs
+		if (existingDirs.length == 0) {
+			var lastSuffix = "0";
+		} else {
+			var lastSuffix = lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
+		}
 
 		// create array of numerically next suffixes
 		for (let i = 1; i <= howMany; i++) {
@@ -111,27 +113,25 @@ module.exports = class extends Generator {
 		// convert array of numbers to array of strings
 		let suffixesStringy = newSuffixes.map(String);
 
-		// populate array of new paths to variations, adding padding if suffix is one digit
+		// populate array of paths to new variations, adding padding if suffix is one digit
 		suffixesStringy.forEach(suffix => {
 			if (suffix.length == 1) {
-				target.push(`${newPath}/${devInitials}-0${suffix}`);
+				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
 			} else {
-				target.push(`${newPath}/${devInitials}-${suffix}`);
+				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
 			}
 		});
 	}
 
   copy() {
-		target.forEach( i => {
-			let newFileName = path.basename(i);
-			// if originalDir doesn't exist
-			if (fse.existsSync(oldPath) === false) {
+		pathsToNewVariations.forEach(variation => {
+			let newFileName = path.basename(variation);
+			if (!fse.existsSync(pathToOriginalDir)) {
 	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
 	      process.exit();
-			// if successful...
 	    } else {
 				try {
-	        fse.copySync(oldPath, i);
+	        fse.copySync(pathToOriginalDir, variation);
 	      } catch (err) {
 	        console.error(err);
 	      }
@@ -140,13 +140,12 @@ module.exports = class extends Generator {
   }
 
   rename() {
-		// for each new absolute path to directory (e.g. ...jc-01/ ...jc-02/ )
-		target.forEach( i => {
-			fse.readdir(i, (err, files) => {
+		pathsToNewVariations.forEach(variation => {
+			fse.readdir(variation, (err, files) => {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
-	        let fullPath = `${i}/${file}`;
+	        let fullPath = `${variation}/${file}`;
 					let newPart = path.basename(path.dirname(fullPath));
 					let oldPart = file.substring(0, file.indexOf('.'));
 					fse.rename(fullPath, fullPath.replace(oldPart, newPart)), err => {
@@ -161,7 +160,7 @@ module.exports = class extends Generator {
 
 	message() {
 		let items = [];
-		target.forEach(i => { items.push(path.basename(i)) });
+		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
 		if (items.length > 1) {
 			console.log(chalk.yellow(`${howMany} variations created: ${items.join(', ')}`));
 		} else {
