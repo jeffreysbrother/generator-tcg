@@ -181,15 +181,13 @@ module.exports = class extends Generator {
 	}
 
 	//need conditional prompting (depending on Yes or no answer)
-	//need to get remote dynamically
-	//need to also do that "git push --set-upstream origin branchname" or whatever
 
 	git() {
 		simpleGit()
 			.checkoutBranch(`${devInitials}_${section}_${blurb}`, 'master')
 			.add('./*')
 			.commit(`copied ${originalDir}`)
-			.push('git@github.com:jeffreysbrother/test-tcg.git', `${devInitials}_${section}_${blurb}`);
+			.push('origin', `${devInitials}_${section}_${blurb}`, [`--set-upstream`]);
 	}
 
 };
