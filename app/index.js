@@ -4,6 +4,7 @@ const fse = require('fs-extra');
 const chalk = require('chalk');
 const path = require('path');
 const osenv = require('osenv');
+const simpleGit = require('simple-git');
 
 const cwd = process.cwd();
 const user = osenv.user();
@@ -22,6 +23,8 @@ let pathsToNewVariations = [];
 let pathToNewDev;
 let existingDirs = [];
 let newSuffixes = [];
+let doGitStuff;
+let blurb;
 
 module.exports = class extends Generator {
 
@@ -71,12 +74,21 @@ module.exports = class extends Generator {
 					return false;
 				}
 			}
+    },{
+      type: 'confirm',
+      name: 'doGitStuff',
+      message: 'Checkout new branch, add, commit, and push?'
+    },{
+      type: 'input',
+      name: 'blurb',
+      message: 'Branch name blurb?'
     }];
 
     return this.prompt(prompts).then(answers => {
       section = answers.section;
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
+			blurb = answers.blurb;
     });
   }
 
@@ -166,6 +178,18 @@ module.exports = class extends Generator {
 		} else {
 			console.log(chalk.yellow(`${howMany} variation created: ${items}`));
 		}
+	}
+
+	//need conditional prompting (depending on Yes or no answer)
+	//need to get remote dynamically
+	//need to also do that "git push --set-upstream origin branchname" or whatever
+
+	git() {
+		simpleGit()
+			.checkoutBranch(`${devInitials}_${section}_${blurb}`, 'master')
+			.add('./*')
+			.commit(`copied ${originalDir}`)
+			.push('git@github.com:jeffreysbrother/test-tcg.git', `${devInitials}_${section}_${blurb}`);
 	}
 
 };
