@@ -71,3 +71,5 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 - [x] Give user the ability to copy multiple directories.
 - [x] Find a way to eliminate `setTimeout()`.
 - [x] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask the user "How many variations?" instead of expecting them to type the variation names manually. Adam also suggested that we retrieve the developer initials from the config file.
+- [] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--no-git").
+- [] Write to each file, adding a comment denoting which variation was copied.
