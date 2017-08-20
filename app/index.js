@@ -75,13 +75,12 @@ module.exports = class extends Generator {
 				}
 			}
     },{
-      type: 'confirm',
-      name: 'doGitStuff',
-      message: 'Checkout new branch, add, commit, and push?'
-    },{
       type: 'input',
       name: 'blurb',
-      message: 'Branch name blurb?'
+      message: 'Please enter a short branch description:',
+			filter: value => {
+				return value.toLowerCase().replace(/\s/g,'');
+			}
     }];
 
     return this.prompt(prompts).then(answers => {
@@ -179,8 +178,6 @@ module.exports = class extends Generator {
 			console.log(chalk.yellow(`${howMany} variation created: ${items}`));
 		}
 	}
-
-	//need conditional prompting (depending on Yes or no answer)
 
 	git() {
 		simpleGit()
