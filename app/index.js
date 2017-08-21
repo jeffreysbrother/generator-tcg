@@ -173,18 +173,28 @@ module.exports = class extends Generator {
 		let items = [];
 		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
 		if (items.length > 1) {
-			console.log(chalk.yellow(`${howMany} variations created: ${[...items]}`));
+			console.log(chalk.yellow(`${howMany} variations created: ${[...items]}.`));
 		} else {
-			console.log(chalk.yellow(`${howMany} variation created: ${items}`));
+			console.log(chalk.yellow(`${howMany} variation created: ${items}.`));
 		}
 	}
 
 	git() {
-		simpleGit()
-			.checkoutBranch(`${devInitials}_${section}_${blurb}`, 'master')
+		try {
+			simpleGit()
+			.checkoutBranch(`${devInitials}_${section}_${blurb}`, 'master', function (err, result) {
+				console.log(chalk.yellow(`new branch ${devInitials}_${section}_${blurb} created...`));
+			})
 			.add('./*')
-			.commit(`copied ${originalDir}`)
-			.push('origin', `${devInitials}_${section}_${blurb}`, [`--set-upstream`]);
+			.commit(`copied ${originalDir}`, function (err, result) {
+				console.log(chalk.yellow('changed staged and committed...'));
+			})
+			.push('origin', `${devInitials}_${section}_${blurb}`, [`--set-upstream`], function (err, result) {
+				console.log(chalk.yellow('pushed!'));
+			});
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
 };
