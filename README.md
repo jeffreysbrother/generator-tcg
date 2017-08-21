@@ -55,8 +55,11 @@ When the command "yo tcg" is executed, the user must answer three questions. Her
 * **What section are you working on?**  report-review
 * **Which directory do you wish to copy?**  ga-33
 * **How many variations would you like?**  1
+* **Please enter a short branch description:**  nav
 
 The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-02` (since in the above example, `jc-02` immediately follows `jc-01`, numerically). TCG's current naming convention is enforced: user's initials (two letters), a hyphen, and 2-3 numbers. The numeric portion of the name will have left padding when the value is less than 10 (`jc-01` rather than `jc-1`).
+
+The generator will then checkout a new branch `ga_report-review_nav`, stage all changes, commit them, and push (setting the upstream to the newly-created branch).
 
 ## Existing Features:
 
@@ -65,12 +68,13 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
 * User input validation.
 * Maximum number of variations is set to 10 (in order to prevent a huge number of files being created inadvertently).
+* Handle necessary Git commands to push a new branch to the remote.
 
 ## Future Features:
 
 - [x] Give user the ability to copy multiple directories.
 - [x] Find a way to eliminate `setTimeout()`.
 - [x] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask the user "How many variations?" instead of expecting them to type the variation names manually. Adam also suggested that we retrieve the developer initials from the config file.
-- [] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--no-git").
+- [x] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--no-git").
 - [] Write to each file, adding a comment denoting which variation was copied.
 - [] Determine the difference between the validate and filter functions.
