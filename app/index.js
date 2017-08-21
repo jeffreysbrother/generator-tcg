@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const path = require('path');
 const osenv = require('osenv');
 const simpleGit = require('simple-git');
+const shell = require('shelljs');
 
 const cwd = process.cwd();
 const user = osenv.user();
@@ -78,8 +79,15 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'blurb',
       message: 'Please enter a short branch description:',
-			filter: value => {
-				return value.toLowerCase().replace(/\s/g,'');
+			validate: value => {
+				let trimmed = value.toLowerCase().replace(/\s/g,'');
+				if (shell.exec(`git ls-remote --heads origin ${devInitials}_${section}_${trimmed}`).code !== 0) {
+					console.log(chalk.yellow(' Remote branch already exists.'));
+					return false;
+					process.exit();
+				} else {
+					return true;
+				}
 			}
     }];
 
