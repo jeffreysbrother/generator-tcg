@@ -184,11 +184,11 @@ module.exports = class extends Generator {
 		try {
 			simpleGit()
 				.checkoutBranch(newBranch, 'master', (err, result) => {
-					console.log(chalk.yellow(`Switched to new branch ${newBranch}...`));
+					console.log(chalk.yellow(`Switched to new branch ${newBranch}`));
 				})
 				.add('./*')
 				.commit(`copied ${originalDir}`, (err, result) => {
-					console.log(chalk.yellow('Changes staged and committed...'));
+					console.log(chalk.yellow('Changes staged and committed'));
 				})
 				.push(['-u', 'origin', `${newBranch}`], (err, result) => {
 					console.log(chalk.yellow('Pushed!'));
