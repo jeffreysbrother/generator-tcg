@@ -81,10 +81,13 @@ module.exports = class extends Generator {
       message: 'Please enter a short branch description:',
 			validate: value => {
 				let trimmed = value.toLowerCase().replace(/\s/g,'');
-				if (shell.exec(`git ls-remote --heads origin ${devInitials}_${section}_${trimmed}`).code !== 0) {
-					console.log(chalk.yellow(' Remote branch already exists.'));
+				if (!shell.exec(`git rev-parse --verify ${devInitials}_${section}_${trimmed}`)) {
+					console.log(chalk.yellow(' Local branch already exists.'));
 					return false;
-					process.exit();
+				// if (shell.exec(`git ls-remote --heads origin ${devInitials}_${section}_${trimmed}`).code !== 0) {
+				// 	console.log(chalk.yellow(' Remote branch already exists.'));
+				// 	return false;
+				// 	process.exit();
 				} else {
 					return true;
 				}
@@ -187,7 +190,7 @@ module.exports = class extends Generator {
 		}
 	}
 
-	git() {
+	end() {
 		let newBranch = `${devInitials}_${section}_${blurb}`;
 		try {
 			simpleGit()
