@@ -63,6 +63,7 @@ The generator will then checkout a new branch `jc_report-review_nav`, stage all 
 
 ## Existing Features:
 
+* Running the generator will immediately checkout the "master" branch and perform a "git pull", to ensure that all subsequent actions are performed on the most up-to-date code.
 * The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to whatever files already exist in the target directory (suffixes are incremented numerically).
 * Developer initials are retrieved from `funnel/config.json`. This is used to rename the duplicated files and folders.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).

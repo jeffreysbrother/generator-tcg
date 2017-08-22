@@ -27,6 +27,13 @@ let newBranch;
 
 module.exports = class extends Generator {
 
+	initializing() {
+		simpleGit()
+			.checkout('master')
+			.pull('origin', 'master');
+		return true;
+	}
+
   prompting() {
     const prompts = [{
       type: 'input',
