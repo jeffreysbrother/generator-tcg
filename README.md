@@ -57,9 +57,9 @@ When the command "yo tcg" is executed, the user must answer three questions. Her
 * **How many variations would you like?**  1
 * **Please enter a short branch description:**  nav
 
-The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-02` (since in the above example, `jc-02` immediately follows `jc-01`, numerically). TCG's current naming convention is enforced: user's initials (two letters), a hyphen, and 2-3 numbers. The numeric portion of the name will have left padding when the value is less than 10 (`jc-01` rather than `jc-1`).
+The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-02` (since *my* config file sets developer to "jc", and since in the above example, `jc-02` immediately follows `jc-01`, numerically). TCG's current naming convention is enforced: user's initials (two letters), a hyphen, and 2-3 numbers. The numeric portion of the name will have left padding when the value is less than 10 (`jc-01` rather than `jc-1`).
 
-The generator will then checkout a new branch `ga_report-review_nav`, stage all changes, commit them, and push (setting the upstream to the newly-created branch).
+The generator will then checkout a new branch `jc_report-review_nav`, stage all changes, commit them, and push (setting the upstream to the newly-created branch).
 
 ## Existing Features:
 
