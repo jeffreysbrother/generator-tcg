@@ -23,7 +23,6 @@ let pathsToNewVariations = [];
 let pathToNewDev;
 let existingDirs = [];
 let newSuffixes = [];
-let doGitStuff;
 let blurb;
 
 module.exports = class extends Generator {
