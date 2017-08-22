@@ -32,6 +32,9 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'section',
       message: 'What section are you working on?',
+			filter: value => {
+				return value.toLowerCase().replace(/\s/g,'');
+			},
       validate: value => {
         if (fse.existsSync(`${pathToSection}/${value}`)) {
           return true;
@@ -44,6 +47,9 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'originalDir',
       message: 'Which directory do you wish to copy?',
+			filter: value => {
+				return value.toLowerCase().replace(/\s/g,'');
+			},
       validate: value => {
         // ensure user input is two letters, a hyphen, and 2-3 digits
         if (value.match(restrictUserInputPattern)) {
@@ -57,6 +63,9 @@ module.exports = class extends Generator {
       type: 'number',
       name: 'howMany',
       message: 'How many variations would you like?',
+			filter: value => {
+				return value.toLowerCase().replace(/\s/g,'');
+			},
 			validate: value => {
 				if (!isNaN(parseFloat(value)) && isFinite(value) && value % 1 === 0) {
 					if (parseFloat(value) === 0) {

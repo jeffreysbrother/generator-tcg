@@ -31,7 +31,7 @@
     "fs-extra",
     "shelljs",
     "simple-git",
-    "yeoman-generator",
+    "yo",
     "James Cool"
   ],
   "dependencies": {
