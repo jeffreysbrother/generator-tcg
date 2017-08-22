@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const path = require('path');
 const osenv = require('osenv');
 const simpleGit = require('simple-git');
+const shell = require('shelljs');
 
 const cwd = process.cwd();
 const user = osenv.user();
@@ -24,6 +25,7 @@ let pathToNewDev;
 let existingDirs = [];
 let newSuffixes = [];
 let blurb;
+let newBranch;
 
 module.exports = class extends Generator {
 
@@ -131,6 +133,18 @@ module.exports = class extends Generator {
 				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
 			}
 		});
+
+		newBranch = `${devInitials}_${section}_${blurb}`;
+	}
+
+	checkBranch() {
+		// this checks if the branch already exists locally
+		if (shell.exec(`git rev-parse --verify --quiet \'${newBranch}\'`, {silent:true}).length > 0) {
+			console.log(chalk.yellow(`ERROR: local branch already exists. Terminating process.`));
+			process.exit();
+		} else {
+			return true;
+		}
 	}
 
   copy() {
@@ -179,7 +193,6 @@ module.exports = class extends Generator {
 	}
 
 	git() {
-		let newBranch = `${devInitials}_${section}_${blurb}`;
 		try {
 			simpleGit()
 				.checkoutBranch(newBranch, 'master', (err, result) => {
