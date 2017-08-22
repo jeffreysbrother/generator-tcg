@@ -27,12 +27,16 @@
     "copy",
     "file names",
     "duplicate",
+		"chalk",
+		"fs-extra",
+		"shelljs",
+		"simple-git",
+		"yeoman-generator",
     "James Cool"
   ],
   "dependencies": {
     "chalk": "^2.1.0",
     "fs-extra": "^4.0.1",
-    "osenv": "^0.1.4",
     "shelljs": "^0.7.8",
     "simple-git": "^1.75.0",
     "yeoman-generator": "^1.1.1"

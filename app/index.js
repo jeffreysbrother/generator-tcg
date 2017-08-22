@@ -3,12 +3,10 @@ const Generator = require('yeoman-generator');
 const fse = require('fs-extra');
 const chalk = require('chalk');
 const path = require('path');
-const osenv = require('osenv');
 const simpleGit = require('simple-git');
 const shell = require('shelljs');
 
 const cwd = process.cwd();
-const user = osenv.user();
 const ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig;
 const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
