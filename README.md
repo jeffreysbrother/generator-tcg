@@ -78,4 +78,6 @@ The generator will then checkout a new branch `jc_report-review_nav`, stage all 
 - [x] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask the user "How many variations?" instead of expecting them to type the variation names manually. Adam also suggested that we retrieve the developer initials from the config file.
 - [x] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--no-git").
 - [x] Add the ability to check if REMOTE branch exists before doing anything.
-- [ ] Write to each file, adding a comment denoting which variation was copied.
+- [ ] Autocomplete upon hitting tab during the first two prompts.
+- [ ] Retrieve default variation automatically. Maybe ask "Copy default variation?" which defaults to "yes" (so we have the option to select another, if necessary).
+- [ ] Add a comment to the PHP file denoting which variation was copied.
