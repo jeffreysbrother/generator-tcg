@@ -1,6 +1,6 @@
 {
   "name": "generator-tcg",
-  "version": "1.5.3",
+  "version": "2.0.0",
   "description": "rename stuff!",
   "license": "BSD-2-Clause",
   "repository": "jeffreysbrother/generator-tcg",
@@ -32,14 +32,15 @@
     "shelljs",
     "simple-git",
     "yo",
+		"yeoman",
     "James Cool",
 		"jeffreysbrother"
   ],
   "dependencies": {
     "chalk": "^2.1.0",
-    "fs-extra": "^4.0.1",
+    "fs-extra": "^4.0.2",
     "shelljs": "^0.7.8",
     "simple-git": "^1.77.0",
-    "yeoman-generator": "^1.1.1"
+    "yeoman-generator": "^2.0.0"
   }
 }
