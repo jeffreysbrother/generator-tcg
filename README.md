@@ -63,7 +63,7 @@ The generator will then checkout a new branch `jc_report-review_nav`, stage all 
 
 ## Existing Features:
 
-* Running the generator will immediately checkout the "master" branch and perform a "git pull", to ensure that all subsequent actions are performed on the most up-to-date code. However, you can override this default functionality by adding the flag `--skip-git`. This might be necessary if you decide to add an additional variation copied from a directory that only exists in the current feature branch. Keep in mind that this flag *all* Git actions.
+* Running the generator will immediately checkout the "master" branch and perform a "git pull", to ensure that all subsequent actions are performed on the most up-to-date code. However, you can override this default functionality by adding the flag `--skip-git`. This might be necessary if you decide to add an additional variation copied from a directory that only exists in the current feature branch. Keep in mind that this flag disables *all* Git actions.
 * The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to whatever files already exist in the target directory (suffixes are incremented numerically).
 * Developer initials are retrieved from `funnel/config.json`. This is used to rename the duplicated files and folders.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
