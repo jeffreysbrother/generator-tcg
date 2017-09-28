@@ -211,6 +211,21 @@ module.exports = class extends Generator {
 		});
   }
 
+	addComments() {
+		pathsToNewVariations.forEach(variation => {
+			fse.readdir(variation, (err, files) => {
+	      // skip hidden files
+	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
+	      files.forEach(file => {
+	        let fullPath = `${variation}/${file}`;
+					if (path.extname(fullPath) == '.less') {
+						fse.appendFileSync(fullPath, `// copy of ${originalDir}`);
+					}
+	      });
+	    });
+		});
+	}
+
 	message() {
 		let items = [];
 		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
