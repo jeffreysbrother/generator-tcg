@@ -27,11 +27,22 @@ let newBranch;
 
 module.exports = class extends Generator {
 
+	constructor(args, opts) {
+    super(args, opts);
+
+    this.option('skip-git', {
+      desc: 'Skips some Git stuff',
+      type: Boolean
+    });
+  }
+
 	initializing() {
-		simpleGit()
+		if (!this.options['skip-git']) {
+			simpleGit()
 			.checkout('master')
 			.pull('origin', 'master');
-		return true;
+			return true;
+		}
 	}
 
   prompting() {
@@ -211,20 +222,22 @@ module.exports = class extends Generator {
 	}
 
 	git() {
-		try {
-			simpleGit()
-				.checkoutBranch(newBranch, 'master', (err, result) => {
-					console.log(chalk.yellow(`Switched to new branch ${newBranch}`));
-				})
-				.add('./*')
-				.commit(`copied ${originalDir}`, (err, result) => {
-					console.log(chalk.yellow('Changes staged and committed'));
-				})
-				.push(['-u', 'origin', `${newBranch}`], (err, result) => {
-					console.log(chalk.yellow('Pushed!'));
-				});
-		} catch (err) {
-			console.error(err);
+		if (!this.options['skip-git']) {
+			try {
+				simpleGit()
+					.checkoutBranch(newBranch, 'master', (err, result) => {
+						console.log(chalk.yellow(`Switched to new branch ${newBranch}`));
+					})
+					.add('./*')
+					.commit(`copied ${originalDir}`, (err, result) => {
+						console.log(chalk.yellow('Changes staged and committed'));
+					})
+					.push(['-u', 'origin', `${newBranch}`], (err, result) => {
+						console.log(chalk.yellow('Pushed!'));
+					});
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	}
 
