@@ -1,6 +1,6 @@
 {
   "name": "generator-tcg",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "rename stuff!",
   "license": "BSD-2-Clause",
   "repository": "jeffreysbrother/generator-tcg",
@@ -32,7 +32,8 @@
     "shelljs",
     "simple-git",
     "yo",
-    "James Cool"
+    "James Cool",
+		"jeffreysbrother"
   ],
   "dependencies": {
     "chalk": "^2.1.0",
