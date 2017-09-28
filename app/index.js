@@ -212,6 +212,9 @@ module.exports = class extends Generator {
   }
 
 	addComments() {
+		// this successfully adds a comment to the end of duplicated Less files
+		// but...if the variation is taken as the new default, successive variations will have multiple comments appended
+		// is that bad?
 		pathsToNewVariations.forEach(variation => {
 			fse.readdir(variation, (err, files) => {
 	      // skip hidden files
