@@ -63,7 +63,7 @@ The generator will then checkout a new branch `jc_report-review_nav`, stage all 
 
 ## Existing Features:
 
-* Running the generator will immediately checkout the "master" branch and perform a "git pull", to ensure that all subsequent actions are performed on the most up-to-date code. However, you can override this default functionality by adding the flag `--skip-git`. This might be necessary if you decide to add an additional variation copied from a directory that only exists in the current feature branch. Keep in mind that this flag disables *all* Git actions.
+* Running the generator will immediately checkout the "master" branch and perform a "git pull", to ensure that all subsequent actions are performed on the most up-to-date code. A new branch will be created, staged, committed, and pushed. However, you can override this default functionality by adding the flag `--skip-git`. This might be necessary if you decide to add an additional variation copied from a directory that only exists in the current feature branch. Keep in mind that this flag disables *all* Git actions.
 * The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to whatever files already exist in the target directory (suffixes are incremented numerically).
 * Developer initials are retrieved from `funnel/config.json`. This is used to rename the duplicated files and folders.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
@@ -76,7 +76,7 @@ The generator will then checkout a new branch `jc_report-review_nav`, stage all 
 - [x] Give user the ability to copy multiple directories.
 - [x] Find a way to eliminate `setTimeout()`.
 - [x] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask the user "How many variations?" instead of expecting them to type the variation names manually. Adam also suggested that we retrieve the developer initials from the config file.
-- [x] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--no-git").
+- [x] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--skip-git").
 - [x] Add the ability to check if REMOTE branch exists before doing anything.
 - [x] Add the ability to override the default functionality of checking out the master branch. The user might want to duplicate a directory that only exists in the current feature branch (for example, if he suddenly decides to create an additional variation).
 - [ ] Allow user to prepare for a route-group test; this requires the ability to duplicate *multiple* directories (within different sections).
