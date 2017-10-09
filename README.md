@@ -1,5 +1,7 @@
 # Generator-TCG
 
+[![npm](https://img.shields.io/npm/dt/express.svg)](https://www.npmjs.com/package/generator-tcg)
+
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed according to a pre-established convention. The new files will then serve as a variation against which the control will be tested.
 
 This tool assumes that the user will navigate to the `funnel/` directory before running any commands. Another assumption is that a `config.json` file exists in the `funnel/` directory. The purpose of this file is to specify the developer's initials; it should look something like this:
