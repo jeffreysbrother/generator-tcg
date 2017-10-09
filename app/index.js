@@ -178,7 +178,6 @@ module.exports = class extends Generator {
 
   copy() {
 		pathsToNewVariations.forEach(variation => {
-			let newFileName = path.basename(variation);
 			if (!fse.existsSync(pathToOriginalDir)) {
 	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
 	      process.exit();
