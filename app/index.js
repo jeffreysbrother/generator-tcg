@@ -24,6 +24,7 @@ let existingDirs = [];
 let newSuffixes = [];
 let blurb;
 let newBranch;
+let lastSuffix;
 
 module.exports = class extends Generator {
 
@@ -136,10 +137,10 @@ module.exports = class extends Generator {
 		let lastDir = existingDirs[existingDirs.length - 1];
 
 		// get last suffix from array of existing dirs
-		if (existingDirs.length == 0) {
-			var lastSuffix = "0";
+		if (existingDirs.length === 0) {
+			lastSuffix = "0";
 		} else {
-			var lastSuffix = lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
+			lastSuffix = lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
 		}
 
 		// create array of numerically next suffixes
@@ -152,7 +153,7 @@ module.exports = class extends Generator {
 
 		// populate array of paths to new variations, adding padding if suffix is one digit
 		suffixesStringy.forEach(suffix => {
-			if (suffix.length == 1) {
+			if (suffix.length === 1) {
 				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
 			} else {
 				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
