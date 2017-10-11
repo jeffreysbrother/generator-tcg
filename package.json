@@ -42,5 +42,8 @@
     "shelljs": "^0.7.8",
     "simple-git": "^1.77.0",
     "yeoman-generator": "^2.0.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.8.0"
   }
 }
