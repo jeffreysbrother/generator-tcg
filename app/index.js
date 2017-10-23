@@ -242,9 +242,9 @@ module.exports = class extends Generator {
 	}
 
 	newTab() {
-		shell.exec(`
-		osascript -e 'tell application "iTerm"' -e 'set myterm to current tab of current window' -e 'tell current window' -e 'create tab with default profile' -e 'end tell' -e 'select myterm' -e 'end tell'
-		`);
+		// this runs an appleScript from the terminal
+		shell.exec(`osascript -e 'tell application "iTerm"' -e 'set myterm to current tab of current window' -e 'tell current window' -e 'create tab with default profile' -e 'end tell' -e 'select myterm' -e 'end tell'`);
+		// run gulp in the newly-created tab so that other git commands can be executed from the original tab
 		shell.exec('gulp');
 	}
 
