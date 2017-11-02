@@ -102,6 +102,8 @@ module.exports = class extends Generator {
 				}
 			}
     },{
+			// show this prompt only if user doesn't add the --skip-git flag
+			when: !this.options['skip-git'],
       type: 'input',
       name: 'blurb',
       message: 'Please enter a short branch description:',
