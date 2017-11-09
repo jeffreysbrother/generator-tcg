@@ -42,7 +42,6 @@ module.exports = class extends Generator {
 			simpleGit()
 			.checkout('master')
 			.pull('origin', 'master');
-			return true;
 		}
 	}
 
@@ -174,8 +173,6 @@ module.exports = class extends Generator {
 		} else if (shell.exec(`git ls-remote --heads origin \'${newBranch}\'`, {silent:true}).length > 0) {
 			console.log(chalk.yellow(`ERROR: remote branch already exists. Terminating process.`));
 			process.exit();
-		} else {
-			return true;
 		}
 	}
 
