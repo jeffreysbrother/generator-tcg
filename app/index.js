@@ -54,7 +54,9 @@ module.exports = class extends Generator {
 				return value.toLowerCase().replace(/\s/g,'');
 			},
       validate: value => {
-        if (fse.existsSync(`${pathToSection}/${value}`)) {
+				if (value === '' || !value.replace(/\s/g, '').length) {
+					console.log(chalk.yellow(' Please enter a valid name.'));
+				} else if (fse.existsSync(`${pathToSection}/${value}`)) {
           return true;
         } else {
           console.log(chalk.yellow(" Section doesn't exist!"));
@@ -108,6 +110,13 @@ module.exports = class extends Generator {
       message: 'Please enter a short branch description:',
 			filter: value => {
 				return value.toLowerCase().replace(/\s/g,'');
+			},
+			validate: value => {
+				if (value === '' || value === 'undefined') {
+					console.log(chalk.yellow(' Invalid name!'));
+				} else {
+					return true;
+				}
 			}
     }];
 
@@ -165,14 +174,16 @@ module.exports = class extends Generator {
 	}
 
 	checkBranch() {
-		// check if the branch already exists locally
-		if (shell.exec(`git rev-parse --verify --quiet \'${newBranch}\'`, {silent:true}).length > 0) {
-			console.log(chalk.yellow(`ERROR: local branch already exists. Terminating process.`));
-			process.exit();
-		// check if the branch already exists remotely
-		} else if (shell.exec(`git ls-remote --heads origin \'${newBranch}\'`, {silent:true}).length > 0) {
-			console.log(chalk.yellow(`ERROR: remote branch already exists. Terminating process.`));
-			process.exit();
+		if (!this.options['skip-git']) {
+			// check if the branch already exists locally
+			if (shell.exec(`git rev-parse --verify --quiet \'${newBranch}\'`, {silent:true}).length > 0) {
+				console.log(chalk.yellow('ERROR: local branch already exists. Terminating process.'));
+				process.exit();
+			// check if the branch already exists remotely
+			} else if (shell.exec(`git ls-remote --heads origin \'${newBranch}\'`, {silent:true}).length > 0) {
+				console.log(chalk.yellow('ERROR: remote branch already exists. Terminating process.'));
+				process.exit();
+			}
 		}
 	}
 
