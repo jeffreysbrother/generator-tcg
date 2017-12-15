@@ -10,8 +10,14 @@ const cwd = process.cwd();
 const ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig;
 const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
-const pathToConfig = `${cwd}/config.json`;
-const devInitials = require(pathToConfig).developer;
+var pathToConfig ='';
+var devInitials = '';
+
+// check if config.json exists
+if (fse.existsSync(`${cwd}/config.json`)) {
+	pathToConfig = `${cwd}/config.json`;
+	devInitials = require(pathToConfig).developer.replace(/\s/g,'');
+}
 
 let section;
 let originalDir;
@@ -23,6 +29,7 @@ let pathToNewDev;
 let existingDirs = [];
 let newSuffixes = [];
 let blurb;
+let askForInitials;
 let newBranch;
 let lastSuffix;
 
@@ -118,13 +125,30 @@ module.exports = class extends Generator {
 					return true;
 				}
 			}
-    }];
+    }, {
+			// if config.json is missing or essential key/values are missing/empty
+			when: !fse.existsSync(`${cwd}/config.json`) || typeof devInitials === 'undefined' || devInitials === '',
+			type: 'input',
+			name: 'askForInitials',
+			message: 'config.json missing or misconfigured. Enter your initials.',
+			filter: value => {
+				return value.toLowerCase().replace(/\s/g,'');
+			},
+			validate: value => {
+				if (value === '' || value === 'undefined') {
+					console.log(chalk.yellow(' Invalid name!'));
+				} else {
+					return true;
+				}
+			}
+		}];
 
     return this.prompt(prompts).then(answers => {
       section = answers.section;
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
 			blurb = answers.blurb;
+			askForInitials = answers.askForInitials;
     });
   }
 
@@ -132,7 +156,12 @@ module.exports = class extends Generator {
 		originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
 
 		pathToOriginalDir = `${pathToSection}/${section}/${originalNamespace}/${originalDir}`;
-		pathToNewDev = `${pathToSection}/${section}/${devInitials}`;
+
+		if (askForInitials) {
+			pathToNewDev = `${pathToSection}/${section}/${askForInitials}`;
+		} else {
+			pathToNewDev = `${pathToSection}/${section}/${devInitials}`;
+		}
 
 		if (!fse.existsSync(pathToNewDev)) {
 			fse.mkdirSync(pathToNewDev);
@@ -164,13 +193,26 @@ module.exports = class extends Generator {
 		// populate array of paths to new variations, adding padding if suffix is one digit
 		suffixesStringy.forEach(suffix => {
 			if (suffix.length === 1) {
-				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
+				if (askForInitials) {
+					pathsToNewVariations.push(`${pathToNewDev}/${askForInitials}-0${suffix}`);
+				} else {
+					pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
+				}
 			} else {
-				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
+				if (askForInitials) {
+					pathsToNewVariations.push(`${pathToNewDev}/${askForInitials}-${suffix}`);
+				} else {
+					pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
+				}
 			}
 		});
 
-		newBranch = `${devInitials}_${section}_${blurb}`;
+		if (askForInitials) {
+			newBranch = `${askForInitials}_${section}_${blurb}`;
+		} else {
+			newBranch = `${devInitials}_${section}_${blurb}`;
+		}
+
 	}
 
 	checkBranch() {
