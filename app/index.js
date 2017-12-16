@@ -12,12 +12,7 @@ const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
 var pathToConfig ='';
 var devInitials = '';
-
-// check if config.json exists
-if (fse.existsSync(`${cwd}/config.json`)) {
-	pathToConfig = `${cwd}/config.json`;
-	devInitials = require(pathToConfig).developer.replace(/\s/g,'');
-}
+var obj;
 
 let section;
 let originalDir;
@@ -32,6 +27,21 @@ let blurb;
 let askForInitials;
 let newBranch;
 let lastSuffix;
+
+// first check if config.json exists
+if (fse.existsSync(`${cwd}/config.json`)) {
+	pathToConfig = `${cwd}/config.json`;
+
+	try {
+		// get contents of JSON, set devInitials if no error is thrown
+		obj = JSON.parse(fse.readFileSync(pathToConfig, 'utf8'));
+		devInitials = require(pathToConfig).developer.replace(/\s/g,'');
+	} catch(e) {
+		// if JSON is invalid
+		console.log(chalk.red('Your config.json is invalid. Please fix and try again.'));
+		process.exit();
+	}
+}
 
 module.exports = class extends Generator {
 
