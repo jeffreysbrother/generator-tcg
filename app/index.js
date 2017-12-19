@@ -10,11 +10,11 @@ const cwd = process.cwd();
 const ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig;
 const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
 const pathToSection = `${cwd}/source/sections`;
-var pathToConfig ='';
-var devInitials = '';
-var obj;
-let isGit = true;
 
+let isGit = true;
+let pathToConfig ='';
+let devInitials = '';
+let jsonContents;
 let section;
 let originalDir;
 let howMany;
@@ -39,7 +39,7 @@ if (fse.existsSync(`${cwd}/config.json`)) {
 
 	try {
 		// try to get contents of JSON
-		obj = JSON.parse(fse.readFileSync(pathToConfig, 'utf8'));
+		jsonContents = JSON.parse(fse.readFileSync(pathToConfig, 'utf8'));
 		try {
 			// try to set devInitials
 			devInitials = require(pathToConfig).developer.replace(/\s/g,'');
@@ -55,6 +55,7 @@ if (fse.existsSync(`${cwd}/config.json`)) {
 
 } else {
 	console.log(chalk.red('Your config.json is missing!!'));
+	process.exit();
 }
 
 module.exports = class extends Generator {
