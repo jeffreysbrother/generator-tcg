@@ -13,6 +13,7 @@ const pathToSection = `${cwd}/source/sections`;
 var pathToConfig ='';
 var devInitials = '';
 var obj;
+let isGit = true;
 
 let section;
 let originalDir;
@@ -28,7 +29,12 @@ let askForInitials;
 let newBranch;
 let lastSuffix;
 
-// first check if config.json exists
+// if no .git file is found (if not a Git repository)
+if (!fse.existsSync(`${cwd}/.git`)) {
+	isGit = false;
+}
+
+// check if config.json exists
 if (fse.existsSync(`${cwd}/config.json`)) {
 	pathToConfig = `${cwd}/config.json`;
 
@@ -55,7 +61,7 @@ module.exports = class extends Generator {
   }
 
 	initializing() {
-		if (!this.options['skip-git']) {
+		if (!this.options['skip-git'] && isGit === true) {
 			simpleGit()
 			.checkout('master')
 			.pull('origin', 'master');
@@ -121,7 +127,7 @@ module.exports = class extends Generator {
 			}
     },{
 			// show this prompt only if user doesn't add the --skip-git flag
-			when: !this.options['skip-git'],
+			when: !this.options['skip-git'] && isGit === true,
       type: 'input',
       name: 'blurb',
       message: 'Please enter a short branch description:',
@@ -226,7 +232,7 @@ module.exports = class extends Generator {
 	}
 
 	checkBranch() {
-		if (!this.options['skip-git']) {
+		if (!this.options['skip-git'] && isGit === true) {
 			// check if the branch already exists locally
 			if (shell.exec(`git rev-parse --verify --quiet \'${newBranch}\'`, {silent:true}).length > 0) {
 				console.log(chalk.yellow('ERROR: local branch already exists. Terminating process.'));
@@ -284,7 +290,7 @@ module.exports = class extends Generator {
 	}
 
 	git() {
-		if (!this.options['skip-git']) {
+		if (!this.options['skip-git'] && isGit === true) {
 			try {
 				simpleGit()
 					.checkoutBranch(newBranch, 'master', (err, result) => {
