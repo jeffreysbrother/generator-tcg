@@ -59,22 +59,19 @@ When the command `yo tcg` is executed, the user must answer three questions. Her
 
 The answers above will result in `ga/ga-33` (the folders and all files within) being duplicated and renamed to `jc/jc-02` (since *my* config file sets developer to "jc", and since in the above example, `jc-02` immediately follows `jc-01`, numerically). TCG's current naming convention is enforced: user's initials (two letters), a hyphen, and 2-3 numbers. The numeric portion of the name will have left padding when the value is less than 10 (`jc-01` rather than `jc-1`).
 
-The generator will then checkout a new branch `jc_report-review_nav`, stage all changes, commit them, and push (setting the upstream to the newly-created branch).
-
-However, the last (4th) prompt and all Git commands will be skipped if one of the following is true: 1) the user includes the flag `--skip-git`, 2) the current working directory is not a Git repository.
+The generator will then checkout a new branch `jc_report-review_nav`, stage all changes, commit them, and push (setting the upstream to the newly-created branch). However, the last (4th) prompt and all Git commands will be skipped if one of the following is true: 1) the user includes the flag `--skip-git`, 2) the current working directory is not a Git repository.
 
 ## Existing Features:
 
 * Running the generator will immediately checkout the "master" branch and perform a "git pull", to ensure that all subsequent actions are performed on the most up-to-date code. A new branch will be created, staged, committed, and pushed. However, as mentioned above, this can be prevented by adding the flag `--skip-git`. This might be necessary if you decide to add an additional variation copied from a directory that only exists in the current feature branch. Keep in mind that this flag disables *all* Git actions.
 * The default variation is cloned into the appropriate directory/sub-directory (which is created if it doesn't yet exist) and all files are renamed according to whatever files already exist in the target directory (suffixes are incremented numerically).
 * Developer initials are retrieved from `funnel/config.json`. This is used to rename the duplicated files and folders.
-* Handle case where `config.json` doesn't exist or when developer initials cannot be found.
-* Alert user if `config.json` is invalid
-* Prevent execution of Git commands if the current working directory is not a Git repo.
+* Alert user if `config.json` is missing, technically invalid, or misconfigured.
 * Hidden files are prevented from being copied and renamed (.DS_Store, for example).
 * User input validation.
 * Maximum number of variations is set to 10 (in order to prevent a huge number of files being created inadvertently).
 * Handle necessary Git commands to push a new branch to the remote, ensuring that the new branch doesn't already exist locally or remotely.
+* Prevent execution of these Git commands if the current working directory is not a Git repo.
 
 ## Future Features:
 
