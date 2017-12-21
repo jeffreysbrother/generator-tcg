@@ -1,5 +1,6 @@
 'use strict';
 const Generator = require('yeoman-generator');
+const fs = require('fs');
 const fse = require('fs-extra');
 const chalk = require('chalk');
 const path = require('path');
@@ -27,6 +28,13 @@ let newSuffixes = [];
 let blurb;
 let newBranch;
 let lastSuffix;
+
+// template paths
+let homeGA = 'funnel/source/sections/home/ga/ga-01';
+let homeBM = 'funnel/source/sections/home/bm/bm-01';
+let reportReviewGAone = 'funnel/source/sections/report-review/ga/ga-01';
+let reportReviewGAtwo = 'funnel/source/sections/report-review/ga/ga-02';
+let reportReviewJC = 'funnel/source/sections/report-review/jc/jc-01';
 
 // if no .git file is found (if not a Git repository)
 if (!fse.existsSync(`${cwd}/.git`)) {
@@ -158,6 +166,33 @@ module.exports = class extends Generator {
 			howMany = answers.howMany;
 			blurb = answers.blurb;
     });
+  }
+
+	generateDirs() {
+		shell.exec(`mkdir -p ${homeGA} ${homeBM} ${reportReviewGAone} ${reportReviewGAtwo} ${reportReviewJC}`)
+	}
+
+	copyTemplates() {
+    this.fs.copyTpl(
+      this.templatePath('ga-01'),
+      this.destinationPath(`${homeGA}`)
+    );
+		this.fs.copyTpl(
+      this.templatePath('bm-01'),
+      this.destinationPath(`${homeBM}`)
+    );
+		this.fs.copyTpl(
+      this.templatePath('ga-01'),
+      this.destinationPath(`${reportReviewGAone}`)
+    );
+		this.fs.copyTpl(
+      this.templatePath('ga-02'),
+      this.destinationPath(`${reportReviewGAtwo}`)
+    );
+		this.fs.copyTpl(
+      this.templatePath('jc-01'),
+      this.destinationPath(`${reportReviewJC}`)
+    );
   }
 
 	manipulation() {

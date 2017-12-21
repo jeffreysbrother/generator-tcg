@@ -17,16 +17,16 @@ funnel
 └── source
     └── sections
         ├── home
-        │   ├── ga
-        │   │   └── ga-01
-        │   │       ├── ga-01.js
-        │   │       ├── ga-01.less
-        │   │       └── ga-01.php
-        │   └── bm
-        │       └── bm-01
-        │           ├── bm-01.js
-        │           ├── bm-01.less
-        │           └── bm-01.php
+        │   ├── bm
+        │   │   └── bm-01
+        │   │       ├── bm-01.js
+        │   │       ├── bm-01.less
+        │   │       └── bm-01.php
+        │   └── ga
+        │       └── ga-01
+        │           ├── ga-01.js
+        │           ├── ga-01.less
+        │           └── ga-01.php
         └── report-review
             ├── ga
             │   ├── ga-01
