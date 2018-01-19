@@ -1,6 +1,7 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const fse = require('fs-extra');
+const fs = require('extfs');
 const chalk = require('chalk');
 const path = require('path');
 const simpleGit = require('simple-git');
@@ -27,15 +28,23 @@ let newSuffixes = [];
 let blurb;
 let newBranch;
 let lastSuffix;
+let emptyFile;
 
 // if no .git file is found (if not a Git repository)
 if (!fse.existsSync(`${cwd}/.git`)) {
 	isGit = false;
 }
 
+emptyFile = fs.isEmptySync(`${cwd}/config.json`);
+
 // check if config.json exists
 if (fse.existsSync(`${cwd}/config.json`)) {
 	pathToConfig = `${cwd}/config.json`;
+
+  if (emptyFile === true) {
+    console.log(chalk.red('Your config.json is empty!! Please see README for details.'));
+    process.exit();
+  }
 
 	try {
 		// try to get contents of JSON
