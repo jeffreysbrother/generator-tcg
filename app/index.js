@@ -29,6 +29,9 @@ let blurb;
 let newBranch;
 let lastSuffix;
 let emptyFile;
+let missing;
+let inputJSONinitials;
+let configMissing = false;
 
 // if no .git file is found (if not a Git repository)
 if (!fse.existsSync(`${cwd}/.git`)) {
@@ -64,7 +67,8 @@ if (fse.existsSync(`${cwd}/config.json`)) {
 
 } else {
 	console.log(chalk.red('Your config.json is missing!!'));
-	process.exit();
+	configMissing = true;
+	// process.exit();
 }
 
 module.exports = class extends Generator {
@@ -88,6 +92,26 @@ module.exports = class extends Generator {
 
   prompting() {
     const prompts = [{
+			when: configMissing === true,
+      type: 'confirm',
+      name: 'missing',
+      message: 'Create config.json?'
+    },{
+			when: answers => answers.missing,
+      type: 'input',
+      name: 'inputJSONinitials',
+      message: 'what are your initials?',
+			filter: value => {
+				return value.toLowerCase().replace(/\s/g,'');
+			},
+			validate: value => {
+				if (value.length === 2) {
+					return true;
+				} else {
+					console.log(chalk.yellow(' Please enter exactly two alphabetical characters.'));
+				}
+			}
+    },{
       type: 'input',
       name: 'section',
       message: 'What section are you working on?',
@@ -166,14 +190,30 @@ module.exports = class extends Generator {
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
 			blurb = answers.blurb;
+			missing = answers.missing;
+			inputJSONinitials = answers.inputJSONinitials;
     });
   }
 
+	createJSON() {
+		if (inputJSONinitials) {
+			let fileContent = `{\n\t"developer": "${inputJSONinitials}"\n}`;
+			let filePath = `${cwd}/config.json`;
+			fs.writeFile(filePath, fileContent, err => {
+				if (err) throw err;
+				console.log('file created!');
+			});
+		}
+	}
+
 	manipulation() {
 		originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
-
 		pathToOriginalDir = `${pathToSection}/${section}/${originalNamespace}/${originalDir}`;
 		pathToNewDev = `${pathToSection}/${section}/${devInitials}`;
+
+		if (inputJSONinitials) {
+			pathToNewDev = `${pathToSection}/${section}/${inputJSONinitials}`;
+		}
 
 		if (!fse.existsSync(pathToNewDev)) {
 			fse.mkdirSync(pathToNewDev);
@@ -188,11 +228,7 @@ module.exports = class extends Generator {
 		let lastDir = existingDirs[existingDirs.length - 1];
 
 		// get last suffix from array of existing dirs
-		if (existingDirs.length === 0) {
-			lastSuffix = "0";
-		} else {
-			lastSuffix = lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
-		}
+		lastSuffix = existingDirs.length === 0 ? "0" : lastDir.substring(lastDir.indexOf('-') + 1, lastDir.length);
 
 		// create array of numerically next suffixes
 		for (let i = 1; i <= howMany; i++) {
@@ -203,15 +239,30 @@ module.exports = class extends Generator {
 		let suffixesStringy = newSuffixes.map(String);
 
 		// populate array of paths to new variations, adding padding if suffix is one digit
-		suffixesStringy.forEach(suffix => {
-			if (suffix.length === 1) {
-				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
-			} else {
-				pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
-			}
-		});
+		if (devInitials) {
+			suffixesStringy.forEach(suffix => {
+				if (suffix.length === 1) {
+					pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
+				} else {
+					pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
+				}
+			});
 
-		newBranch = `${devInitials}_${section}_${blurb}`;
+			newBranch = `${devInitials}_${section}_${blurb}`;
+		}
+
+		if (inputJSONinitials) {
+			suffixesStringy.forEach(suffix => {
+				if (suffix.length === 1) {
+					pathsToNewVariations.push(`${pathToNewDev}/${inputJSONinitials}-0${suffix}`);
+				} else {
+					pathsToNewVariations.push(`${pathToNewDev}/${inputJSONinitials}-${suffix}`);
+				}
+			});
+
+			newBranch = `${inputJSONinitials}_${section}_${blurb}`;
+		}
+
 
 	}
 
@@ -250,9 +301,9 @@ module.exports = class extends Generator {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
-	        let fullPath = `${variation}/${file}`;
-					let newPart = path.basename(path.dirname(fullPath));
-					let oldPart = file.substring(0, file.indexOf('.'));
+	        let fullPath = `${variation}/${file}`,
+						newPart = path.basename(path.dirname(fullPath)),
+						oldPart = file.substring(0, file.indexOf('.'));
 					fse.rename(fullPath, fullPath.replace(oldPart, newPart)), err => {
 						if (err) {
 							throw err;
