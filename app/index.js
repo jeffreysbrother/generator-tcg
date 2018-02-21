@@ -29,7 +29,7 @@ let blurb;
 let newBranch;
 let lastSuffix;
 let emptyFile;
-let missing;
+let createConfig;
 let inputJSONinitials;
 let configMissing = false;
 
@@ -94,13 +94,13 @@ module.exports = class extends Generator {
     const prompts = [{
 			when: configMissing === true,
       type: 'confirm',
-      name: 'missing',
+      name: 'createConfig',
       message: 'Create config.json?'
     },{
-			when: answers => answers.missing,
+			when: answers => answers.createConfig,
       type: 'input',
       name: 'inputJSONinitials',
-      message: 'what are your initials?',
+      message: 'What are your initials?',
 			filter: value => {
 				return value.toLowerCase().replace(/\s/g,'');
 			},
@@ -112,6 +112,7 @@ module.exports = class extends Generator {
 				}
 			}
     },{
+			when: answers => answers.createConfig,
       type: 'input',
       name: 'section',
       message: 'What section are you working on?',
@@ -129,6 +130,7 @@ module.exports = class extends Generator {
         }
       }
     },{
+			when: answers => answers.createConfig,
       type: 'input',
       name: 'originalDir',
       message: 'Which directory do you wish to copy?',
@@ -145,6 +147,7 @@ module.exports = class extends Generator {
         }
       }
     },{
+			when: answers => answers.createConfig,
       type: 'number',
       name: 'howMany',
       message: 'How many variations would you like?',
@@ -169,7 +172,7 @@ module.exports = class extends Generator {
 			}
     },{
 			// show this prompt only if user doesn't add the --skip-git flag
-			when: !this.options['skip-git'] && isGit === true,
+			when: !this.options['skip-git'] && isGit === true && (answers => answers.createConfig),
       type: 'input',
       name: 'blurb',
       message: 'Please enter a short branch description:',
@@ -190,10 +193,17 @@ module.exports = class extends Generator {
       originalDir = answers.originalDir;
 			howMany = answers.howMany;
 			blurb = answers.blurb;
-			missing = answers.missing;
+			createConfig = answers.createConfig;
 			inputJSONinitials = answers.inputJSONinitials;
     });
   }
+
+	abandon() {
+		if (createConfig === false) {
+			console.log(chalk.yellow('Please create your config.json file and try again.'));
+			process.exit();
+		}
+	}
 
 	createJSON() {
 		if (inputJSONinitials) {
