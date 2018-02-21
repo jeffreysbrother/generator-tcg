@@ -68,7 +68,6 @@ if (fse.existsSync(`${cwd}/config.json`)) {
 } else {
 	console.log(chalk.red('Your config.json is missing!!'));
 	configMissing = true;
-	// process.exit();
 }
 
 module.exports = class extends Generator {
@@ -92,7 +91,7 @@ module.exports = class extends Generator {
 
   prompting() {
     const prompts = [{
-			when: configMissing === true,
+			when: configMissing,
       type: 'confirm',
       name: 'createConfig',
       message: 'Create config.json?'
@@ -112,7 +111,7 @@ module.exports = class extends Generator {
 				}
 			}
     },{
-			when: answers => answers.createConfig,
+			when: answers => answers.createConfig || !configMissing,
       type: 'input',
       name: 'section',
       message: 'What section are you working on?',
@@ -130,7 +129,7 @@ module.exports = class extends Generator {
         }
       }
     },{
-			when: answers => answers.createConfig,
+			when: answers => answers.createConfig || !configMissing,
       type: 'input',
       name: 'originalDir',
       message: 'Which directory do you wish to copy?',
@@ -147,7 +146,7 @@ module.exports = class extends Generator {
         }
       }
     },{
-			when: answers => answers.createConfig,
+			when: answers => answers.createConfig || !configMissing,
       type: 'number',
       name: 'howMany',
       message: 'How many variations would you like?',
@@ -172,7 +171,7 @@ module.exports = class extends Generator {
 			}
     },{
 			// show this prompt only if user doesn't add the --skip-git flag
-			when: !this.options['skip-git'] && isGit === true && (answers => answers.createConfig),
+			when: !this.options['skip-git'] && isGit === true && !configMissing || (answers => answers.createConfig),
       type: 'input',
       name: 'blurb',
       message: 'Please enter a short branch description:',
@@ -200,7 +199,7 @@ module.exports = class extends Generator {
 
 	abandon() {
 		if (createConfig === false) {
-			console.log(chalk.yellow('Please create your config.json file and try again.'));
+			console.log(chalk.yellow('Please create your config.json file and try again. Aborting'));
 			process.exit();
 		}
 	}
@@ -211,7 +210,7 @@ module.exports = class extends Generator {
 			let filePath = `${cwd}/config.json`;
 			fs.writeFile(filePath, fileContent, err => {
 				if (err) throw err;
-				console.log('file created!');
+				console.log(chalk.yellow('file created!'));
 			});
 		}
 	}
