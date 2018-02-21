@@ -29,7 +29,7 @@ let blurb;
 let newBranch;
 let lastSuffix;
 let emptyFile;
-let createConfig;
+let createConfig = '';
 let inputJSONinitials;
 let configMissing = false;
 
@@ -170,8 +170,7 @@ module.exports = class extends Generator {
 				}
 			}
     },{
-			// show this prompt only if user doesn't add the --skip-git flag
-			when: !this.options['skip-git'] && isGit === true && !configMissing || (answers => answers.createConfig),
+			when: !this.options['skip-git'] && isGit === true && (answers => answers.createConfig || !configMissing),
       type: 'input',
       name: 'blurb',
       message: 'Please enter a short branch description:',
@@ -210,7 +209,7 @@ module.exports = class extends Generator {
 			let filePath = `${cwd}/config.json`;
 			fs.writeFile(filePath, fileContent, err => {
 				if (err) throw err;
-				console.log(chalk.yellow('file created!'));
+				console.log(chalk.yellow('config.json created!'));
 			});
 		}
 	}
