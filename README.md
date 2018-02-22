@@ -61,7 +61,7 @@ The answers above will result in `ga/ga-33` (the folders and all files within) b
 
 The generator will then checkout a new branch `jc_report-review_nav`, stage all changes, commit them, and push (setting the upstream to the newly-created branch). However, the last (4th) prompt and all Git commands will be skipped if one of the following is true: 1) the user includes the flag `--skip-git`, 2) the current working directory is not a Git repository.
 
-Two additional prompts will appear if the user has a missing `config.json` file, and decides to create and configure it:
+Two additional prompts will appear if the user has a missing `config.json` file and decides to create and configure it:
 
 * **Create config.json?** Yes
 * **What are your initials?** jc
@@ -77,6 +77,7 @@ Two additional prompts will appear if the user has a missing `config.json` file,
 * Maximum number of variations is set to 10 (in order to prevent a huge number of files being created inadvertently).
 * Handle necessary Git commands to push a new branch to the remote, ensuring that the new branch doesn't already exist locally or remotely.
 * Prevent execution of these Git commands if the current working directory is not a Git repo.
+* Append comment to the end of the PHP file, e.g. `<!-- copied from ga-33 -->`. This can be prevented by adding the flag `--skip-comments`.
 
 ## Future Features:
 
@@ -86,8 +87,8 @@ Two additional prompts will appear if the user has a missing `config.json` file,
 - [x] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--skip-git").
 - [x] Add the ability to check if REMOTE branch exists before doing anything.
 - [x] Add the ability to override the default functionality of checking out the master branch. The user might want to duplicate a directory that only exists in the current feature branch (for example, if he suddenly decides to create an additional variation).
+- [x] Add a comment to the PHP file denoting which variation was copied.
 - [ ] Allow user to prepare for a route-group test; this requires the ability to duplicate *multiple* directories (within different sections).
 - [ ] Autocomplete upon hitting tab during the first two prompts.
 - [ ] Retrieve default variation automatically. Maybe ask "Copy default variation?" which defaults to "yes" (so we have the option to select another, if necessary).
 - [ ] Populate `config.json` as needed if it is empty.
-- [ ] Add a comment to the PHP file denoting which variation was copied.

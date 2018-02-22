@@ -79,6 +79,11 @@ module.exports = class extends Generator {
       desc: 'Skips some Git stuff',
       type: Boolean
     });
+
+		this.option('skip-comments', {
+      desc: 'Skips the PHP comments',
+      type: Boolean
+    });
   }
 
 	initializing() {
@@ -329,6 +334,23 @@ module.exports = class extends Generator {
 			console.log(chalk.yellow(`${howMany} variations created: ${[...items]}.`));
 		} else {
 			console.log(chalk.yellow(`${howMany} variation created: ${items}.`));
+		}
+	}
+
+	insertPHPComment() {
+		if (!this.options['skip-comments']) {
+			pathsToNewVariations.forEach(variation => {
+				fse.readdir(variation, (err, files) => {
+					// skip hidden files
+					files = files.filter(item => !(ignoreHiddenFiles).test(item));
+					files.forEach(file => {
+						let newFile = `${variation}/${file}`;
+						if (path.extname(newFile) === '.php') {
+							fs.appendFileSync(newFile, `<!-- copied from ${originalDir} -->`);
+						}
+					});
+				});
+			});
 		}
 	}
 
