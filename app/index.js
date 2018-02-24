@@ -315,9 +315,8 @@ module.exports = class extends Generator {
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
 	        let fullPath = `${variation}/${file}`,
-						newPart = path.basename(path.dirname(fullPath)),
-						oldPart = file.substring(0, file.indexOf('.'));
-					fse.rename(fullPath, fullPath.replace(oldPart, newPart)), err => {
+						newPart = path.basename(path.dirname(fullPath));
+					fse.rename(fullPath, fullPath.replace(originalDir, newPart)), err => {
 						if (err) {
 							throw err;
 						}
