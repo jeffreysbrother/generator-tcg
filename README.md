@@ -44,6 +44,8 @@ funnel
                     └── jc-01.php
 ```
 
+Chances are, your project will not be structured in this way. If this is the case, you can run the command `yo tcg --create-tree` to generate a dummy file tree just like the one above. After doing this, simply move into the `funnel/` directory and execute `yo tcg` again.
+
 ## Installation:
 
 `npm install --global yo generator-tcg`

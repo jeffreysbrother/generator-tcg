@@ -33,43 +33,6 @@ let createConfig = '';
 let inputJSONinitials;
 let configMissing = false;
 
-// if no .git file is found (if not a Git repository)
-if (!fse.existsSync(`${cwd}/.git`)) {
-	isGit = false;
-}
-
-emptyFile = fs.isEmptySync(`${cwd}/config.json`);
-
-// check if config.json exists
-if (fse.existsSync(`${cwd}/config.json`)) {
-	pathToConfig = `${cwd}/config.json`;
-
-  if (emptyFile === true) {
-    console.log(chalk.red('Your config.json is empty!! Please see README for details.'));
-    process.exit();
-  }
-
-	try {
-		// try to get contents of JSON
-		jsonContents = JSON.parse(fse.readFileSync(pathToConfig, 'utf8'));
-		try {
-			// try to set devInitials
-			devInitials = require(pathToConfig).developer.replace(/\s/g,'');
-		} catch(e) {
-			console.log(chalk.red('config.json is misconfigured! See README for more details.'));
-			process.exit();
-		}
-	} catch(e) {
-		// if JSON is invalid
-		console.log(chalk.red('config.json is invalid. Please fix and try again.'));
-		process.exit();
-	}
-
-} else {
-	console.log(chalk.red('Your config.json is missing!!'));
-	configMissing = true;
-}
-
 module.exports = class extends Generator {
 
 	constructor(args, opts) {
@@ -84,13 +47,86 @@ module.exports = class extends Generator {
       desc: 'Skips the PHP comments',
       type: Boolean
     });
+
+		this.option('create-tree', {
+			desc: 'create directory structure',
+			type: Boolean
+		});
   }
 
 	initializing() {
+		if (this.options['create-tree']) {
+			if (!fse.existsSync(`${cwd}/funnel`)) {
+				const dirStubs = [
+					'funnel/source/sections/home/ga/ga-01',
+					'funnel/source/sections/home/bm/bm-01',
+					'funnel/source/sections/report-review/ga/ga-01',
+					'funnel/source/sections/report-review/ga/ga-02',
+					'funnel/source/sections/report-review/jc/jc-01'
+				];
+
+				const extensions = [
+					'.php',
+					'.js',
+					'.less'
+				];
+
+				dirStubs.forEach(i => {
+					shell.exec(`mkdir -p ${i}`);
+					extensions.forEach(o => {
+						fs.closeSync(fs.openSync(`${i}/${i.slice(-5)}${o}`, 'w'));
+					});
+				});
+
+				console.log(chalk.yellow(`Directory structure and files generated!\nPlease move into the funnel/ directory and run \'yo tcg\'`));
+				process.exit();
+			} else {
+				console.log(chalk.red('funnel/ directory already exists! Aborting.'));
+				process.exit();
+			}
+		}
+
 		if (!this.options['skip-git'] && isGit === true) {
 			simpleGit()
 			.checkout('master')
 			.pull('origin', 'master');
+		}
+
+		// if no .git file is found (if not a Git repository)
+		if (!fse.existsSync(`${cwd}/.git`)) {
+			isGit = false;
+		}
+
+		emptyFile = fs.isEmptySync(`${cwd}/config.json`);
+
+		// check if config.json exists
+		if (fse.existsSync(`${cwd}/config.json`)) {
+			pathToConfig = `${cwd}/config.json`;
+
+		  if (emptyFile === true) {
+		    console.log(chalk.red('Your config.json is empty!! Please see README for details.'));
+		    process.exit();
+		  }
+
+			try {
+				// try to get contents of JSON
+				jsonContents = JSON.parse(fse.readFileSync(pathToConfig, 'utf8'));
+				try {
+					// try to set devInitials
+					devInitials = require(pathToConfig).developer.replace(/\s/g,'');
+				} catch(e) {
+					console.log(chalk.red('config.json is misconfigured! See README for more details.'));
+					process.exit();
+				}
+			} catch(e) {
+				// if JSON is invalid
+				console.log(chalk.red('config.json is invalid. Please fix and try again.'));
+				process.exit();
+			}
+
+		} else {
+			console.log(chalk.red('Your config.json is missing!!'));
+			configMissing = true;
 		}
 	}
 
