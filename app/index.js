@@ -384,11 +384,11 @@ module.exports = class extends Generator {
 							fs.readFile(newFile, 'utf8', function (err, data) {
 								if (err) throw err;
 								if(data.indexOf('<!-- copied from') >= 0) {
-									let commentRegEx = /(\<\!\-\-\scopied\sfrom\s.+\s\-\-\>)/g;
-									let replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
+									let commentRegEx = /(\<\!\-{2}\scopied\sfrom\s.{0,5}\s\-{2}\>)/g,
+										replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
 									fs.writeFile(newFile, replacement, 'utf8', function (err) {
-								    if (err) return console.log(err);
-										console.log(chalk.yellow('existing comment renamed'));
+								    if (err) throw err;
+										console.log(chalk.yellow('existing comment replaced'));
 								  });
 							  } else {
 									fs.appendFileSync(newFile, `<!-- copied from ${originalDir} -->`);
