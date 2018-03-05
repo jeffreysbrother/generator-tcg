@@ -43,7 +43,7 @@ module.exports = class extends Generator {
       type: Boolean
     });
 
-		this.option('skip-comments', {
+		this.option('skip-comment', {
       desc: 'Skips the PHP comments',
       type: Boolean
     });
@@ -373,7 +373,7 @@ module.exports = class extends Generator {
 	}
 
 	insertPHPComment() {
-		if (!this.options['skip-comments']) {
+		if (!this.options['skip-comment']) {
 			pathsToNewVariations.forEach(variation => {
 				fse.readdir(variation, (err, files) => {
 					// skip hidden files
@@ -381,7 +381,19 @@ module.exports = class extends Generator {
 					files.forEach(file => {
 						let newFile = `${variation}/${file}`;
 						if (path.extname(newFile) === '.php') {
-							fs.appendFileSync(newFile, `<!-- copied from ${originalDir} -->`);
+							fs.readFile(newFile, 'utf8', function (err, data) {
+								if (err) throw err;
+								if(data.indexOf('<!-- copied from') >= 0) {
+									let commentRegEx = /(\<\!\-\-\scopied\sfrom\s.+\s\-\-\>)/g;
+									let replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
+									fs.writeFile(newFile, replacement, 'utf8', function (err) {
+								    if (err) return console.log(err);
+										console.log(chalk.yellow('existing comment renamed'));
+								  });
+							  } else {
+									fs.appendFileSync(newFile, `<!-- copied from ${originalDir} -->`);
+								}
+							});
 						}
 					});
 				});
