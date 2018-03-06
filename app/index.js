@@ -356,11 +356,7 @@ module.exports = class extends Generator {
 	message() {
 		let items = [];
 		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
-		if (items.length > 1) {
-			console.log(chalk.yellow(`${howMany} variations created: ${[...items]}.`));
-		} else {
-			console.log(chalk.yellow(`${howMany} variation created: ${items}.`));
-		}
+		console.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
 	}
 
 	insertPHPComment() {
