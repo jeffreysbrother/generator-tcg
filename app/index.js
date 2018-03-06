@@ -288,31 +288,22 @@ module.exports = class extends Generator {
 		let suffixesStringy = newSuffixes.map(String);
 
 		// populate array of paths to new variations, adding padding if suffix is one digit
+		function string(x) {
+			suffixesStringy.forEach(suffix => {
+				if (suffix.length === 1) {
+					pathsToNewVariations.push(`${pathToNewDev}/${x}-0${suffix}`);
+				} else {
+					pathsToNewVariations.push(`${pathToNewDev}/${x}-${suffix}`);
+				}
+			});
+			newBranch = `${x}_${section}_${blurb}`;
+		}
+
 		if (devInitials) {
-			suffixesStringy.forEach(suffix => {
-				if (suffix.length === 1) {
-					pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-0${suffix}`);
-				} else {
-					pathsToNewVariations.push(`${pathToNewDev}/${devInitials}-${suffix}`);
-				}
-			});
-
-			newBranch = `${devInitials}_${section}_${blurb}`;
+			string(devInitials);
+		} else if (inputJSONinitials) {
+			string(inputJSONinitials);
 		}
-
-		if (inputJSONinitials) {
-			suffixesStringy.forEach(suffix => {
-				if (suffix.length === 1) {
-					pathsToNewVariations.push(`${pathToNewDev}/${inputJSONinitials}-0${suffix}`);
-				} else {
-					pathsToNewVariations.push(`${pathToNewDev}/${inputJSONinitials}-${suffix}`);
-				}
-			});
-
-			newBranch = `${inputJSONinitials}_${section}_${blurb}`;
-		}
-
-
 	}
 
 	checkBranch() {
