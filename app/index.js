@@ -384,7 +384,7 @@ module.exports = class extends Generator {
 							fs.readFile(newFile, 'utf8', function (err, data) {
 								if (err) throw err;
 								if(data.indexOf('<!-- copied from') >= 0) {
-									let commentRegEx = /(\<\!\-{2}\scopied\sfrom\s.{0,5}\s\-{2}\>)/g,
+									let commentRegEx = /(\<\!\-{2}\scopied\sfrom\s.{0,6}\s\-{2}\>)/g,
 										replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
 									fs.writeFile(newFile, replacement, 'utf8', function (err) {
 								    if (err) throw err;
