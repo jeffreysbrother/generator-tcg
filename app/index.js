@@ -114,6 +114,10 @@ module.exports = class extends Generator {
 				try {
 					// try to set devInitials
 					devInitials = require(pathToConfig).developer.replace(/\s/g,'');
+					if (devInitials === '') {
+						console.log(chalk.red('Please specify your initials in config.json'));
+						process.exit();
+					}
 				} catch(e) {
 					console.log(chalk.red('config.json is misconfigured! See README for more details.'));
 					process.exit();
