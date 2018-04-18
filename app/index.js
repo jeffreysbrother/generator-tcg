@@ -277,6 +277,17 @@ module.exports = class extends Generator {
 			existingDirs.push(dir);
 		});
 
+		// put array items in numerical order (so last item will have the greatest numerical value)
+		existingDirs.sort(function (a, b) {
+			if (parseFloat(a.substring(a.indexOf('-') + 1, a.length)) < parseFloat(b.substring(b.indexOf('-') + 1, b.length))) {
+		    return -1;
+		  }
+		  if (parseFloat(a.substring(a.indexOf('-') + 1, a.length)) > parseFloat(b.substring(b.indexOf('-') + 1, b.length))) {
+		    return 1;
+		  }
+		  return 0;
+		});
+
 		// find last existing dir
 		let lastDir = existingDirs[existingDirs.length - 1];
 
@@ -379,7 +390,7 @@ module.exports = class extends Generator {
 										replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
 									fs.writeFile(newFile, replacement, 'utf8', function (err) {
 								    if (err) throw err;
-										console.log(chalk.yellow('existing comment replaced'));
+										console.log(chalk.yellow('existing comment replaced.'));
 								  });
 							  } else {
 									fs.appendFileSync(newFile, `<!-- copied from ${originalDir} -->`);
