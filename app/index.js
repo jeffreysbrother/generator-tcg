@@ -278,11 +278,13 @@ module.exports = class extends Generator {
 		});
 
 		// put array items in numerical order (so last item will have the greatest numerical value)
-		existingDirs.sort(function (a, b) {
-			if (parseFloat(a.substring(a.indexOf('-') + 1, a.length)) < parseFloat(b.substring(b.indexOf('-') + 1, b.length))) {
+		existingDirs.sort((a, b) => {
+			let firstItem = parseFloat(a.substring(a.indexOf('-') + 1, a.length));
+			let secondItem = parseFloat(b.substring(b.indexOf('-') + 1, b.length));
+			if (firstItem < secondItem) {
 		    return -1;
 		  }
-		  if (parseFloat(a.substring(a.indexOf('-') + 1, a.length)) > parseFloat(b.substring(b.indexOf('-') + 1, b.length))) {
+		  if (firstItem > secondItem) {
 		    return 1;
 		  }
 		  return 0;
