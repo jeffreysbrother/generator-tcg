@@ -87,15 +87,15 @@ module.exports = class extends Generator {
 			}
 		}
 
+		// if no .git file is found (if not a Git repository)
+		if (!fse.existsSync(`${cwd}/.git`)) {
+			isGit = false;
+		}
+
 		if (!this.options['skip-git'] && isGit === true) {
 			simpleGit()
 			.checkout('master')
 			.pull('origin', 'master');
-		}
-
-		// if no .git file is found (if not a Git repository)
-		if (!fse.existsSync(`${cwd}/.git`)) {
-			isGit = false;
 		}
 
 		emptyFile = fs.isEmptySync(`${cwd}/config.json`);
