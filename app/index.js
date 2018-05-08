@@ -367,7 +367,13 @@ module.exports = class extends Generator {
 	message() {
 		let items = [];
 		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
-		console.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
+		if (items.length > 0) {
+			console.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
+		} else {
+			// not sure if this is the best place for this error message
+			console.log(chalk.red('Something went wrong. Zero variations created.'));
+			process.exit();
+		}
 	}
 
 	insertPHPComment() {
@@ -384,7 +390,7 @@ module.exports = class extends Generator {
 								if (data.indexOf('<!-- copied from') >= 0) {
 									let commentRegEx = /(\<\!\-{2}\scopied\sfrom\s.{0,6}\s\-{2}\>)/g,
 										replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
-									fs.writeFile(newFile, replacement, 'utf8', (err) => {
+									fs.writeFile(newFile, replacement, 'utf8', err => {
 								    if (err) throw err;
 								  });
 									// log this message only once
