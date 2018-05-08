@@ -305,14 +305,9 @@ module.exports = class extends Generator {
 		// convert array of numbers to array of strings
 		let suffixesStringy = newSuffixes.map(String);
 
-		// populate array of paths to new variations, adding padding if suffix is one digit
 		function string(x) {
 			suffixesStringy.forEach(suffix => {
-				if (suffix.length === 1) {
-					pathsToNewVariations.push(`${pathToNewDev}/${x}-0${suffix}`);
-				} else {
-					pathsToNewVariations.push(`${pathToNewDev}/${x}-${suffix}`);
-				}
+				pathsToNewVariations.push(`${pathToNewDev}/${x}-${suffix.padStart(2, '0')}`);
 			});
 			newBranch = `${x}_${section}_${blurb}`;
 		}
