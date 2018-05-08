@@ -1,37 +1,38 @@
 'use strict';
-const Generator = require('yeoman-generator');
-const fse = require('fs-extra');
-const fs = require('extfs');
-const chalk = require('chalk');
-const path = require('path');
-const simpleGit = require('simple-git');
-const shell = require('shelljs');
+const Generator = require('yeoman-generator'),
+	fse = require('fs-extra'),
+	fs = require('extfs'),
+	chalk = require('chalk'),
+	path = require('path'),
+	simpleGit = require('simple-git'),
+	shell = require('shelljs'),
 
-const cwd = process.cwd();
-const ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig;
-const restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g;
-const pathToSection = `${cwd}/source/sections`;
+	cwd = process.cwd(),
+	ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig,
+	restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g,
+	pathToSection = `${cwd}/source/sections`;
 
-let isGit = true;
-let pathToConfig ='';
-let devInitials = '';
-let jsonContents;
-let section;
-let originalDir;
-let howMany;
-let originalNamespace;
-let pathToOriginalDir;
-let pathsToNewVariations = [];
-let pathToNewDev;
-let existingDirs = [];
-let newSuffixes = [];
-let blurb;
-let newBranch;
-let lastSuffix;
-let emptyFile;
-let createConfig = '';
-let inputJSONinitials;
-let configMissing = false;
+let isGit = true,
+	pathToConfig ='',
+	devInitials = '',
+	jsonContents,
+	section,
+	originalDir,
+	howMany,
+	originalNamespace,
+	pathToOriginalDir,
+	pathsToNewVariations = [],
+	pathToNewDev,
+	existingDirs = [],
+	newSuffixes = [],
+	blurb,
+	newBranch,
+	lastSuffix,
+	emptyFile,
+	createConfig = '',
+	inputJSONinitials,
+	configMissing = false,
+	fileToReplace = true;
 
 module.exports = class extends Generator {
 
@@ -250,8 +251,8 @@ module.exports = class extends Generator {
 
 	createJSON() {
 		if (inputJSONinitials) {
-			let fileContent = `{\n\t"developer": "${inputJSONinitials}"\n}`;
-			let filePath = `${cwd}/config.json`;
+			let fileContent = `{\n\t"developer": "${inputJSONinitials}"\n}`,
+				filePath = `${cwd}/config.json`;
 			fs.writeFile(filePath, fileContent, err => {
 				if (err) throw err;
 				console.log(chalk.yellow('config.json created!'));
@@ -279,8 +280,8 @@ module.exports = class extends Generator {
 
 		// put array items in numerical order (so last item will have the greatest numerical value)
 		existingDirs.sort((a, b) => {
-			let firstItem = parseFloat(a.substring(a.indexOf('-') + 1, a.length));
-			let secondItem = parseFloat(b.substring(b.indexOf('-') + 1, b.length));
+			let firstItem = parseFloat(a.substring(a.indexOf('-') + 1, a.length)),
+				secondItem = parseFloat(b.substring(b.indexOf('-') + 1, b.length));
 			if (firstItem < secondItem) {
 		    return -1;
 		  }
@@ -361,9 +362,7 @@ module.exports = class extends Generator {
 	        let fullPath = `${variation}/${file}`,
 						newPart = path.basename(path.dirname(fullPath));
 					fse.rename(fullPath, fullPath.replace(originalDir, newPart)), err => {
-						if (err) {
-							throw err;
-						}
+						if (err) throw err;
 					};
 	      });
 	    });
@@ -385,15 +384,19 @@ module.exports = class extends Generator {
 					files.forEach(file => {
 						let newFile = `${variation}/${file}`;
 						if (path.extname(newFile) === '.php') {
-							fs.readFile(newFile, 'utf8', function (err, data) {
+							fs.readFile(newFile, 'utf8', (err, data) => {
 								if (err) throw err;
-								if(data.indexOf('<!-- copied from') >= 0) {
+								if (data.indexOf('<!-- copied from') >= 0) {
 									let commentRegEx = /(\<\!\-{2}\scopied\sfrom\s.{0,6}\s\-{2}\>)/g,
 										replacement = data.replace(commentRegEx, `<!-- copied from ${originalDir} -->`);
-									fs.writeFile(newFile, replacement, 'utf8', function (err) {
+									fs.writeFile(newFile, replacement, 'utf8', (err) => {
 								    if (err) throw err;
-										console.log(chalk.yellow('existing comment replaced.'));
 								  });
+									// log this message only once
+									if (fileToReplace === true) {
+										console.log(chalk.yellow('existing comment replaced.'));
+										fileToReplace = false;
+									}
 							  } else {
 									fs.appendFileSync(newFile, `<!-- copied from ${originalDir} -->`);
 								}
