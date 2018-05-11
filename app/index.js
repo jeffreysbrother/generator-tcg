@@ -10,6 +10,7 @@ const Generator = require('yeoman-generator'),
 	cwd = process.cwd(),
 	ignoreHiddenFiles = /(^|\/)\.[^\/\.]/ig,
 	restrictUserInputPattern = /\b[a-zA-Z]{2}(-)\d{2,3}\b/g,
+	configRule = /\b[a-zA-Z]{2}\b/,
 	pathToSection = `${cwd}/source/sections`;
 
 let isGit = true,
@@ -72,10 +73,10 @@ module.exports = class extends Generator {
 					'.less'
 				];
 
-				dirStubs.forEach(i => {
-					shell.exec(`mkdir -p ${i}`);
-					extensions.forEach(o => {
-						fs.closeSync(fs.openSync(`${i}/${i.slice(-5)}${o}`, 'w'));
+				dirStubs.forEach(dir => {
+					shell.exec(`mkdir -p ${dir}`);
+					extensions.forEach(ext => {
+						fs.closeSync(fs.openSync(`${dir}/${dir.slice(-5)}${ext}`, 'w'));
 					});
 				});
 
@@ -150,7 +151,7 @@ module.exports = class extends Generator {
 				return value.toLowerCase().replace(/\s/g,'');
 			},
 			validate: value => {
-				if (value.length === 2) {
+				if (value.match(configRule)) {
 					return true;
 				} else {
 					this.log(chalk.yellow(' Please enter exactly two alphabetical characters.'));
@@ -244,7 +245,7 @@ module.exports = class extends Generator {
 
 	abandon() {
 		if (createConfig === false) {
-			this.log(chalk.yellow('Please create your config.json file and try again. Aborting'));
+			this.log(chalk.yellow('Please create your config.json file and try again. Aborting.'));
 			process.exit();
 		}
 	}
@@ -274,9 +275,7 @@ module.exports = class extends Generator {
 		}
 
 		// get array of existing dirs
-		fse.readdirSync(pathToNewDev).forEach(dir => {
-			existingDirs.push(dir);
-		});
+		fse.readdirSync(pathToNewDev).forEach(dir => existingDirs.push(dir));
 
 		// put array items in numerical order (so last item will have the greatest numerical value)
 		existingDirs.sort((a, b) => {
@@ -366,7 +365,7 @@ module.exports = class extends Generator {
 
 	message() {
 		let items = [];
-		pathsToNewVariations.forEach(variation => { items.push(path.basename(variation)) });
+		pathsToNewVariations.forEach(variation => items.push(path.basename(variation)));
 		if (items.length > 0) {
 			this.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
 		} else {
