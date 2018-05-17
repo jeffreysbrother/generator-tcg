@@ -43,6 +43,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "extfs": "0.0.7",
+		"inquirer": "^5.2.0",
     "fs-extra": "^5.0.0",
     "shelljs": "^0.8.2",
     "simple-git": "^1.92.0"
