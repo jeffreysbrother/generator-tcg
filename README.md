@@ -52,7 +52,7 @@ Chances are, your project will not be structured in this way. If this is the cas
 
 ## How to Use:
 
-When the command `yo tcg` is executed, the user must answer three questions. Here's an example of how one might answer:
+When the command `yo tcg` is executed, the user must answer four questions. Here's an example of how one might answer:
 
 * **What section are you working on?**  report-review
 * **Which directory do you wish to copy?**  ga-33
@@ -83,7 +83,6 @@ Two additional prompts will appear if the user has a missing `config.json` file 
 
 ## Future Features:
 
-- [x] Give user the ability to copy multiple directories.
 - [x] Find a way to eliminate `setTimeout()`.
 - [x] Create the appropriate subdirectory dynamically (numerically speaking). This would prevent us from having to input the desired suffix manually because it would find the subdirectory with the highest numerical value and then rename the duplicated directory (and the files within) with the **next** numerical value. If the most recent file name is `jc-44.js`, the program will create `jc-45.js`. We could ask the user "How many variations?" instead of expecting them to type the variation names manually. Adam also suggested that we retrieve the developer initials from the config file.
 - [x] Allow the generator to also handle the necessary Git commands: checkout new branch, stage changes, commit with message "copied [default variation]", and push. This could be optional functionality (possibly selected as an option in the prompt, or maybe overridden with an additional flag such as "--skip-git").

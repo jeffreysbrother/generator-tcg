@@ -80,10 +80,10 @@ module.exports = class extends Generator {
 					});
 				});
 
-				this.log(chalk.yellow(`Directory structure and files generated!\nPlease move into the funnel/ directory and run \'yo tcg\'`));
+				console.log(chalk.yellow(`Directory structure and files generated!\nPlease move into the funnel/ directory and run \'yo tcg\'`));
 				process.exit();
 			} else {
-				this.log(chalk.red('funnel/ directory already exists! Aborting.'));
+				console.log(chalk.red('funnel/ directory already exists! Aborting.'));
 				process.exit();
 			}
 		}
@@ -106,7 +106,7 @@ module.exports = class extends Generator {
 			pathToConfig = `${cwd}/config.json`;
 
 		  if (emptyFile === true) {
-		    this.log(chalk.red('Your config.json is empty!! Please see README for details.'));
+		    console.log(chalk.red('Your config.json is empty!! Please see README for details.'));
 		    process.exit();
 		  }
 
@@ -117,21 +117,21 @@ module.exports = class extends Generator {
 					// try to set devInitials
 					devInitials = require(pathToConfig).developer.replace(/\s/g,'');
 					if (devInitials === '') {
-						this.log(chalk.red('Please specify your initials in config.json'));
+						console.log(chalk.red('Please specify your initials in config.json'));
 						process.exit();
 					}
 				} catch(e) {
-					this.log(chalk.red('config.json is misconfigured! See README for more details.'));
+					console.log(chalk.red('config.json is misconfigured! See README for more details.'));
 					process.exit();
 				}
 			} catch(e) {
 				// if JSON is invalid
-				this.log(chalk.red('config.json is invalid. Please fix and try again.'));
+				console.log(chalk.red('config.json is invalid. Please fix and try again.'));
 				process.exit();
 			}
 
 		} else {
-			this.log(chalk.red('Your config.json is missing!!'));
+			console.log(chalk.red('Your config.json is missing!!'));
 			configMissing = true;
 		}
 	}
@@ -154,7 +154,7 @@ module.exports = class extends Generator {
 				if (value.match(configRule)) {
 					return true;
 				} else {
-					this.log(chalk.yellow(' Please enter exactly two alphabetical characters.'));
+					console.log(chalk.yellow(' Please enter exactly two alphabetical characters.'));
 				}
 			}
     },{
@@ -167,11 +167,11 @@ module.exports = class extends Generator {
 			},
       validate: value => {
 				if (value === '' || !value.replace(/\s/g, '').length) {
-					this.log(chalk.yellow(' Please enter a valid name.'));
+					console.log(chalk.yellow(' Please enter a valid name.'));
 				} else if (fse.existsSync(`${pathToSection}/${value}`)) {
           return true;
         } else {
-          this.log(chalk.yellow(" Section doesn't exist!"));
+          console.log(chalk.yellow(" Section doesn't exist!"));
           return false;
         }
       }
@@ -188,7 +188,7 @@ module.exports = class extends Generator {
         if (value.match(restrictUserInputPattern)) {
           return true;
         } else {
-          this.log(chalk.yellow(' Invalid directory name!'));
+          console.log(chalk.yellow(' Invalid directory name!'));
           return false;
         }
       }
@@ -203,16 +203,16 @@ module.exports = class extends Generator {
 			validate: value => {
 				if (!isNaN(parseFloat(value)) && isFinite(value) && value % 1 === 0) {
 					if (parseFloat(value) === 0) {
-						this.log(chalk.yellow(' What? You don\'t want that.'));
+						console.log(chalk.yellow(' What? You don\'t want that.'));
 						return false;
 					} else if (parseFloat(value) > 10) {
-						this.log(chalk.yellow(' Too many variations!'));
+						console.log(chalk.yellow(' Too many variations!'));
 						return false;
 					} else {
 						return true;
 					}
 				} else {
-					this.log(chalk.yellow(' Please enter a whole number.'));
+					console.log(chalk.yellow(' Please enter a whole number.'));
 					return false;
 				}
 			}
@@ -226,7 +226,7 @@ module.exports = class extends Generator {
 			},
 			validate: value => {
 				if (value === '' || value === 'undefined') {
-					this.log(chalk.yellow(' Invalid name!'));
+					console.log(chalk.yellow(' Invalid name!'));
 				} else {
 					return true;
 				}
@@ -245,7 +245,7 @@ module.exports = class extends Generator {
 
 	abandon() {
 		if (createConfig === false) {
-			this.log(chalk.yellow('Please create your config.json file and try again. Aborting.'));
+			console.log(chalk.yellow('Please create your config.json file and try again. Aborting.'));
 			process.exit();
 		}
 	}
@@ -256,7 +256,7 @@ module.exports = class extends Generator {
 				filePath = `${cwd}/config.json`;
 			fs.writeFile(filePath, fileContent, err => {
 				if (err) throw err;
-				this.log(chalk.yellow('config.json created!'));
+				console.log(chalk.yellow('config.json created!'));
 			});
 		}
 	}
@@ -322,11 +322,11 @@ module.exports = class extends Generator {
 		if (!this.options['skip-git'] && isGit === true) {
 			// check if the branch already exists locally
 			if (shell.exec(`git rev-parse --verify --quiet \'${newBranch}\'`, {silent:true}).length > 0) {
-				this.log(chalk.yellow('ERROR: local branch already exists. Terminating process.'));
+				console.log(chalk.yellow('ERROR: local branch already exists. Terminating process.'));
 				process.exit();
 			// check if the branch already exists remotely
 			} else if (shell.exec(`git ls-remote --heads origin \'${newBranch}\'`, {silent:true}).length > 0) {
-				this.log(chalk.yellow('ERROR: remote branch already exists. Terminating process.'));
+				console.log(chalk.yellow('ERROR: remote branch already exists. Terminating process.'));
 				process.exit();
 			}
 		}
@@ -335,13 +335,13 @@ module.exports = class extends Generator {
   copy() {
 		pathsToNewVariations.forEach(variation => {
 			if (!fse.existsSync(pathToOriginalDir)) {
-	      this.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
+	      console.log(chalk.yellow(`${originalDir} doesn't exist! Aborting.`));
 	      process.exit();
 	    } else {
 				try {
 	        fse.copySync(pathToOriginalDir, variation);
 	      } catch (err) {
-	        this.log(err);
+	        console.log(err);
 	      }
 			}
 		});
@@ -367,10 +367,10 @@ module.exports = class extends Generator {
 		let items = [];
 		pathsToNewVariations.forEach(variation => items.push(path.basename(variation)));
 		if (items.length > 0) {
-			this.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
+			console.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
 		} else {
 			// not sure if this is the best place for this error message
-			this.log(chalk.red('Something went wrong. Zero variations created.'));
+			console.log(chalk.red('Something went wrong. Zero variations created.'));
 			process.exit();
 		}
 	}
@@ -378,7 +378,7 @@ module.exports = class extends Generator {
 	insertPHPComment() {
 		if (!this.options['skip-comment']) {
 			pathsToNewVariations.forEach(variation => {
-				fse.readdir(variation, (err, files) => {
+				fse.readdirSync(variation, (err, files) => {
 					// skip hidden files
 					files = files.filter(item => !(ignoreHiddenFiles).test(item));
 					files.forEach(file => {
@@ -394,7 +394,7 @@ module.exports = class extends Generator {
 								  });
 									// log this message only once
 									if (fileToReplace === true) {
-										this.log(chalk.yellow('existing comment replaced.'));
+										console.log(chalk.yellow('existing comment replaced.'));
 										fileToReplace = false;
 									}
 							  } else {
@@ -413,17 +413,17 @@ module.exports = class extends Generator {
 			try {
 				simpleGit()
 					.checkoutBranch(newBranch, 'master', (err, result) => {
-						this.log(chalk.yellow(`Switched to new branch ${newBranch}`));
+						console.log(chalk.yellow(`Switched to new branch ${newBranch}`));
 					})
 					.add('./*')
 					.commit(`copied ${originalDir}`, (err, result) => {
-						this.log(chalk.yellow('Changes staged and committed'));
+						console.log(chalk.yellow('Changes staged and committed'));
 					})
 					.push(['-u', 'origin', `${newBranch}`], (err, result) => {
-						this.log(chalk.yellow('Pushed!'));
+						console.log(chalk.yellow('Pushed!'));
 					});
 			} catch (err) {
-				this.log(err);
+				console.log(err);
 			}
 		}
 	}
