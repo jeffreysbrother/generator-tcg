@@ -349,7 +349,7 @@ module.exports = class extends Generator {
 
   rename() {
 		pathsToNewVariations.forEach(variation => {
-			fse.readdirSync(variation, (err, files) => {
+			fse.readdir(variation, (err, files) => {
 	      // skip hidden files
 	      files = files.filter(item => !(ignoreHiddenFiles).test(item));
 	      files.forEach(file => {
