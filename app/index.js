@@ -95,8 +95,8 @@ module.exports = class extends Generator {
 
 		if (!this.options['skip-git'] && isGit === true) {
 			simpleGit()
-			.checkout('master')
-			.pull('origin', 'master');
+				.checkout('master')
+				.pull('origin', 'master');
 		}
 
 		emptyFile = fs.isEmptySync(`${cwd}/config.json`);
@@ -120,11 +120,11 @@ module.exports = class extends Generator {
 						console.log(chalk.red('Please specify your initials in config.json'));
 						process.exit();
 					}
-				} catch(e) {
+				} catch(err) {
 					console.log(chalk.red('config.json is misconfigured! See README for more details.'));
 					process.exit();
 				}
-			} catch(e) {
+			} catch(err) {
 				// if JSON is invalid
 				console.log(chalk.red('config.json is invalid. Please fix and try again.'));
 				process.exit();
@@ -413,14 +413,14 @@ module.exports = class extends Generator {
 		if (!this.options['skip-git'] && isGit === true) {
 			try {
 				simpleGit()
-					.checkoutBranch(newBranch, 'master', (err, result) => {
+					.checkoutBranch(newBranch, 'master', () => {
 						console.log(chalk.yellow(`Switched to new branch ${newBranch}`));
 					})
 					.add('./*')
-					.commit(`copied ${originalDir}`, (err, result) => {
+					.commit(`copied ${originalDir}`, () => {
 						console.log(chalk.yellow('Changes staged and committed'));
 					})
-					.push(['-u', 'origin', `${newBranch}`], (err, result) => {
+					.push(['-u', 'origin', `${newBranch}`], () => {
 						console.log(chalk.yellow('Pushed!'));
 					});
 			} catch (err) {
