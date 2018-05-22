@@ -264,10 +264,11 @@ module.exports = class extends Generator {
 	manipulation() {
 		originalNamespace = originalDir.substr(0, originalDir.indexOf('-'));
 		pathToOriginalDir = `${pathToSection}/${section}/${originalNamespace}/${originalDir}`;
-		pathToNewDev = `${pathToSection}/${section}/${devInitials}`;
 
 		if (inputJSONinitials) {
 			pathToNewDev = `${pathToSection}/${section}/${inputJSONinitials}`;
+		} else {
+			pathToNewDev = `${pathToSection}/${section}/${devInitials}`;
 		}
 
 		if (!fse.existsSync(pathToNewDev)) {
@@ -355,9 +356,9 @@ module.exports = class extends Generator {
 	      files.forEach(file => {
 	        let fullPath = `${variation}/${file}`,
 						newPart = path.basename(path.dirname(fullPath));
-					fse.rename(fullPath, fullPath.replace(originalDir, newPart)), err => {
+					fse.rename(fullPath, fullPath.replace(originalDir, newPart), err => {
 						if (err) throw err;
-					};
+					});
 	      });
 	    });
 		});
