@@ -309,7 +309,22 @@ module.exports = class extends Generator {
 			suffixesStringy.forEach(suffix => {
 				pathsToNewVariations.push(`${pathToNewDev}/${x}-${suffix.padStart(2, '0')}`);
 			});
-			newBranch = `${x}_${section}_${blurb}`;
+			// if first character is a slash
+			if (section.charAt(0) === '/') {
+				// remove initial slashes
+				let sectionNoSlashes = section.replace(/^(\/)+/, '');
+				if (sectionNoSlashes.includes('/')) {
+					newBranch = `${x}_${sectionNoSlashes.substring(0, sectionNoSlashes.indexOf('/'))}_${blurb}`;
+				} else {
+					newBranch = `${x}_${sectionNoSlashes}_${blurb}`;
+				}
+			} else {
+				if (section.includes('/')) {
+					newBranch = `${x}_${section.substring(0, section.indexOf('/'))}_${blurb}`;
+				} else {
+					newBranch = `${x}_${section}_${blurb}`;
+				}
+			}
 		}
 
 		if (devInitials) {
@@ -395,7 +410,11 @@ module.exports = class extends Generator {
 								  });
 									// log this message only once
 									if (fileToReplace === true) {
-										console.log(chalk.yellow('existing comment replaced.'));
+										if (howMany > 1) {
+											console.log(chalk.yellow('existing comments replaced.'));
+										} else {
+											console.log(chalk.yellow('existing comment replaced.'));
+										}
 										fileToReplace = false;
 									}
 							  } else {
