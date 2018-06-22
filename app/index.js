@@ -382,8 +382,9 @@ module.exports = class extends Generator {
 	message() {
 		let items = [];
 		pathsToNewVariations.forEach(variation => items.push(path.basename(variation)));
+
 		if (items.length > 0) {
-			console.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created: ${items}.`));
+			console.log(chalk.yellow(`${howMany} variation${(items.length > 1) ? 's' : ''} created:${items.map(i => ' ' + i)}.`));
 		} else {
 			// not sure if this is the best place for this error message
 			console.log(chalk.red('Something went wrong. Zero variations created.'));
