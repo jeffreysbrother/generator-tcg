@@ -45,7 +45,7 @@
     "extfs": "0.0.7",
     "fs-extra": "^7.0.0",
     "shelljs": "^0.8.2",
-    "simple-git": "^1.96.0",
+    "simple-git": "^1.105.0",
     "yeoman-generator": "^3.1.1"
   }
 }
