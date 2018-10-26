@@ -1,4 +1,6 @@
 **This package is no longer maintained!! Please use lean-tcg for enhanced performance.**
+**npm: [lean-tcg](https://www.npmjs.com/package/lean-tcg)**
+**GitHub: [lean-tcg](https://github.com/jeffreysbrother/lean-tcg)**
 
 # Generator-TCG
 
