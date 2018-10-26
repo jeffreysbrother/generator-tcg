@@ -1,3 +1,5 @@
+**This package is no longer maintained!! Please use lean-tcg for enhanced performance.**
+
 # Generator-TCG
 
 A command line utility for The Control Group split testing team. An existing directory (the default variation) is cloned and renamed according to a pre-established convention. The new files will then serve as a variation against which the control will be tested.
